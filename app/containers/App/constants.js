@@ -10,3 +10,4 @@
  */
 
 export const FETCH_DATA = 'containers/App/FETCH_DATA';
+export const FETCH_DATA_SUCCESS = 'containers/App/FETCH_DATA_SUCCESS';
