@@ -7,7 +7,7 @@ export default class Footer extends Component {
   render() {
     return (
       <StyleFooter>
-             Copyright by team front-end 2019  
+             Copyright © by team front-end 2019  
       </StyleFooter>
     )
   }

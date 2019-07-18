@@ -21,19 +21,22 @@ import Login from 'components/Login';
 import NotFoundPage from 'containers/NotFoundPage';
 
 import GlobalStyle from '../../global-styles';
+import Article from '../../components/Article';
 
 export default function App() {
   return (
     <div>
       <Header />
-      <Switch>
-        <Route path="/home" component={HomePage} />
-        <Route path="/peoples" component={Peoples} />
-        <Route path="/teacher" component={Teachers} />
-        <Route path="/students" component={Students} />
-        <Route path="/login" component={Login} />
-        <Route component={NotFoundPage} />
-      </Switch>
+      <Article>
+        <Switch>
+          <Route path="/home" component={HomePage} />
+          <Route path="/peoples" component={Peoples} />
+          <Route path="/teachers" component={Teachers} />
+          <Route path="/students" component={Students} />
+          <Route path="/login" component={Login} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </Article>
       <Footer />
       <GlobalStyle />
     </div>
