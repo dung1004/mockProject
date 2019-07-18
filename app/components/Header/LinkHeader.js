@@ -9,4 +9,11 @@ export default styled(NavLink)`
   // background: seagreen;
   font-weight: bold;
   text-decoration: none;
+  transition: 0.5s ease-in-out;
+  opacity: 0.7;
+  &:hover {
+    background: #303f9f;
+    transition: 0.5s ease-in-out;
+    border-radius: 4px;
+  }
 `;
