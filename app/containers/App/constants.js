@@ -9,4 +9,4 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-// export const FETCH_DATA = 'containers/App/FETCH_DATA';
+export const FETCH_DATA = 'containers/App/FETCH_DATA';
