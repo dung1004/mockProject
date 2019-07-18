@@ -14,10 +14,10 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Peoples from 'components/Peoples';
-import Teachers from 'components/Teacher';
-import Students from 'components/Student';
-import Login from 'components/Login';
+import Peoples from 'containers/Peoples';
+import Teachers from 'containers/Teacher';
+import Students from 'containers/Student';
+import Login from 'containers/Login';
 import NotFoundPage from 'containers/NotFoundPage';
 
 import GlobalStyle from '../../global-styles';
