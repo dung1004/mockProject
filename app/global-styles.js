@@ -26,6 +26,21 @@ const GlobalStyle = createGlobalStyle`
     font-family: Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5em;
   }
+  .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 100px
+}
+a.active {
+  background: seagreen;
+}
+button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary {
+  box-shadow: none;
+}
+button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary a {
+  padding: 0;
+  background: none
+}
 `;
 
 export default GlobalStyle;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /**
  *
  * App.js
@@ -11,17 +12,29 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
+import Peoples from 'components/Peoples';
+import Teachers from 'components/Teacher';
+import Students from 'components/Student';
+import Login from 'components/Login';
+import NotFoundPage from 'containers/NotFoundPage';
 
 import GlobalStyle from '../../global-styles';
 
 export default function App() {
   return (
     <div>
+      <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route path="/home" component={HomePage} />
+        <Route path="/peoples" component={Peoples} />
+        <Route path="/teacher" component={Teachers} />
+        <Route path="/students" component={Students} />
+        <Route path="/login" component={Login} />
         <Route component={NotFoundPage} />
       </Switch>
+      <Footer />
       <GlobalStyle />
     </div>
   );
