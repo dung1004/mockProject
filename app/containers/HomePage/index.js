@@ -50,7 +50,7 @@ export default function HomePage() {
       <BoxImg>
         <Img src="https://sas.edu.vn/wp-content/themes/neda/images/backgrounds/background.jpg" />
       </BoxImg>
-      <StyleH1 id="titleH1"> Welcome to page trung tam anh ngu </StyleH1>
+      <StyleH1 id="titleH1"> Chao mung ban den voi trung tam anh ngu </StyleH1>
       <Section className={classes.root}>
         <Lotrinh container spacing={3}>
           <Grid item xs={12}>

@@ -26,13 +26,13 @@ export default class Footer extends Component {
               <LinkHeader to="/home">Home</LinkHeader>
             </NavBar>
             <NavBar>
-              <LinkHeader to="/peoples">Peoples</LinkHeader>
+              <LinkHeader to="/people">People</LinkHeader>
             </NavBar>
             <NavBar>
-              <LinkHeader to="/teachers">List Teacher</LinkHeader>
+              <LinkHeader to="/teachers">Teachers</LinkHeader>
             </NavBar>
             <NavBar>
-              <LinkHeader to="/students">List Student</LinkHeader>
+              <LinkHeader to="/students">Students</LinkHeader>
             </NavBar>
           </MenuLink>
           <Button variant="contained" color="primary">

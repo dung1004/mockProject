@@ -32,7 +32,7 @@ export default function App() {
       <Article>
         <Switch>
           <Route path="/home" component={HomePage} />
-          <Route path="/peoples" component={Peoples} />
+          <Route path="/people" component={Peoples} />
           <Route path="/teachers" component={Teachers} />
           <Route path="/students" component={Students} />
           <Route path="/login" component={Login} />
