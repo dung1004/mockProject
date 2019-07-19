@@ -20,7 +20,7 @@ const test = keyframes`
 `;
 export default styled.h1`
     position: absolute;
-    top: 20%;
+    top: 15%;
     left: 50%;
     color: white;
     text-transform: uppercase;
@@ -32,5 +32,5 @@ export default styled.h1`
     word-spacing: 10px;
     font-family: 'Purisa' ;
     transition: .3s ease-in-out;
-    animation: ${test} 3s linear;
+    animation: ${test} 5s linear;
 `;

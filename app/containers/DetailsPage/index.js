@@ -1,42 +1,47 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable no-else-return */
+/* eslint-disable no-undef */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable consistent-return */
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 // import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 // import ButtonBase from '@material-ui/core/ButtonBase';
 import Section from '../../components/Section';
 import StyleAvt from './StyleAvt';
 import ButtonAvt from './ButtonAvt';
 import BoxCard from './BoxCard';
-
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   paper: {
-//     padding: theme.spacing(2),
-//     margin: 'auto',
-//     maxWidth: 500,
-//   },
-//   image: {
-//     width: 128,
-//     height: 128,
-//   },
-//   img: {
-//     margin: 'auto',
-//     display: 'block',
-//     maxWidth: '100%',
-//     maxHeight: '100%',
-//   },
-// }));
+import StyleTheP from './StyleTheP';
+import StyleForm from './StyleForm';
+import StyleH3 from '../HomePage/StyleH3';
 
 export default class index extends Component {
-  render() {
-    return (
-      <Section>
+  constructor(props) {
+    super(props);
+    this.state = {
+      trangthai: true,
+    };
+  }
+
+  editClick = () => {
+    this.setState({
+      trangthai: !this.state.trangthai
+    })
+    console.log(this.state.trangthai);
+
+  }
+
+  hideFormUser = () => {
+    if (this.state.trangthai === true) {
+      return (
         <BoxCard>
-          <Grid container spacing={2} xs={12}>
+          <Grid container spacing={2} xs={12} justify="center">
             <Grid item>
               <ButtonAvt>
                 <StyleAvt
@@ -46,34 +51,106 @@ export default class index extends Component {
                 />
               </ButtonAvt>
             </Grid>
-            <Grid item xs={8} sm container>
+            <Grid item xs={6} container justify="center">
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
                   <h2 gutterBottom variant="subtitle1">
                     Nguyen Thanh Dung
                   </h2>
-                  <Typography variant="body1" color="textSecondary">
-                    ID: 1030114
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    Email: 1004nguyendung@gmail.com
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    Phone: 0898162560
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    Address: Chau Hoa Tuyen Hoa Quang Binh
-                  </Typography>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b>ID:</b> 1030114
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b>Email:</b> 1004nguyendung@gmail.com
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b>Phone:</b>0898162560
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b>Ngày Sinh:</b> 2019-07-18
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b> Chức vụ: </b> Học viên
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b>Address:</b> hau Hoa Tuyen Hoa Quang Binh
+                  </StyleTheP>
                 </Grid>
                 <Grid item>
-                  <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                    Remove
-                  </Typography>
+                  <Button onClick={() => this.editClick()} variant="contained" color="secondary">
+                    Edit
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
         </BoxCard>
+      )
+    }
+  }
+  // eslint-disable-next-line lines-between-class-members
+  showFormEdit = () => {
+    if (this.state.trangthai === false) {
+      return (
+        <BoxCard>
+          <StyleH3>Edit Info User</StyleH3>
+          <StyleForm noValidate autoComplete="off">
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Email"
+              defaultValue="1004nguyendung@gmail.com"
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              id="outlined-dense"
+              label="Edit Phone"
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              id="outlined-dense"
+              label="Edit Ngày Sinh"
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              id="outlined-dense"
+              label="Edit Chức Vụ"
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              id="outlined-dense"
+              label="Edit Address"
+              margin="normal"
+              variant="outlined"
+            />
+            <Grid container md={12} align="center" spacing={3}>
+              <Grid item md={6} align="right">
+                <Button onClick={() => this.editClick()} variant="contained" color="secondary">
+                  Cancel
+                </Button>
+              </Grid>
+              <Grid item md={6} align="left">
+                <Button variant="contained" color="primary">
+                  Lưu Lại
+                </Button>
+              </Grid>
+            </Grid>
+          </StyleForm>
+        </BoxCard>
+      );
+    }
+  };
+
+  render() {
+    console.log(this.state.trangthai);
+    return (
+      <Section>
+        {this.hideFormUser()}
+        {this.showFormEdit()}
       </Section>
     );
   }
