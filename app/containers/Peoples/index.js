@@ -21,7 +21,7 @@ export default class About extends Component {
             { title: 'PHONE', field: 'phone' },
             { title: 'View Info',
               render: rowData => (
-                <StyleLink component={RouterLink} to='info/id=2'>
+                <StyleLink component={RouterLink} to={`info/${rowData.id}`}>
                   View
                 </StyleLink>
               )

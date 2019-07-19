@@ -19,13 +19,15 @@ import Teachers from 'containers/Teacher';
 import Students from 'containers/Student';
 import Login from 'containers/Login';
 import NotFoundPage from 'containers/NotFoundPage';
+import DetailsPage from 'containers/DetailsPage';
 
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
+import Wrapper from '../../components/Wrapper';
 
 export default function App() {
   return (
-    <div>
+    <Wrapper>
       <Header />
       <Article>
         <Switch>
@@ -34,11 +36,12 @@ export default function App() {
           <Route path="/teachers" component={Teachers} />
           <Route path="/students" component={Students} />
           <Route path="/login" component={Login} />
+          <Route path="/info/:id" component={DetailsPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Article>
       <Footer />
       <GlobalStyle />
-    </div>
+    </Wrapper>
   );
 }
