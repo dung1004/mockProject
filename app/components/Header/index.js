@@ -23,7 +23,7 @@ export default class Footer extends Component {
           </Typography>
           <MenuLink>
             <NavBar>
-              <LinkHeader to="/home">Home</LinkHeader>
+              <LinkHeader exact to="/">Home</LinkHeader>
             </NavBar>
             <NavBar>
               <LinkHeader to="/people">People</LinkHeader>

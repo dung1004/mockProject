@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react/prop-types */
+/* eslint-disable radix */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable no-else-return */
 /* eslint-disable no-undef */
@@ -12,6 +15,8 @@ import Grid from '@material-ui/core/Grid';
 // import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { Redirect } from "react-router-dom";
+import apiCaller from '../../utils/apiCaller';
 // import ButtonBase from '@material-ui/core/ButtonBase';
 import Section from '../../components/Section';
 import StyleAvt from './StyleAvt';
@@ -26,14 +31,49 @@ export default class index extends Component {
     super(props);
     this.state = {
       trangthai: true,
+      roles: 1,
+      data: []
     };
+  }
+
+  componentDidMount() {
+    apiCaller('users', 'get', null).then(res =>
+      this.setState({
+        data: res.data,
+      }),
+    );
+  }
+
+  // eslint-disable-next-line lines-between-class-members
+  showNut = () => {
+    if (this.state.roles === 0) {
+      return (
+        <Button onClick={() => this.editClick()} variant="contained" color="secondary">
+          Edit
+        </Button>
+      )
+    } else {
+      return (
+        <Button onClick={() => this.vetrangchu()} variant="contained" color="secondary">
+          Tro Lai
+        </Button>
+      )
+    }
+  }
+
+  vetrangchu = () => {
+    if(this.state.roles === 1) {
+      return <Redirect to='/home' />
+    }
+    // console.log(this.state.roles);
+    
   }
 
   editClick = () => {
     this.setState({
       trangthai: !this.state.trangthai
     })
-    console.log(this.state.trangthai);
+    // console.log(this.state.trangthai);
 
   }
 
@@ -46,7 +86,6 @@ export default class index extends Component {
               <ButtonAvt>
                 <StyleAvt
                   alt="complex"
-                  // src="http://diembaoaz.com/wp-content/uploads/2018/11/anh-girl-xinh-9-1.jpg"
                   src="https://scontent.fdad3-1.fna.fbcdn.net/v/t1.0-9/66511901_352607552306976_236412562093113344_n.jpg?_nc_cat=102&_nc_oc=AQn5U983Zeo7Fu4uLzQVya4NOXzWdL5NVglwKl4FH8pKZa8sAvrO7R_-1ypKBXpi3cI&_nc_ht=scontent.fdad3-1.fna&oh=82bddc50eea6c8c2b4f771d406b17cc9&oe=5DAEB553"
                 />
               </ButtonAvt>
@@ -77,9 +116,7 @@ export default class index extends Component {
                   </StyleTheP>
                 </Grid>
                 <Grid item>
-                  <Button onClick={() => this.editClick()} variant="contained" color="secondary">
-                    Edit
-                  </Button>
+                  {this.showNut()}
                 </Grid>
               </Grid>
             </Grid>
@@ -146,7 +183,21 @@ export default class index extends Component {
   };
 
   render() {
-    console.log(this.state.trangthai);
+    const dulieu = this.state.data;
+    const idString = this.props.location.pathname;
+    const kq = idString.match(/\d/g);
+
+    const  idUrl = parseInt(kq);
+    console.log(idUrl);
+    
+    // console.log(this.state.trangthai);
+    // console.log(this.state.roles);
+    // console.log(this.state.data);
+    console.log(dulieu.map((value) => {
+      if(parseInt(value.id) === idUrl) {
+        return value.roles;
+      }
+    }));
     return (
       <Section>
         {this.hideFormUser()}
