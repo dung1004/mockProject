@@ -7,6 +7,9 @@ const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case type.FETCH_DATA:
       return [...state];
+    case type.FETCH_DATA_SUCCESS:
+      state = action.users;
+      return [...state];
     default:
       return [...state];
   }

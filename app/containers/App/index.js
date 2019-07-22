@@ -1,3 +1,9 @@
+/* eslint-disable import/named */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-unresolved */
 /**
  *
@@ -8,8 +14,9 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import HomePage from 'containers/HomePage/Loadable';
 import Header from 'components/Header';
@@ -20,18 +27,33 @@ import Students from 'containers/Student';
 import Login from 'containers/Login';
 import NotFoundPage from 'containers/NotFoundPage';
 import DetailsPage from 'containers/DetailsPage';
+import { useInjectReducer } from 'utils/injectReducer';
+import { createStructuredSelector } from 'reselect';
 
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
+import reducer from './reducers';
+import { fetchData } from './actions';
+import { selectEmail } from './selectors';
 
-export default function App() {
+const key = 'appp';
+
+export function App(props) {
+  useInjectReducer({ key, reducer });
+  const [values, setValues] = useState({
+    path: location.pathname,
+  });
+  useEffect(() => {
+    props.onfetchUser();
+    setValues({ path: location.pathname });
+  }, []);
   return (
     <Wrapper>
-      <Header />
+      {location.pathname !== '/login' ? <Header /> : null}
       <Article>
         <Switch>
-          <Route path="/home" component={HomePage} />
+          <Route exact path="/" component={HomePage} />
           <Route path="/people" component={Peoples} />
           <Route path="/teachers" component={Teachers} />
           <Route path="/students" component={Students} />
@@ -41,7 +63,20 @@ export default function App() {
         </Switch>
       </Article>
       <Footer />
+      <Footer />
       <GlobalStyle />
     </Wrapper>
   );
 }
+const mapStateToProps = createStructuredSelector({
+  users: selectEmail,
+});
+const mapDispatchToProps = dispatch => ({
+  onfetchUser: () => {
+    dispatch(fetchData());
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);
