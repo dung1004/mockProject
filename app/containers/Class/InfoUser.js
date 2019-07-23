@@ -11,7 +11,7 @@ import ItemInfo from './ItemInfo';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '50%',
+    width: '75%',
     margin: '0 auto',
   },
   heading: {

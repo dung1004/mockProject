@@ -30,9 +30,6 @@ export default function Footer() {
     phanquyen: 0
   });
 
-
-  // console.log(value.phanquyen);
-
   const quyenAdmin = () => {
     if (value.phanquyen === 0) {
       return (
