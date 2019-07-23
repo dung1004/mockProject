@@ -73,8 +73,6 @@ export default class index extends Component {
     this.setState({
       trangthai: !this.state.trangthai
     })
-    // console.log(this.state.trangthai);
-
   }
 
   hideFormUser = () => {

@@ -1,3 +1,7 @@
+/* eslint-disable no-else-return */
+/* eslint-disable react/no-this-in-sfc */
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
@@ -6,41 +10,110 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import LinkHeader from './LinkHeader';
 import MenuLink from './MenuLink';
+import Accout from './Accout';
+
+export default function Footer() {
 
 
-export default class Footer extends Component {
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
 
-  render() {
-    return (
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" >
-            Trung Tâm Anh Ngữ
-          </Typography>
+  function handleToggle() {
+    setOpen(prevOpen => !prevOpen);
+  }
+
+  const [value, setValue] = React.useState({
+    phanquyen: 0
+  });
+
+
+  // console.log(value.phanquyen);
+
+  const quyenAdmin = () => {
+    if (value.phanquyen === 0) {
+      return (
+        <React.Fragment>
           <MenuLink>
             <NavBar>
               <LinkHeader exact to="/">Home</LinkHeader>
             </NavBar>
             <NavBar>
-              <LinkHeader to="/people">People</LinkHeader>
+              <LinkHeader to="/giaovien">Giáo Viên</LinkHeader>
             </NavBar>
             <NavBar>
-              <LinkHeader to="/teachers">Teachers</LinkHeader>
+              <LinkHeader to="/students">Học Viên</LinkHeader>
             </NavBar>
             <NavBar>
-              <LinkHeader to="/students">Students</LinkHeader>
+              <LinkHeader to="/nhanvien">Nhân Viên</LinkHeader>
             </NavBar>
           </MenuLink>
-          <Button variant="contained" color="primary">
-            <LinkHeader to="/login">Login</LinkHeader>
-          </Button>
-          <Icon>account_circle</Icon>
-        </Toolbar>
-      </AppBar>
-    )
+
+          <Accout />
+        </React.Fragment>
+
+      )
+    } else if (value.phanquyen === 1) {
+      return (
+        <React.Fragment>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/class">Class</LinkHeader>
+            </NavBar>
+          </MenuLink>
+
+          <Accout />
+        </React.Fragment>
+      )
+    } else if (value.phanquyen === 2) {
+      return (
+        <React.Fragment>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/class">Class</LinkHeader>
+            </NavBar>
+          </MenuLink>
+          <Accout />
+        </React.Fragment>
+      )
+    }
+    else {
+      return (
+        <React.Fragment>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <Button variant="contained" color="primary">
+              <LinkHeader to="/login">Login</LinkHeader>
+            </Button>
+          </MenuLink>
+
+        </React.Fragment>
+
+      )
+    }
   }
+
+  return (
+    <AppBar position="static">
+      <Toolbar style={{ justifyContent: 'space-between' }}>
+        <Typography variant="h6" >
+          Trung Tâm Anh Ngữ
+        </Typography>
+
+        {quyenAdmin()}
+
+      </Toolbar>
+    </AppBar>
+  )
 }

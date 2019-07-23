@@ -6,10 +6,9 @@ export function fetchData() {
   };
 }
 
-export function fetchDataSuccess(users, classData) {
+export function fetchDataSuccess(users) {
   return {
     type: type.FETCH_DATA_SUCCESS,
     users,
-    classData,
   };
 }

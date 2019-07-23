@@ -1,102 +1,267 @@
-/* eslint-disable no-constant-condition */
+/* eslint-disable consistent-return */
+/* eslint-disable no-dupe-keys */
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable no-shadow */
 /* eslint-disable no-unused-expressions */
-/* eslint-disable indent */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
-/* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
-import FormControl from '@material-ui/core/FormControl';
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-no-comment-textnodes */
+import React, { useEffect, memo, useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import { Redirect } from "react-router-dom";
-import { withFormik, Form, Field } from 'formik';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import Hidden from '@material-ui/core/Hidden';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { withFormik, Field } from 'formik';
 import * as Yup from 'yup';
-import apiCaller from '../../utils/apiCaller';
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      
-    };
-  }
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
+import Header from 'components/Header';
+import { loginRequest } from './actions';
+import reducer from './reducer';
+import { makeSelectErr, makeSelectLogged } from './selectors';
+import saga from './saga';
 
-  componentDidMount() {
-    apiCaller('users', 'get', null).then(res =>
-      this.setState({
-        data: res.data,
-      }),
-    );
-  }
+const key = 'login';
 
-  onChangeForm = (ev) => {
+const useStyles = makeStyles(theme => ({
+  '@global': {
+    body: {
+      backgroundColor: theme.palette.common.white,
+    },
+  },
+  paper: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  paperErr: {
+    padding: '10px 0',
+    textAlign: 'center',
+    fontSize: '1.5em',
+    backgroundColor: 'red',
+    color: 'white',
+  },
+}));
 
-    const { name } = ev.target;
-    const { value } = ev.target;
-    this.setState({
-      [name]: value,
-    });
+export function SignIn(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+    submit: false,
+    isLoggedIn: false,
+  });
+  const classes = useStyles();
+  const handleSubmit = event => {
+    if (event) event.preventDefault();
+    props.onLoginRequest(values.email, values.password, values.submit);
   };
-
-  onSubmit = e => {
-    e.preventDefault();
-    const arrEmail = this.state.data.map((value) => value.email);
-    const result = arrEmail.filter(item => 
-      this.state.email === item &&  this.state.pass === '12345' ? item : ''
-    );
-    this.setState({
-      emailToken: result
-    })
+  const handleChange = event => {
+    event.persist();
+    setValues(values => ({
+      ...values,
+      [event.target.name]: event.target.value,
+    }));
   };
-
-  render() {
-    if(this.state.emailToken) {
-      localStorage.setItem("keyUser", this.state.emailToken);
-      return <Redirect to='/home' />
+  const renderRedirect = () => {
+    if (localStorage.getItem('token')) {
+      return <Redirect to="/" />;
     }
-    return (
-      <React.Fragment>
-        <Grid container justify="center" alignContent="center">
-          <Grid item xs={6} md={4}>
-            <Paper elevation={4}>
-              <Typography gutterBottom>Signup</Typography>
-              <Form>
-                <Grid item xs={12}>
-                  <TextField
-                    type="email"
-                    name="email"
-                    placeholder="nhap email"
-                    onChange={(ev) => this.onChangeForm(ev)}
-                  />
+  };
+  return (
+    <div>
+      {renderRedirect()}
+      <Container component="main" maxWidth="xs">
+        <Box component="div" mt={2} mb={5}>
+          <Hidden xsDown>
+            {props.err ? (
+              <Paper className={classes.paperErr}>{props.err}</Paper>
+            ) : null}
+          </Hidden>
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <FormControl
+                fullWidth
+                margin="normal"
+                id="email"
+                autoComplete="email"
+                autoFocus
+                value={values.email}
+                onChange={handleChange}
+                error={props.touched.email && !!props.errors.email}
+              >
+                <Field
+                  name="email"
+                  render={({ field }) =>
+                    props.errors.email ? (
+                      <TextField
+                        error
+                        label="Email Address"
+                        id="outlined-error"
+                        variant="outlined"
+                        {...field}
+                      />
+                    ) : (
+                      <TextField
+                        label="Email Address"
+                        variant="outlined"
+                        {...field}
+                      />
+                    )
+                  }
+                />
+                {props.touched.email && (
+                  <FormHelperText>{props.errors.email}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                fullWidth
+                margin="normal"
+                id="password"
+                value={values.password}
+                onChange={handleChange}
+                error={props.touched.password && !!props.errors.password}
+              >
+                <Field
+                  name="password"
+                  render={({ field }) =>
+                    props.errors.password ? (
+                      <TextField
+                        error
+                        type="password"
+                        label="Password"
+                        id="outlined-error"
+                        variant="outlined"
+                        {...field}
+                      />
+                    ) : (
+                      <TextField
+                        type="password"
+                        label="Password"
+                        variant="outlined"
+                        {...field}
+                      />
+                    )
+                  }
+                />
+                {props.touched.password && (
+                  <FormHelperText>{props.errors.password}</FormHelperText>
+                )}
+              </FormControl>
+              {props.errors.password || props.errors.email ? (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              )}
+              <Grid container>
+                <Grid item xs>
+                  <Link href="/reset-password" variant="body2">
+                    Forgot password?
+                  </Link>
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    type="password"
-                    name="pass"
-                    placeholder="nhap pass"
-                    onChange={(ev) => this.onChangeForm(ev)}
-                  />
+                <Grid item>
+                  <Link href="/singup" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
                 </Grid>
-                <FormControl fullWidth margin="normal">
-                  <Button onClick={(e) => this.onSubmit(e)} color="primary">
-                    Signup
-                  </Button>
-                </FormControl>
-              </Form>
-            </Paper>
-          </Grid>
-        </Grid>
-      </React.Fragment>
-    );
-  }
+              </Grid>
+            </form>
+          </div>
+        </Box>
+      </Container>
+    </div>
+  );
 }
+
+const FormikForm = withFormik({
+  mapPropsToValues() {
+    // Init form field
+    return {
+      email: '',
+      password: '',
+    };
+  },
+  validationSchema: Yup.object().shape({
+    // Validate form field
+    email: Yup.string()
+      .required('Email is required')
+      .email('Email is invalid'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(8, 'Password have 8 characters'),
+  }),
+})(SignIn);
+
+const mapStateToProps = createStructuredSelector({
+  err: makeSelectErr(),
+  isLoggedIn: makeSelectLogged(),
+});
+const mapDispatchToProps = dispatch => ({
+  onLoginRequest: (email, password, submit) => {
+    dispatch(loginRequest(email, password, submit));
+  },
+});
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+export default compose(
+  withConnect,
+  memo,
+)(FormikForm);

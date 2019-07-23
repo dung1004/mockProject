@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-state */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable prettier/prettier */
@@ -8,33 +7,13 @@ import { Link as RouterLink} from 'react-router-dom';
 import MaterialTable from 'material-table';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import apiCaller from '../../utils/apiCaller';
 
-
-export default class About extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: [],
-    }
-  }
-  
-
-  componentDidMount() {
-    apiCaller('users', 'get', null).then(res =>
-      this.setState({
-        data: res.data,
-      }),
-    );
-  }
-  // eslint-disable-next-line lines-between-class-members
+export default class Giaovien extends Component {
   render() {
-    const dulieu = this.state.data;
-    
     return (
       <Section>
         <MaterialTable
-          title="List people"
+          title="List Nhân Viên"
           columns={[
             { title: 'ID', field: 'id' },
             { title: 'NAME', field: 'name' },
@@ -48,7 +27,13 @@ export default class About extends Component {
               )
             },
           ]}
-          data={dulieu.map((value) => value)}
+          data={[
+            { id: 1, name: 'Mehmet', email: 'drauotlart@gmail.com', phone: '0898162560' },
+            { id: 2, name: 'Duy Thuan', email: 'tunglv96@gmail.com', phone: '06782671987' },
+            { id: 3, name: 'Van Tung', email: 'nguyenduythuan@gmail.com', phone: '0809762560' },
+            { id: 4, name: 'Nguyen Dung', email: '1004nguyendung@gmail.com', phone: '0898168975' },
+            { id: 5, name: 'Ngoc Vinh', email: 'ngocvinhptm@gmail.com', phone: '0898367820' }
+          ]}
           options={{
             sorting: true
           }}

@@ -6,18 +6,15 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-// import Paper from '@material-ui/core/Paper';
-// import Icon from '@material-ui/core/Icon';
-// import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Img from './Img';
 import BoxImg from './BoxImg';
 import StyleH1 from './StyleH1';
 import LoTrinhHoc from './LoTrinhHoc';
 import Lotrinh from './Lotrinh';
-import Item1 from './Item1';
-import Item2 from './Item2';
-import Item3 from './Item3';
+import ItemPaper from './ItemPaper';
+// import Item2 from './Item2';
+// import Item3 from './Item3';
 import StyleH2 from './StyleH2';
 import StyleIcon from './StyleIcon';
 import BoxText from './BoxText';
@@ -53,13 +50,11 @@ export default function HomePage() {
       <StyleH1 id="titleH1"> Chao mung ban den voi trung tam anh ngu </StyleH1>
       <Section className={classes.root}>
         <Lotrinh container spacing={3}>
-          <Grid item xs={12}>
-            <LoTrinhHoc >
-              <h1>LỘ TRÌNH HỌC TINH GỌN</h1>
-            </LoTrinhHoc>
+          <Grid item md={12}>
+            <h1 style={{ textAlign: "center", textShadow: "2px -2px 5px #4a3b3b" }} >LỘ TRÌNH HỌC TINH GỌN</h1>
           </Grid>
-          <Grid item xs={4}>
-            <Item1 className={classes.paper}>
+          <Grid item md={4}>
+            <ItemPaper >
               <StyleH2>
                 <StyleIcon>room</StyleIcon>
                 2 THÁNG ĐẦU
@@ -69,10 +64,10 @@ export default function HomePage() {
                 <BoxTextLi>Bổ sung từ vựng - cấu trúc với chủ điểm giao tiếp về bản thân</BoxTextLi>
                 <BoxTextLi>Xây dựng nền tảng phản xạ khi giao tiếp tiếng Anh</BoxTextLi>
               </BoxText>
-            </Item1>
+            </ItemPaper>
           </Grid>
-          <Grid item xs={4}>
-            <Item2 className={classes.paper}>
+          <Grid item md={4}>
+            <ItemPaper>
               <StyleH2>
                 <StyleIcon>room</StyleIcon>
                 2 THÁNG GIỮA
@@ -83,10 +78,10 @@ export default function HomePage() {
                 <BoxTextLi>X Rèn luyện kỹ năng đàm thoại</BoxTextLi>
                 <BoxTextLi>Nâng cao khả năng phản xạ với tốc độ nghe nói của người bản xứ</BoxTextLi>
               </BoxText>
-            </Item2>
+            </ItemPaper>
           </Grid>
           <Grid item xs={4}>
-            <Item3 className={classes.paper}>
+            <ItemPaper>
               <StyleH2>
                 <StyleIcon>room</StyleIcon>
                 2 THÁNG CUỐI
@@ -97,18 +92,18 @@ export default function HomePage() {
                 <BoxTextLi>Hiểu và viết được 1 CV xin việc đầy đủ các thành phần quan trọng</BoxTextLi>
                 <BoxTextLi>Kỹ năng viết mail chuyên nghiệp trong môi trường quốc tế</BoxTextLi>
               </BoxText>
-            </Item3>
+            </ItemPaper>
           </Grid>
         </Lotrinh>
       </Section>
       <Section className={classes.root}>
         <Grid container spacing={3} justify="center">
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <LoTrinhHoc className={classes.paper}>
               <h1>KẾT QUẢ</h1>
             </LoTrinhHoc>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <BoxSkill className={classes.paper}>
               <Skills>
                 <StyleH3>Tiếng Anh</StyleH3>
