@@ -6,9 +6,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-// import Paper from '@material-ui/core/Paper';
-// import Icon from '@material-ui/core/Icon';
-// import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Img from './Img';
 import BoxImg from './BoxImg';
