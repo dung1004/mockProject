@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 export default styled(Paper)`
-  position: absolute !important;
+  // position: absolute !important;
   bottom: 175px;
   left: 50%;
   transform: translateX(-64%);

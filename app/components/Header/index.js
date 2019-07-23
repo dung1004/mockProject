@@ -27,25 +27,31 @@ export default function Footer() {
   }
 
   const [value, setValue] = React.useState({
-    phanquyen: 0
+    phanquyen: 1
   });
 
 
-  console.log(value.phanquyen);
+  // console.log(value.phanquyen);
 
   const quyenAdmin = () => {
     if (value.phanquyen === 0) {
       return (
         <React.Fragment>
-          <NavBar>
-            <LinkHeader to="/giaovien">Giáo Viên</LinkHeader>
-          </NavBar>
-          <NavBar>
-            <LinkHeader to="/students">Học Viên</LinkHeader>
-          </NavBar>
-          <NavBar>
-            <LinkHeader to="/nhanvien">Nhân Viên</LinkHeader>
-          </NavBar>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/giaovien">Giáo Viên</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/students">Học Viên</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/nhanvien">Nhân Viên</LinkHeader>
+            </NavBar>
+          </MenuLink>
+
           <Accout />
         </React.Fragment>
 
@@ -53,43 +59,60 @@ export default function Footer() {
     } else if (value.phanquyen === 1) {
       return (
         <React.Fragment>
-          <NavBar>
-            <LinkHeader to="/class">Class</LinkHeader>
-          </NavBar>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/class">Class</LinkHeader>
+            </NavBar>
+          </MenuLink>
+
           <Accout />
         </React.Fragment>
       )
     } else if (value.phanquyen === 2) {
       return (
         <React.Fragment>
-          <NavBar>
-            <LinkHeader to="/class">Class</LinkHeader>
-          </NavBar>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <NavBar>
+              <LinkHeader to="/class">Class</LinkHeader>
+            </NavBar>
+          </MenuLink>
           <Accout />
         </React.Fragment>
       )
     }
     else {
       return (
-        <Button variant="contained" color="primary">
-          <LinkHeader to="/login">Login</LinkHeader>
-        </Button>
+        <React.Fragment>
+          <MenuLink>
+            <NavBar>
+              <LinkHeader exact to="/">Home</LinkHeader>
+            </NavBar>
+            <Button variant="contained" color="primary">
+              <LinkHeader to="/login">Login</LinkHeader>
+            </Button>
+          </MenuLink>
+
+        </React.Fragment>
+
       )
     }
   }
 
   return (
     <AppBar position="static">
-      <Toolbar style={{justifyContent: 'space-around'}}>
+      <Toolbar style={{ justifyContent: 'space-between' }}>
         <Typography variant="h6" >
           Trung Tâm Anh Ngữ
         </Typography>
-        <MenuLink>
-          <NavBar>
-            <LinkHeader exact to="/">Home</LinkHeader>
-          </NavBar>
-          {quyenAdmin()}
-        </MenuLink>
+
+        {quyenAdmin()}
+
       </Toolbar>
     </AppBar>
   )

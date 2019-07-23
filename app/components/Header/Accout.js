@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+// import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
@@ -27,7 +27,7 @@ export default function Footer() {
         <Icon>account_circle</Icon>
       </Button>
       <Popper
-        style={{ zIndex: 9, position: 'absolute', right: '210px', top: '55px' }}
+        style={{ zIndex: 9, position: 'absolute', right: '95px', top: '55px' }}
         open={open}
         keepMounted
         transition
@@ -42,16 +42,16 @@ export default function Footer() {
             }}
           >
             <Paper id="menu-list-grow">
-              <ClickAwayListener>
-                <MenuList>
-                  <MenuItem>
-                    <Link to="/info/2">My account</Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to="/login">Logout</Link>
-                  </MenuItem>
-                </MenuList>
-              </ClickAwayListener>
+              {/* <ClickAwayListener> */}
+              <MenuList>
+                <MenuItem>
+                  <Link to="/info/2">My account</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/login">Logout</Link>
+                </MenuItem>
+              </MenuList>
+              {/* </ClickAwayListener> */}
             </Paper>
           </Grow>
         )}

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 export default styled(NavLink)`
   color: #fff;
-  padding: 10px 23px;
+  padding: 10px 20px;
   // background: seagreen;
   font-weight: bold;
   text-decoration: none;
