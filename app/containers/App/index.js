@@ -1,3 +1,6 @@
+/* eslint-disable vars-on-top */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unreachable */
 /* eslint-disable import/named */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/prop-types */
@@ -21,12 +24,15 @@ import { connect } from 'react-redux';
 import HomePage from 'containers/HomePage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Peoples from 'containers/Peoples';
-import Teachers from 'containers/Teacher';
+// import Peoples from 'containers/Peoples';
+import Nhanvien from 'containers/Nhanvien';
+import Teachers from 'containers/Giaovien';
+import Class from 'containers/Class';
 import Students from 'containers/Student';
 import Login from 'containers/Login';
 import NotFoundPage from 'containers/NotFoundPage';
 import DetailsPage from 'containers/DetailsPage';
+import InfoUser from 'containers/Class/InfoUser';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 
@@ -54,11 +60,13 @@ export default function App() {
       <Article>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/people" component={Peoples} />
-          <Route path="/teachers" component={Teachers} />
+          <Route path="/nhanvien" component={Nhanvien} />
+          <Route path="/giaovien" component={Teachers} />
+          <Route exact path="/class" component={Class} />
           <Route path="/students" component={Students} />
           <Route path="/login" component={Login} />
           <Route path="/info/:id" component={DetailsPage} />
+          <Route path="/class/infoUser/:id" component={InfoUser} />
           <Route component={NotFoundPage} />
         </Switch>
       </Article>

@@ -36,6 +36,7 @@ import * as Yup from 'yup';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import Header from 'components/Header';
 import { loginRequest } from './actions';
 import reducer from './reducer';
 import { makeSelectErr, makeSelectLogged } from './selectors';

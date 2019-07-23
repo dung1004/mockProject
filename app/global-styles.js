@@ -32,6 +32,12 @@ const GlobalStyle = createGlobalStyle`
     justify-content: space-between;
     padding: 0 100px
 }
+a {
+  padding: 10px 23px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.5s ease-in-out;
+}
 a.active {
   background: seagreen;
   opacity: 1;

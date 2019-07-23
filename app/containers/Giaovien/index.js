@@ -8,12 +8,12 @@ import MaterialTable from 'material-table';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
 
-export default class About extends Component {
+export default class Giaovien extends Component {
   render() {
     return (
       <Section>
         <MaterialTable
-          title="List people"
+          title="List Nhân Viên"
           columns={[
             { title: 'ID', field: 'id' },
             { title: 'NAME', field: 'name' },
