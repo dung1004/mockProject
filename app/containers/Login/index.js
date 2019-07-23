@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-dupe-keys */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-expressions */
@@ -8,6 +10,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useEffect, memo, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -25,12 +28,17 @@ import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import Hidden from '@material-ui/core/Hidden';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { withFormik, Field } from 'formik';
+import * as Yup from 'yup';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { loginRequest } from './actions';
 import reducer from './reducer';
-import { selectLog } from './selectors';
+import { makeSelectErr, makeSelectLogged } from './selectors';
 import saga from './saga';
 
 const key = 'login';
@@ -42,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -58,6 +66,13 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  paperErr: {
+    padding: '10px 0',
+    textAlign: 'center',
+    fontSize: '1.5em',
+    backgroundColor: 'red',
+    color: 'white',
+  },
 }));
 
 export function SignIn(props) {
@@ -67,6 +82,7 @@ export function SignIn(props) {
     email: '',
     password: '',
     submit: false,
+    isLoggedIn: false,
   });
   const classes = useStyles();
   const handleSubmit = event => {
@@ -80,90 +96,163 @@ export function SignIn(props) {
       [event.target.name]: event.target.value,
     }));
   };
-  // useEffect(() => {
-  //   // const user = JSON.parse(localStorage.getItem('user'));
-  //   props.onLoginRequest();
-  // }, []);
+  const renderRedirect = () => {
+    if (localStorage.getItem('token')) {
+      return <Redirect to="/" />;
+    }
+  };
   return (
-    <Container component="main" maxWidth="xs">
-      <Box component="div" mt={2} mb={5}>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={values.email}
-              onChange={handleChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={values.password}
-              onChange={handleChange}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+    <div>
+      {renderRedirect()}
+      <Container component="main" maxWidth="xs">
+        <Box component="div" mt={2} mb={5}>
+          <Hidden xsDown>
+            {props.err ? (
+              <Paper className={classes.paperErr}>{props.err}</Paper>
+            ) : null}
+          </Hidden>
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <FormControl
+                fullWidth
+                margin="normal"
+                id="email"
+                autoComplete="email"
+                autoFocus
+                value={values.email}
+                onChange={handleChange}
+                error={props.touched.email && !!props.errors.email}
+              >
+                <Field
+                  name="email"
+                  render={({ field }) =>
+                    props.errors.email ? (
+                      <TextField
+                        error
+                        label="Email Address"
+                        id="outlined-error"
+                        variant="outlined"
+                        {...field}
+                      />
+                    ) : (
+                      <TextField
+                        label="Email Address"
+                        variant="outlined"
+                        {...field}
+                      />
+                    )
+                  }
+                />
+                {props.touched.email && (
+                  <FormHelperText>{props.errors.email}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                fullWidth
+                margin="normal"
+                id="password"
+                value={values.password}
+                onChange={handleChange}
+                error={props.touched.password && !!props.errors.password}
+              >
+                <Field
+                  name="password"
+                  render={({ field }) =>
+                    props.errors.password ? (
+                      <TextField
+                        error
+                        label="Password"
+                        id="outlined-error"
+                        variant="outlined"
+                        {...field}
+                      />
+                    ) : (
+                      <TextField
+                        label="Password"
+                        variant="outlined"
+                        {...field}
+                      />
+                    )
+                  }
+                />
+                {props.touched.password && (
+                  <FormHelperText>{props.errors.password}</FormHelperText>
+                )}
+              </FormControl>
+              {props.errors.password || props.errors.email ? (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              )}
+              <Grid container>
+                <Grid item xs>
+                  <Link href="/reset-password" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/singup" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Box>
-    </Container>
+            </form>
+          </div>
+        </Box>
+      </Container>
+    </div>
   );
 }
 
+const FormikForm = withFormik({
+  mapPropsToValues() {
+    // Init form field
+    return {
+      email: '',
+      password: '',
+    };
+  },
+  validationSchema: Yup.object().shape({
+    // Validate form field
+    email: Yup.string()
+      .required('Email is required')
+      .email('Email is invalid'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(8, 'Password have 8 characters'),
+  }),
+})(SignIn);
+
 const mapStateToProps = createStructuredSelector({
-  user: selectLog,
+  err: makeSelectErr(),
+  isLoggedIn: makeSelectLogged(),
 });
 const mapDispatchToProps = dispatch => ({
   onLoginRequest: (email, password, submit) => {
     dispatch(loginRequest(email, password, submit));
   },
-  // onloginSuccess: () => {
-  //   dispatch(loginSuccess());
-  // },
 });
 const withConnect = connect(
   mapStateToProps,
@@ -172,4 +261,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(SignIn);
+)(FormikForm);

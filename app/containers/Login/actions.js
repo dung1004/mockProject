@@ -8,8 +8,16 @@ export function loginRequest(email, password, submit) {
     submit,
   };
 }
-export function loginSuccess() {
+export function loginSuccess(level) {
   return {
     type: type.LOGIN_SUCCESS,
+    level,
+  };
+}
+
+export function loginFailure(err) {
+  return {
+    type: type.LOGIN_FAILURE,
+    err,
   };
 }

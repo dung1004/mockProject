@@ -9,8 +9,14 @@ const loginReducer = (state = initialState, action) => {
       state = { ...action, submit: true };
       return { ...state };
     case type.LOGIN_SUCCESS:
-      state = { ...state, isLoggedIn: true };
-      localStorage.setItem('token', JSON.stringify(state.email));
+      state = { ...state, isLoggedIn: true, level: action.level };
+      localStorage.setItem(
+        'token',
+        JSON.stringify({ email: state.email, level: state.level }),
+      );
+      return { ...state };
+    case type.LOGIN_FAILURE:
+      state = { err: action.err };
       return { ...state };
     default:
       return { ...state };

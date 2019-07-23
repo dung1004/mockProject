@@ -39,18 +39,18 @@ import { selectEmail } from './selectors';
 
 const key = 'appp';
 
-export function App(props) {
-  useInjectReducer({ key, reducer });
-  const [values, setValues] = useState({
-    path: location.pathname,
-  });
-  useEffect(() => {
-    props.onfetchUser();
-    setValues({ path: location.pathname });
-  }, []);
+export default function App() {
+  // useInjectReducer({ key, reducer });
+  // const [values, setValues] = useState({
+  //   path: location.pathname,
+  // });
+  // useEffect(() => {
+  //   props.onfetchUser();
+  //   setValues({ path: location.pathname });
+  // }, []);
   return (
     <Wrapper>
-      {location.pathname !== '/login' ? <Header /> : null}
+      <Header />
       <Article>
         <Switch>
           <Route exact path="/" component={HomePage} />
@@ -63,20 +63,19 @@ export function App(props) {
         </Switch>
       </Article>
       <Footer />
-      <Footer />
       <GlobalStyle />
     </Wrapper>
   );
 }
-const mapStateToProps = createStructuredSelector({
-  users: selectEmail,
-});
-const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchData());
-  },
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App);
+// const mapStateToProps = createStructuredSelector({
+//   users: selectEmail,
+// });
+// const mapDispatchToProps = dispatch => ({
+//   onfetchUser: () => {
+//     dispatch(fetchData());
+//   },
+// });
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(App);
