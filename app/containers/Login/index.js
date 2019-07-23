@@ -168,6 +168,7 @@ export function SignIn(props) {
                     props.errors.password ? (
                       <TextField
                         error
+                        type="password"
                         label="Password"
                         id="outlined-error"
                         variant="outlined"
@@ -175,6 +176,7 @@ export function SignIn(props) {
                       />
                     ) : (
                       <TextField
+                        type="password"
                         label="Password"
                         variant="outlined"
                         {...field}
