@@ -1,35 +1,30 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import { Link as RouterLink} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 // import Link from '@material-ui/core/Link';
 import MaterialTable from 'material-table';
+
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import apiCaller from '../../utils/apiCaller';
+import {selectHome } from '../App/selectors';
+import { fetchData } from '../App/actions';
 
 
-export default class About extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: [],
-    }
-  }
+class About extends Component {
+
   
-
-  componentDidMount() {
-    apiCaller('users', 'get', null).then(res =>
-      this.setState({
-        data: res.data,
-      }),
-    );
-  }
-  // eslint-disable-next-line lines-between-class-members
   render() {
-    const dulieu = this.state.data;
+    
+    
+    
     
     return (
       <Section>
@@ -37,18 +32,19 @@ export default class About extends Component {
           title="List Nhân Viên"
           columns={[
             { title: 'ID', field: 'id' },
-            { title: 'NAME', field: 'name' },
+            { title: 'NAME', field: 'first_name' },
             { title: 'EMAIL', field: 'email' },
-            { title: 'PHONE', field: 'phone' },
+            { title: 'PHONE', field: 'phone_number' },
             { title: 'View Info',
               render: rowData => (
-                <StyleLink component={RouterLink} to={`info/${rowData.id}`}>
+                <StyleLink  component={RouterLink} to={`/nhanvien/info/${rowData.id}`}>
                   View
                 </StyleLink>
               )
             },
           ]}
-          data={dulieu.map((value) => value)}
+          data={this.props.users.staffs}
+
           options={{
             sorting: true
           }}
@@ -57,3 +53,12 @@ export default class About extends Component {
     )
   }
 }
+const mapDispatchToProps = dispatch => ({
+  onfetchUser: () => {
+    dispatch(fetchData());
+  },
+});
+const mapStateToProps = createStructuredSelector({
+  users: selectHome,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(About)

@@ -5,7 +5,6 @@ export function fetchData() {
     type: type.FETCH_DATA,
   };
 }
-
 export function fetchDataSuccess(users) {
   return {
     type: type.FETCH_DATA_SUCCESS,

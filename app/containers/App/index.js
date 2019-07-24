@@ -17,9 +17,13 @@
  *
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from 'containers/HomePage/Loadable';
 import Header from 'components/Header';
@@ -33,40 +37,42 @@ import Login from 'containers/Login';
 import NotFoundPage from 'containers/NotFoundPage';
 import DetailsPage from 'containers/DetailsPage';
 import InfoUser from 'containers/Class/InfoUser';
-import { useInjectReducer } from 'utils/injectReducer';
-import { createStructuredSelector } from 'reselect';
-
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
 import reducer from './reducers';
 import { fetchData } from './actions';
-import { selectEmail } from './selectors';
+import { selectEmail , selectHome } from './selectors';
+import saga from './saga';
 
-const key = 'appp';
+const key = 'app';
 
-export default function App() {
-  // useInjectReducer({ key, reducer });
-  // const [values, setValues] = useState({
-  //   path: location.pathname,
-  // });
-  // useEffect(() => {
-  //   props.onfetchUser();
-  //   setValues({ path: location.pathname });
-  // }, []);
+export function App(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+  useEffect(() => {
+    props.onfetchUser();
+  }, []);
+
+  // console.log(props.users);
+  
+
+
   return (
     <Wrapper>
       <Header />
       <Article>
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/nhanvien" component={Nhanvien} />
-          <Route path="/giaovien" component={Teachers} />
+          <Route exact path="/" component={HomePage}/>
+          <Route exact path="/nhanvien" component={Nhanvien} />
+          <Route exact path="/giaovien" component={Teachers}  dataTeacher = {props.users} />
           <Route exact path="/class" component={Class} />
-          <Route path="/students" component={Students} />
+          <Route exact path="/students" component={Students} />
           <Route path="/login" component={Login} />
-          <Route path="/info/:id" component={DetailsPage} />
+          <Route path="/giaovien/info/:id" component={DetailsPage} />
           <Route path="/class/infoUser/:id" component={InfoUser} />
+          <Route path="/students/info/:id" component={DetailsPage} />
+          <Route path="/nhanvien/info/:id" component={DetailsPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Article>
@@ -75,15 +81,19 @@ export default function App() {
     </Wrapper>
   );
 }
-// const mapStateToProps = createStructuredSelector({
-//   users: selectEmail,
-// });
-// const mapDispatchToProps = dispatch => ({
-//   onfetchUser: () => {
-//     dispatch(fetchData());
-//   },
-// });
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(App);
+const mapStateToProps = createStructuredSelector({
+  users: selectHome,
+});
+const mapDispatchToProps = dispatch => ({
+  onfetchUser: () => {
+    dispatch(fetchData());
+  },
+});
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+export default compose(
+  withConnect,
+  memo,
+)(App);
