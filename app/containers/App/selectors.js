@@ -1,12 +1,17 @@
+/* eslint-disable import/no-unresolved */
 import { createSelector } from 'reselect';
-import { initialState } from './reducers';
+import initialState from './reducers';
 
 const selectRouter = state => state.router;
-const selectEmail = state => state.app || initialState;
-
+const selectUser = state => state.app || initialState;
 const makeSelectLocation = () =>
   createSelector(
     selectRouter,
     routerState => routerState.location,
   );
-export { makeSelectLocation, selectEmail };
+const makeSelectLevel = () =>
+  createSelector(
+    selectUser,
+    levelState => levelState.level,
+  );
+export { makeSelectLocation, makeSelectLevel };

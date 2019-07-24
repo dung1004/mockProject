@@ -1,6 +1,5 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
@@ -21,9 +20,7 @@ export default class Students extends Component {
               title: 'View Info',
               // eslint-disable-next-line no-unused-vars
               render: rowData => (
-                <StyleLink component={RouterLink} to="info/id=2">
-                  View
-                </StyleLink>
+                <StyleLink to={`/students/info/${rowData.id}`}>View</StyleLink>
               ),
             },
           ]}

@@ -7,11 +7,11 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Section from '../../components/Section';
-import ItemInfo from './ItemInfo';
+import ItemInfo from '../ItemInfo';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '50%',
+    width: '70%',
     margin: '0 auto',
   },
   heading: {

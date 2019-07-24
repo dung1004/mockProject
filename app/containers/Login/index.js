@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable consistent-return */
 /* eslint-disable no-dupe-keys */
 /* eslint-disable import/no-named-as-default-member */
@@ -36,7 +37,6 @@ import * as Yup from 'yup';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import Header from 'components/Header';
 import { loginRequest } from './actions';
 import reducer from './reducer';
 import { makeSelectErr, makeSelectLogged } from './selectors';

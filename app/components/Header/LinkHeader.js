@@ -7,7 +7,6 @@ export default styled(NavLink)`
   color: #fff;
   padding: 10px 15px;
   font-size: 14px;
-  // background: seagreen;
   font-weight: bold;
   text-decoration: none;
   transition: 0.5s ease-in-out;

@@ -1,7 +1,7 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
@@ -23,7 +23,7 @@ export default class Teachers extends Component {
               title: 'View Info',
               // eslint-disable-next-line no-unused-vars
               render: rowData => (
-                <StyleLink component={RouterLink} to={`/class/infoUser/${rowData.name}`}>
+                <StyleLink to={`/class/info/${rowData.id}`}>
                   View
                 </StyleLink>
               ),

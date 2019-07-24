@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 export default styled(Link)`
   color: black !important;
   font-weight: bold;

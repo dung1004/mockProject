@@ -13,7 +13,7 @@ export default class Giaovien extends Component {
     return (
       <Section>
         <MaterialTable
-          title="List Nhân Viên"
+          title="List Giáo Viên"
           columns={[
             { title: 'ID', field: 'id' },
             { title: 'NAME', field: 'name' },
@@ -21,7 +21,7 @@ export default class Giaovien extends Component {
             { title: 'PHONE', field: 'phone' },
             { title: 'View Info',
               render: rowData => (
-                <StyleLink component={RouterLink} to={`info/${rowData.id}`}>
+                <StyleLink to={`/teachers/info/${rowData.id}`}>
                   View
                 </StyleLink>
               )

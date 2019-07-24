@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Redirect } from "react-router-dom";
-import apiCaller from '../../utils/apiCaller';
+// import apiCaller from '../../utils/apiCaller';
 // import ButtonBase from '@material-ui/core/ButtonBase';
 import Section from '../../components/Section';
 import StyleAvt from './StyleAvt';
@@ -31,18 +31,18 @@ export default class index extends Component {
     super(props);
     this.state = {
       trangthai: true,
-      roles: 1,
+      roles: 0,
       data: []
     };
   }
 
-  componentDidMount() {
-    apiCaller('users', 'get', null).then(res =>
-      this.setState({
-        data: res.data,
-      }),
-    );
-  }
+  // componentDidMount() {
+  //   apiCaller('users', 'get', null).then(res =>
+  //     this.setState({
+  //       data: res.data,
+  //     }),
+  //   );
+  // }
 
   // eslint-disable-next-line lines-between-class-members
   showNut = () => {
@@ -63,7 +63,7 @@ export default class index extends Component {
 
   vetrangchu = () => {
     if(this.state.roles === 1) {
-      return <Redirect to='/home' />
+      return <Redirect to='/' />
     }
     // console.log(this.state.roles);
     
@@ -181,21 +181,21 @@ export default class index extends Component {
   };
 
   render() {
-    const dulieu = this.state.data;
-    const idString = this.props.location.pathname;
-    const kq = idString.match(/\d/g);
+    // const dulieu = this.state.data;
+    // const idString = this.props.location.pathname;
+    // const kq = idString.match(/\d/g);
 
-    const  idUrl = parseInt(kq);
-    console.log(idUrl);
+    // const  idUrl = parseInt(kq);
+    // // console.log(idUrl);
     
-    // console.log(this.state.trangthai);
-    // console.log(this.state.roles);
-    // console.log(this.state.data);
-    console.log(dulieu.map((value) => {
-      if(parseInt(value.id) === idUrl) {
-        return value.roles;
-      }
-    }));
+    // // // console.log(this.state.trangthai);
+    // // // console.log(this.state.roles);
+    // // // console.log(this.state.data);
+    // // console.log(dulieu.map((value) => {
+    // //   if(parseInt(value.id) === idUrl) {
+    // //     return value.roles;
+    // //   }
+    // // }));
     return (
       <Section>
         {this.hideFormUser()}

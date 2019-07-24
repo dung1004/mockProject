@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable consistent-return */
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 // import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -7,19 +9,27 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default function Footer() {
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-
+  const [value, setValues] = React.useState(false);
+  // function redireactLogin() {
+  //   setValues(true);
+  // }
   function handleToggle() {
     setOpen(prevOpen => !prevOpen);
   }
+  // const renderRedirect = () => {
+  //   if (value === true) {
+  //     localStorage.removeItem('token');
+  //     return <Redirect to="/" />;
+  //   }
+  // };
   return (
     <React.Fragment>
+      {/* {value === true ? renderRedirect() : null} */}
       <Button
-        ref={anchorRef}
         aria-controls="menu-list-grow"
         aria-haspopup="true"
         onClick={handleToggle}
@@ -48,7 +58,7 @@ export default function Footer() {
                   <Link to="/info/2">My account</Link>
                 </MenuItem>
                 <MenuItem>
-                  <Link to="/login">Logout</Link>
+                  <Button>Logout</Button>
                 </MenuItem>
               </MenuList>
               {/* </ClickAwayListener> */}
