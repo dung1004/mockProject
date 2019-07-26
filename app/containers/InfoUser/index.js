@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import Section from '../../components/Section';
+import Article from '../../components/Article';
 import ItemInfo from '../ItemInfo';
 import { selectUser } from '../App/selectors';
 import { fetchData } from '../App/actions'
@@ -30,23 +31,48 @@ class ControlledExpansionPanels extends Component {
     const idUrl = parseInt(kq);
     console.log(this.props.dataClass.students);
 
-    if(this.props.dataClass.students) {
+    if (this.props.dataClass.students) {
       // const classId = this.props.dataClass.students.map(value => value.class_id);
       const classId = this.props.dataClass.students.filter(value => value.class_id.filter(item => item === [2]));
       console.log(classId);
-      
+
     }
-    
+
     // this.props.dataClass.students.map(value => value.class_id) 
   }
 
   render() {
-    // console.log(this.props.dataClass.students);
+    console.log(this.props.dataClass.teachers);
+    console.log(this.props.dataClass);
     console.log(this.getDataClass());
     return (
-      <Section >
-        <h2 style={{ textAlign: "center" }}>Danh Sách Học Viên</h2>
-        <div>
+      <Article style={{width: '100%', display: 'flex'}}>
+        <Section style={{width: '50%', padding: '50px 5px'}}>
+          <h2 style={{ textAlign: "center" }}>Giáo Viên Đứng Lớp</h2>
+          <ExpansionPanel
+          >
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel4bh-content"
+              id="panel4bh-header"
+            >
+              <Typography >
+                4
+              </Typography>
+              <Typography >
+                NGUYỄN NGỌC VINH
+              </Typography>
+              <Typography>
+                Quảng Trạch
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <ItemInfo />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </Section>
+        <Section style={{width: '50%', padding: '50px 5px'}}>
+          <h2 style={{ textAlign: "center" }}>Danh Sách Học Viên</h2>
           <ExpansionPanel
           >
             <ExpansionPanelSummary
@@ -65,9 +91,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
@@ -88,9 +112,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
@@ -111,9 +133,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
@@ -134,13 +154,11 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
-        </div>
-      </Section>
+        </Section>
+      </Article>
     );
   }
 }

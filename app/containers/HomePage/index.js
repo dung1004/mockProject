@@ -107,38 +107,38 @@ export default function HomePage() {
             <BoxSkill className={classes.paper}>
               <Skills>
                 <StyleH3>Tiếng Anh</StyleH3>
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Nghe
                 </TitleTheP>
                 <Slider value={[0, 100]} />
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Nói
                 </TitleTheP>
                 <Slider value={[0, 100]} />
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Đọc
                 </TitleTheP>
                 <Slider value={[0, 75]} />
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Viết
                 </TitleTheP>
                 <Slider value={[0, 70]} />
               </Skills>
               <Skills>
                 <StyleH3>Cá Nhân</StyleH3>
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Giao Tiếp
                 </TitleTheP>
                 <Slider value={[0, 80]} />
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Làm Việc Nhóm
                 </TitleTheP>
                 <Slider value={[0, 85]} />
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Lãnh Đạo
                 </TitleTheP>
                 <Slider value={[0, 90]} />
-                <TitleTheP gutterBottom>
+                <TitleTheP>
                   Thuyết Trình
                 </TitleTheP>
                 <Slider value={[0, 80]} />
