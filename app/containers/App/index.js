@@ -1,6 +1,9 @@
+/* eslint-disable import/named */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-unreachable */
 /* eslint-disable react/prop-types */
+
 import React, { useEffect, useState, memo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -29,8 +32,8 @@ import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
 import reducer from './reducers';
 import saga from './saga';
-import { fetchUser } from './actions';
-import { makeSelectLevel } from './selectors';
+import { fetchUser, fetchData } from './actions';
+import { makeSelectLevel, selectUser } from './selectors';
 
 const key = 'app';
 
@@ -39,9 +42,17 @@ export function App(props) {
   useInjectSaga({ key, saga });
   useEffect(() => {
     props.onfetchUser();
-  });
+    props.onfetchData();
+  }, []);
+  // console.log(props.users);
+  let roles = 3;
+
+  const tokenAccout = JSON.parse(localStorage.getItem('token'));
+  if (tokenAccout) {
+    roles = tokenAccout.level;
+  }
   const roleLink = () => {
-    switch (props.level) {
+    switch (roles) {
       case 0:
         return (
           <Switch>
@@ -51,10 +62,10 @@ export function App(props) {
             <Route exact path="/teacher" component={GiaoVien} />
             <Route exact path="/staff" component={NhanVien} />
             <Route path="/teachers/info/:id" component={DetailsPage} />
-            <Route path="/students/info/:id" component={DetailsPage} />
+            <Route path="/student/info/:id" component={DetailsPage} />
             <Route path="/staffs/info/:id" component={DetailsPage} />
             <Route path="/info-user/:id" component={ItemInfo} />
-            <Route path="/class/info/:id" component={InfoUser} />
+            <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
@@ -66,7 +77,8 @@ export function App(props) {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/class" component={Class} />
             <Route path="/teacher/info/:id" component={DetailsPage} />
-            <Route path="/class/info-students/:id" component={ItemInfo} />
+            <Route path="/class/info-students/:id" component={InfoUser} />
+            {/* <Route exact path="/class/info/:id" component={InfoUser} /> */}
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
@@ -78,7 +90,7 @@ export function App(props) {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/class" component={Class} />
             <Route path="/student/info/:id" component={DetailsPage} />
-            <Route path="/class/info-teachers/:id" component={ItemInfo} />
+            <Route path="/class/info-teachers/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
@@ -94,9 +106,10 @@ export function App(props) {
         );
     }
   };
+  // eslint-disable-next-line react/no-this-in-sfc
   return (
     <Wrapper>
-      <Header level={props.level} />
+      <Header level={roles} />
       <Article>{roleLink()}</Article>
       <Footer />
       <GlobalStyle />
@@ -105,25 +118,21 @@ export function App(props) {
 }
 const mapStateToProps = createStructuredSelector({
   level: makeSelectLevel(),
+  users: selectUser,
 });
 const mapDispatchToProps = dispatch => ({
   onfetchUser: () => {
     dispatch(fetchUser());
+  },
+  onfetchData: () => {
+    dispatch(fetchData());
   },
 });
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
 );
-
 export default compose(
   withConnect,
   memo,
 )(App);
-
-// const [values, setValues] = useState({
-//   user: JSON.parse(localStorage.getItem('token')),
-// });
-// useEffect(() => {
-//   setValues({user: JSON.parse(localStorage.getItem('token'))});
-// }, []);

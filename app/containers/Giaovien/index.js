@@ -1,25 +1,39 @@
+/* eslint-disable import/named */
+/* eslint-disable react/prop-types */
+/* eslint-disable lines-between-class-members */
+/* eslint-disable react/no-unused-state */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import { Link as RouterLink} from 'react-router-dom';
-// import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import MaterialTable from 'material-table';
+
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
+import { selectUser } from '../App/selectors';
+import { fetchUser } from '../App/actions';
 
-export default class Giaovien extends Component {
+
+class Giaovien extends Component {
+
   render() {
+    // console.log(this.props.users.teacher);
+    
     return (
       <Section>
         <MaterialTable
           title="List Giáo Viên"
           columns={[
             { title: 'ID', field: 'id' },
-            { title: 'NAME', field: 'name' },
+            { title: 'NAME', field: 'first_name' },
             { title: 'EMAIL', field: 'email' },
-            { title: 'PHONE', field: 'phone' },
-            { title: 'View Info',
+            { title: 'PHONE', field: 'phone_number' },
+            {
+              title: 'View Info',
               render: rowData => (
                 <StyleLink to={`/teachers/info/${rowData.id}`}>
                   View
@@ -27,13 +41,7 @@ export default class Giaovien extends Component {
               )
             },
           ]}
-          data={[
-            { id: 1, name: 'Mehmet', email: 'drauotlart@gmail.com', phone: '0898162560' },
-            { id: 2, name: 'Duy Thuan', email: 'tunglv96@gmail.com', phone: '06782671987' },
-            { id: 3, name: 'Van Tung', email: 'nguyenduythuan@gmail.com', phone: '0809762560' },
-            { id: 4, name: 'Nguyen Dung', email: '1004nguyendung@gmail.com', phone: '0898168975' },
-            { id: 5, name: 'Ngoc Vinh', email: 'ngocvinhptm@gmail.com', phone: '0898367820' }
-          ]}
+          data={this.props.userTeacher.teacher}
           options={{
             sorting: true
           }}
@@ -42,3 +50,14 @@ export default class Giaovien extends Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  onfetchUser: () => {
+    dispatch(fetchUser());
+  },
+});
+const mapStateToProps = createStructuredSelector({
+  userTeacher: selectUser,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Giaovien)
+

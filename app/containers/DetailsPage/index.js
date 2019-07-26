@@ -1,3 +1,9 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable radix */
@@ -9,15 +15,13 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-// import Paper from '@material-ui/core/Paper';
-// import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Redirect } from "react-router-dom";
-// import apiCaller from '../../utils/apiCaller';
-// import ButtonBase from '@material-ui/core/ButtonBase';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
 import Section from '../../components/Section';
 import StyleAvt from './StyleAvt';
 import ButtonAvt from './ButtonAvt';
@@ -25,26 +29,51 @@ import BoxCard from './BoxCard';
 import StyleTheP from './StyleTheP';
 import StyleForm from './StyleForm';
 import StyleH3 from '../HomePage/StyleH3';
+import { selectUser } from '../App/selectors';
+import { fetchData } from '../App/actions';
 
-export default class index extends Component {
+class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
       trangthai: true,
       roles: 0,
-      data: []
+      data: [],
+      dataUser: this.getDataAllUser(),
     };
   }
 
-  // componentDidMount() {
-  //   apiCaller('users', 'get', null).then(res =>
-  //     this.setState({
-  //       data: res.data,
-  //     }),
-  //   );
-  // }
+  // lay du lieu tat ca
+  getDataAllUser = (oneUser) => {
+    // lay id tren url
+    const idUrlString = this.props.location.pathname;
+    const idString = idUrlString.slice(0, -1);
+    const kq = idUrlString.match(/\d/g);
+    const idUrl = parseInt(kq);
 
-  // eslint-disable-next-line lines-between-class-members
+    // so sanh duong dan voi url
+    if (idString === '/teachers/info/') {
+      const userTeacher = this.props.users.teacher;
+      if (userTeacher) {
+        const oneUser = userTeacher.filter(value => value.id === idUrl);
+        return oneUser;
+      }
+    } else if (idString === '/student/info/') {
+      const userStudent = this.props.users.students;
+      if (userStudent) {
+        const oneUser = userStudent.filter(value => value.id === idUrl);
+        return oneUser;
+      }
+    } else if (idString === '/staffs/info/') {
+      const userStaffs = this.props.users.staffs;
+      if (userStaffs) {
+        const oneUser = userStaffs.filter(value => value.id === idUrl);
+        return oneUser;
+      }
+    }
+  }
+
+  // kiem tra roles
   showNut = () => {
     if (this.state.roles === 0) {
       return (
@@ -61,70 +90,132 @@ export default class index extends Component {
     }
   }
 
+  // quay ve trang chu
   vetrangchu = () => {
-    if(this.state.roles === 1) {
-      return <Redirect to='/' />
+    if (this.state.roles === 1) {
+      return <Redirect to='/home' />
     }
-    // console.log(this.state.roles);
-    
   }
 
+  // tro lai
   editClick = () => {
     this.setState({
       trangthai: !this.state.trangthai
     })
   }
 
+  // hieen thi form thong tin user
+  showInfoStaffs = () => {
+    const { dataUser } = this.state;
+    if (dataUser) {
+      return <Grid container item spacing={2} xs={12} justify="center">
+        <Grid item>
+          <ButtonAvt>
+            <StyleAvt
+              alt="complex"
+              src={dataUser[0].avatar}
+            />
+          </ButtonAvt>
+        </Grid>
+        <Grid item xs={6} container justify="center">
+          <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs>
+              <h2 variant="subtitle1">
+                {`${dataUser[0].first_name} ${dataUser[0].last_name}`}
+              </h2>
+              <StyleTheP variant="body1" color="textSecondary">
+                <b>ID:</b> {`${dataUser[0].id}`}
+              </StyleTheP>
+              <StyleTheP variant="body1" color="textSecondary">
+                <b>Email:</b> {`${dataUser[0].email}`}
+              </StyleTheP>
+              <StyleTheP variant="body1" color="textSecondary">
+                <b>Phone:</b> {`${dataUser[0].phone_number}`}
+              </StyleTheP>
+              <StyleTheP variant="body1" color="textSecondary">
+                <b>Gender:</b> {`${dataUser[0].gender}`}
+              </StyleTheP>
+
+              {/* kiem tra dieu kien de hien thi du lieu */}
+              {
+                dataUser[0].position ? <StyleTheP variant="body1" color="textSecondary">
+                  <b> Chức vụ: </b> {`${dataUser[0].position}`}
+                </StyleTheP> : null
+              }
+              {
+                dataUser[0].description ? <StyleTheP variant="body1" color="textSecondary">
+                  <b> description: </b> {`${dataUser[0].description}`}
+                </StyleTheP> : null
+              }
+              {
+                dataUser[0].date_birth ? <React.Fragment>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b> Date_birth: </b> {`${dataUser[0].date_birth}`}
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b> Address: </b> {`${dataUser[0].address}`}
+                  </StyleTheP>
+                </React.Fragment> : null
+              }
+            </Grid>
+            <Grid item>
+              {this.showNut()}
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    }
+  }
+
+  // kiem tra state true ? show : hide
   hideFormUser = () => {
     if (this.state.trangthai === true) {
       return (
         <BoxCard>
-          <Grid container spacing={2} xs={12} justify="center">
-            <Grid item>
-              <ButtonAvt>
-                <StyleAvt
-                  alt="complex"
-                  src="https://scontent.fdad3-1.fna.fbcdn.net/v/t1.0-9/66511901_352607552306976_236412562093113344_n.jpg?_nc_cat=102&_nc_oc=AQn5U983Zeo7Fu4uLzQVya4NOXzWdL5NVglwKl4FH8pKZa8sAvrO7R_-1ypKBXpi3cI&_nc_ht=scontent.fdad3-1.fna&oh=82bddc50eea6c8c2b4f771d406b17cc9&oe=5DAEB553"
-                />
-              </ButtonAvt>
-            </Grid>
-            <Grid item xs={6} container justify="center">
-              <Grid item xs container direction="column" spacing={2}>
-                <Grid item xs>
-                  <h2 gutterBottom variant="subtitle1">
-                    Nguyen Thanh Dung
-                  </h2>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b>ID:</b> 1030114
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b>Email:</b> 1004nguyendung@gmail.com
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b>Phone:</b>0898162560
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b>Ngày Sinh:</b> 2019-07-18
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b> Chức vụ: </b> Học viên
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b>Address:</b> hau Hoa Tuyen Hoa Quang Binh
-                  </StyleTheP>
-                </Grid>
-                <Grid item>
-                  {this.showNut()}
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+          {this.showInfoStaffs()}
         </BoxCard>
       )
     }
   }
+
   // eslint-disable-next-line lines-between-class-members
+  // theo doi khi chinh sua input 
+  isChange = (event) => {
+    const { name } = event.target;
+    const { value } = event.target;
+    this.setState({
+      [name]: value,
+    })
+  }
+
+  // luu lai du lieu sau khi thay doi
+  getInfoDataUser = (name, phone, gender, permission) => {
+    // dong goi thanh item
+    const item = {};
+    item.id = this.state.dataUser[0].id;
+    item.first_name = name;
+    item.gender = gender;
+    item.phone_number = phone;
+    item.position = permission;
+
+    const items = this.state.data;
+    items.push(item);
+
+    this.setState({
+      dataUser: items
+    })
+    this.editClick()
+    // console.log(this.state.dataUser);
+    // console.log(items);
+    
+
+  }
+
+
+  // hien thi form edit khi click
   showFormEdit = () => {
+    const { dataUser } = this.state;
+
     if (this.state.trangthai === false) {
       return (
         <BoxCard>
@@ -134,19 +225,34 @@ export default class index extends Component {
               disabled
               id="outlined-disabled"
               label="Email"
-              defaultValue="1004nguyendung@gmail.com"
+              defaultValue={dataUser[0].email}
+              margin="normal"
+              variant="outlined"
+            />
+            <TextField
+              id="outlined-disabled"
+              label="Edit Name"
+              name="name"
+              defaultValue={`${dataUser[0].first_name} ${dataUser[0].last_name}`}
+              onChange={(event) => this.isChange(event)}
               margin="normal"
               variant="outlined"
             />
             <TextField
               id="outlined-dense"
               label="Edit Phone"
+              name="phone"
+              defaultValue={dataUser[0].phone_number}
+              onChange={(event) => this.isChange(event)}
               margin="normal"
               variant="outlined"
             />
             <TextField
               id="outlined-dense"
-              label="Edit Ngày Sinh"
+              label="Edit Gender"
+              name="gender"
+              defaultValue={`${dataUser[0].gender}`}
+              onChange={(event) => this.isChange(event)}
               margin="normal"
               variant="outlined"
             />
@@ -154,22 +260,19 @@ export default class index extends Component {
               id="outlined-dense"
               label="Edit Chức Vụ"
               margin="normal"
+              name="permission"
+              defaultValue={`${dataUser[0].position}`}
+              onChange={(event) => this.isChange(event)}
               variant="outlined"
             />
-            <TextField
-              id="outlined-dense"
-              label="Edit Address"
-              margin="normal"
-              variant="outlined"
-            />
-            <Grid container md={12} align="center" spacing={3}>
+            <Grid container item md={12} align="center" spacing={3}>
               <Grid item md={6} align="right">
                 <Button onClick={() => this.editClick()} variant="contained" color="secondary">
                   Cancel
                 </Button>
               </Grid>
               <Grid item md={6} align="left">
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={(name, phone, gender, permission) => this.getInfoDataUser(this.state.name, this.state.phone, this.state.gender, this.state.permission)}>
                   Lưu Lại
                 </Button>
               </Grid>
@@ -181,26 +284,20 @@ export default class index extends Component {
   };
 
   render() {
-    // const dulieu = this.state.data;
-    // const idString = this.props.location.pathname;
-    // const kq = idString.match(/\d/g);
-
-    // const  idUrl = parseInt(kq);
-    // // console.log(idUrl);
-    
-    // // // console.log(this.state.trangthai);
-    // // // console.log(this.state.roles);
-    // // // console.log(this.state.data);
-    // // console.log(dulieu.map((value) => {
-    // //   if(parseInt(value.id) === idUrl) {
-    // //     return value.roles;
-    // //   }
-    // // }));
     return (
       <Section>
-        {this.hideFormUser()}
         {this.showFormEdit()}
+        {this.hideFormUser()}
       </Section>
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  onfetchUser: () => {
+    dispatch(fetchData());
+  },
+});
+const mapStateToProps = createStructuredSelector({
+  users: selectUser,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(index)

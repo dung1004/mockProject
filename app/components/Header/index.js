@@ -27,6 +27,7 @@ export default function Header(props) {
   useEffect(() => {
     setValues({level: props.level});
   });
+
   const quyenAdmin = () => {
     switch(values.level) {
       case 0:

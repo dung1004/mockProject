@@ -12,3 +12,15 @@ export function fetchUserSuccess(user) {
     user,
   };
 }
+export function fetchData() {
+  return {
+    type: type.FETCH_DATA,
+  };
+}
+
+export function fetchDataSuccess(allData) {
+  return {
+    type: type.FETCH_DATA_SUCCESS,
+    allData,
+  };
+}

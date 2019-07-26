@@ -11,6 +11,11 @@ const appReducer = (state = initialState, action) => {
     case type.FETCH_USER_SUCCESS:
       state = { ...action.user };
       return { ...state };
+    case type.FETCH_DATA:
+      return { ...state };
+    case type.FETCH_DATA_SUCCESS:
+      state = { ...action.allData };
+      return { ...state };
     default:
       return { ...state };
   }

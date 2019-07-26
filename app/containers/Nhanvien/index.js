@@ -1,28 +1,40 @@
+/* eslint-disable import/named */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable prettier/prettier */
-import React, { Component } from 'react';
+import React, {useEffect, Component } from 'react';
 import { Link as RouterLink} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 // import Link from '@material-ui/core/Link';
 import MaterialTable from 'material-table';
+
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import apiCaller from '../../utils/apiCaller';
+import { selectUser } from '../App/selectors';
+import { fetchData } from '../App/actions';
 
 
-export default class About extends Component {
-  // eslint-disable-next-line lines-between-class-members
-  render() {
+
+class About extends Component {
+  
+  render(){
+    // console.log(this.props.dataUserStaffs.staffs);
+    
+
     return (
       <Section>
         <MaterialTable
           title="List Nhân Viên"
           columns={[
             { title: 'ID', field: 'id' },
-            { title: 'NAME', field: 'name' },
+            { title: 'NAME', field: 'first_name' },
             { title: 'EMAIL', field: 'email' },
-            { title: 'PHONE', field: 'phone' },
+            { title: 'PHONE', field: 'phone_number' },
             { title: 'View Info',
               render: rowData => (
                 <StyleLink to={`/staffs/info/${rowData.id}`}>
@@ -31,38 +43,9 @@ export default class About extends Component {
               )
             },
           ]}
-          data={[
-            {
-              id: 1,
-              name: 'Mehmet',
-              email: 'drauotlart@gmail.com',
-              phone: '0898162560',
-            },
-            {
-              id: 2,
-              name: 'Duy Thuan',
-              email: 'tunglv96@gmail.com',
-              phone: '06782671987',
-            },
-            {
-              id: 3,
-              name: 'Van Tung',
-              email: 'nguyenduythuan@gmail.com',
-              phone: '0809762560',
-            },
-            {
-              id: 4,
-              name: 'Nguyen Dung',
-              email: '1004nguyendung@gmail.com',
-              phone: '0898168975',
-            },
-            {
-              id: 5,
-              name: 'Ngoc Vinh',
-              email: 'ngocvinhptm@gmail.com',
-              phone: '0898367820',
-            },
-          ]}
+     
+          data={this.props.dataUserStaffs.staffs}
+
           options={{
             sorting: true
           }}
@@ -71,3 +54,13 @@ export default class About extends Component {
     )
   }
 }
+const mapDispatchToProps = dispatch => ({
+  onfetchUser: () => {
+    dispatch(fetchData());
+  },
+});
+const mapStateToProps = createStructuredSelector({
+  dataUserStaffs: selectUser,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(About)

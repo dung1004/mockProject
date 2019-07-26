@@ -8,6 +8,10 @@
  * Follow this format:
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
-
+// lấy tài khoản người dùng
 export const FETCH_USER = 'containers/App/FETCH_USER';
 export const FETCH_USER_SUCCESS = 'containers/App/FETCH_USER_SUCCESS';
+
+// lấy tất cả data
+export const FETCH_DATA = 'containers/App/FETCH_DATA';
+export const FETCH_DATA_SUCCESS = 'containers/App/FETCH_DATA_SUCCESS';
