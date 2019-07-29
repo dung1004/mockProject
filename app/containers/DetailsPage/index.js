@@ -1,26 +1,11 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-unused-vars */
-/* eslint-disable eqeqeq */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable radix */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable no-else-return */
-/* eslint-disable no-undef */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable consistent-return */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import PropsTypes from 'prop-types';
 
 import Section from '../../components/Section';
 import StyleAvt from './StyleAvt';
@@ -44,173 +29,162 @@ class index extends Component {
   }
 
   // lay du lieu tat ca
-  getDataAllUser = (oneUser) => {
+  getDataAllUser = () => {
     // lay id tren url
     const idUrlString = this.props.location.pathname;
-    const idString = idUrlString.slice(0, -1);
-    const kq = idUrlString.match(/\d/g);
-    const idUrl = parseInt(kq);
+    const idString = idUrlString.slice(13);
 
     // so sanh duong dan voi url
-    if (idString === '/teachers/info/') {
-      const userTeacher = this.props.users.teacher;
-      if (userTeacher) {
-        const oneUser = userTeacher.filter(value => value.id === idUrl);
-        return oneUser;
+    if (idString !== null) {
+      const { students } = this.props.users;
+      const { teacher } = this.props.users;
+      const { staffs } = this.props.users;
+      let listData;
+      if (students) {
+        listData = students.concat(teacher, staffs);
       }
-    } else if (idString === '/student/info/') {
-      const userStudent = this.props.users.students;
-      if (userStudent) {
-        const oneUser = userStudent.filter(value => value.id === idUrl);
-        return oneUser;
+      let oneUser;
+      if (students) {
+        oneUser = listData.filter(value => value.id === idString);
       }
-    } else if (idString === '/staffs/info/') {
-      const userStaffs = this.props.users.staffs;
-      if (userStaffs) {
-        const oneUser = userStaffs.filter(value => value.id === idUrl);
-        return oneUser;
-      }
+      return oneUser;
     }
-  }
+    return true;
+  };
 
   // kiem tra roles
   showNut = () => {
     if (this.state.roles === 0) {
       return (
-        <Button onClick={() => this.editClick()} variant="contained" color="secondary">
+        <Button onClick={this.editClick} variant="contained" color="secondary">
           Edit
         </Button>
-      )
-    } else {
-      return (
-        <Button onClick={() => this.vetrangchu()} variant="contained" color="secondary">
-          Tro Lai
-        </Button>
-      )
+      );
     }
-  }
+    return (
+      <Button
+        onClick={() => this.vetrangchu()}
+        variant="contained"
+        color="secondary"
+      >
+        Tro Lai
+      </Button>
+    );
+  };
 
   // quay ve trang chu
   vetrangchu = () => {
     if (this.state.roles === 1) {
-      return <Redirect to='/home' />
+      return <Redirect to="/home" />;
     }
-  }
+    return true;
+  };
 
   // tro lai
   editClick = () => {
     this.setState({
-      trangthai: !this.state.trangthai
-    })
-  }
+      // eslint-disable-next-line react/no-access-state-in-setstate
+      trangthai: !this.state.trangthai,
+    });
+  };
 
   // hieen thi form thong tin user
   showInfoStaffs = () => {
     const { dataUser } = this.state;
     if (dataUser) {
-      return <Grid container item spacing={2} xs={12} justify="center">
-        <Grid item>
-          <ButtonAvt>
-            <StyleAvt
-              alt="complex"
-              src={dataUser[0].avatar}
-            />
-          </ButtonAvt>
-        </Grid>
-        <Grid item xs={6} container justify="center">
-          <Grid item xs container direction="column" spacing={2}>
-            <Grid item xs>
-              <h2 variant="subtitle1">
-                {`${dataUser[0].first_name} ${dataUser[0].last_name}`}
-              </h2>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>ID:</b> {`${dataUser[0].id}`}
-              </StyleTheP>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>Email:</b> {`${dataUser[0].email}`}
-              </StyleTheP>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>Phone:</b> {`${dataUser[0].phone_number}`}
-              </StyleTheP>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>Gender:</b> {`${dataUser[0].gender}`}
-              </StyleTheP>
+      return (
+        <Grid container item spacing={2} xs={12} justify="center">
+          <Grid item>
+            <ButtonAvt>
+              <StyleAvt alt="complex" src={dataUser[0].avatar} />
+            </ButtonAvt>
+          </Grid>
+          <Grid item xs={6} container justify="center">
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <h2 variant="subtitle1">
+                  {`${dataUser[0].firstName} ${dataUser[0].lastName}`}
+                </h2>
+                <StyleTheP variant="body1" color="textSecondary">
+                  <b>ID:</b> {`${dataUser[0].id}`}
+                </StyleTheP>
+                <StyleTheP variant="body1" color="textSecondary">
+                  <b>Email:</b> {`${dataUser[0].email}`}
+                </StyleTheP>
+                <StyleTheP variant="body1" color="textSecondary">
+                  <b>Phone:</b> {`${dataUser[0].phoneNumber}`}
+                </StyleTheP>
+                <StyleTheP variant="body1" color="textSecondary">
+                  <b>Gender:</b> {`${dataUser[0].gender}`}
+                </StyleTheP>
 
-              {/* kiem tra dieu kien de hien thi du lieu */}
-              {
-                dataUser[0].position ? <StyleTheP variant="body1" color="textSecondary">
-                  <b> Chức vụ: </b> {`${dataUser[0].position}`}
-                </StyleTheP> : null
-              }
-              {
-                dataUser[0].description ? <StyleTheP variant="body1" color="textSecondary">
-                  <b> description: </b> {`${dataUser[0].description}`}
-                </StyleTheP> : null
-              }
-              {
-                dataUser[0].date_birth ? <React.Fragment>
+                {/* kiem tra dieu kien de hien thi du lieu */}
+                {dataUser[0].position ? (
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b> Date_birth: </b> {`${dataUser[0].date_birth}`}
+                    <b> Chức vụ: </b> {`${dataUser[0].position}`}
                   </StyleTheP>
+                ) : null}
+                {dataUser[0].description ? (
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b> Address: </b> {`${dataUser[0].address}`}
+                    <b> description: </b> {`${dataUser[0].description}`}
                   </StyleTheP>
-                </React.Fragment> : null
-              }
-            </Grid>
-            <Grid item>
-              {this.showNut()}
+                ) : null}
+                {dataUser[0].dateBirth ? (
+                  <React.Fragment>
+                    <StyleTheP variant="body1" color="textSecondary">
+                      <b> DateBirth: </b> {`${dataUser[0].dateBirth}`}
+                    </StyleTheP>
+                    <StyleTheP variant="body1" color="textSecondary">
+                      <b> Address: </b> {`${dataUser[0].address}`}
+                    </StyleTheP>
+                  </React.Fragment>
+                ) : null}
+              </Grid>
+              <Grid item>{this.showNut()}</Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      );
     }
-  }
+    return true;
+  };
 
   // kiem tra state true ? show : hide
   hideFormUser = () => {
     if (this.state.trangthai === true) {
-      return (
-        <BoxCard>
-          {this.showInfoStaffs()}
-        </BoxCard>
-      )
+      return <BoxCard>{this.showInfoStaffs()}</BoxCard>;
     }
-  }
+    return true;
+  };
 
-  // eslint-disable-next-line lines-between-class-members
-  // theo doi khi chinh sua input 
-  isChange = (event) => {
+  // theo doi khi chinh sua input
+  isChange = event => {
     const { name } = event.target;
     const { value } = event.target;
     this.setState({
       [name]: value,
-    })
-  }
+    });
+  };
 
   // luu lai du lieu sau khi thay doi
   getInfoDataUser = (name, phone, gender, permission) => {
     // dong goi thanh item
     const item = {};
     item.id = this.state.dataUser[0].id;
-    item.first_name = name;
+    item.firstName = name;
     item.gender = gender;
-    item.phone_number = phone;
+    item.phoneNumber = phone;
     item.position = permission;
 
+    // eslint-disable-next-line react/no-access-state-in-setstate
     const items = this.state.data;
     items.push(item);
 
     this.setState({
-      dataUser: items
-    })
-    this.editClick()
-    // console.log(this.state.dataUser);
-    // console.log(items);
-    
-
-  }
-
+      dataUser: items,
+    });
+    this.editClick();
+  };
 
   // hien thi form edit khi click
   showFormEdit = () => {
@@ -233,8 +207,8 @@ class index extends Component {
               id="outlined-disabled"
               label="Edit Name"
               name="name"
-              defaultValue={`${dataUser[0].first_name} ${dataUser[0].last_name}`}
-              onChange={(event) => this.isChange(event)}
+              defaultValue={`${dataUser[0].firstName} ${dataUser[0].lastName}`}
+              onChange={event => this.isChange(event)}
               margin="normal"
               variant="outlined"
             />
@@ -242,8 +216,8 @@ class index extends Component {
               id="outlined-dense"
               label="Edit Phone"
               name="phone"
-              defaultValue={dataUser[0].phone_number}
-              onChange={(event) => this.isChange(event)}
+              defaultValue={dataUser[0].phoneNumber}
+              onChange={event => this.isChange(event)}
               margin="normal"
               variant="outlined"
             />
@@ -252,7 +226,7 @@ class index extends Component {
               label="Edit Gender"
               name="gender"
               defaultValue={`${dataUser[0].gender}`}
-              onChange={(event) => this.isChange(event)}
+              onChange={event => this.isChange(event)}
               margin="normal"
               variant="outlined"
             />
@@ -262,17 +236,32 @@ class index extends Component {
               margin="normal"
               name="permission"
               defaultValue={`${dataUser[0].position}`}
-              onChange={(event) => this.isChange(event)}
+              onChange={event => this.isChange(event)}
               variant="outlined"
             />
             <Grid container item md={12} align="center" spacing={3}>
               <Grid item md={6} align="right">
-                <Button onClick={() => this.editClick()} variant="contained" color="secondary">
+                <Button
+                  onClick={() => this.editClick()}
+                  variant="contained"
+                  color="secondary"
+                >
                   Cancel
                 </Button>
               </Grid>
               <Grid item md={6} align="left">
-                <Button variant="contained" color="primary" onClick={(name, phone, gender, permission) => this.getInfoDataUser(this.state.name, this.state.phone, this.state.gender, this.state.permission)}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    this.getInfoDataUser(
+                      this.state.name,
+                      this.state.phone,
+                      this.state.gender,
+                      this.state.permission,
+                    )
+                  }
+                >
                   Lưu Lại
                 </Button>
               </Grid>
@@ -281,6 +270,7 @@ class index extends Component {
         </BoxCard>
       );
     }
+    return true;
   };
 
   render() {
@@ -300,4 +290,11 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = createStructuredSelector({
   users: selectUser,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(index)
+index.propTypes = {
+  location: PropsTypes.string,
+  users: PropsTypes.object,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(index);

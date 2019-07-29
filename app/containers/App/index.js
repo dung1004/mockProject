@@ -1,26 +1,17 @@
-/* eslint-disable import/named */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unreachable */
-/* eslint-disable react/prop-types */
-
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-
-// eslint-disable-next-line no-unused-vars
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
+import PropsTypes from 'prop-types';
 
 import HomePage from 'containers/HomePage';
+import People from 'containers/People';
 import Class from 'containers/Class';
-import Student from 'containers/Student';
-import NhanVien from 'containers/Nhanvien';
-import GiaoVien from 'containers/Giaovien';
 import Login from 'containers/Login';
 import NotPage from 'containers/NotFoundPage';
 import InfoUser from 'containers/InfoUser';
@@ -44,7 +35,6 @@ export function App(props) {
     props.onfetchUser();
     props.onfetchData();
   }, []);
-  // console.log(props.users);
   let roles = 3;
 
   const tokenAccout = JSON.parse(localStorage.getItem('token'));
@@ -57,20 +47,15 @@ export function App(props) {
         return (
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <Route exact path="/people" component={People} />
             <Route exact path="/class" component={Class} />
-            <Route exact path="/student" component={Student} />
-            <Route exact path="/teacher" component={GiaoVien} />
-            <Route exact path="/staff" component={NhanVien} />
-            <Route path="/teachers/info/:id" component={DetailsPage} />
-            <Route path="/student/info/:id" component={DetailsPage} />
-            <Route path="/staffs/info/:id" component={DetailsPage} />
+            <Route path="/people/info/:id" component={DetailsPage} />
             <Route path="/info-user/:id" component={ItemInfo} />
             <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
         );
-        break;
       case 1:
         return (
           <Switch>
@@ -78,12 +63,10 @@ export function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/teacher/info/:id" component={DetailsPage} />
             <Route path="/class/info-students/:id" component={InfoUser} />
-            {/* <Route exact path="/class/info/:id" component={InfoUser} /> */}
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
         );
-        break;
       case 2:
         return (
           <Switch>
@@ -95,7 +78,6 @@ export function App(props) {
             <Route path="" component={NotPage} />
           </Switch>
         );
-        break;
       default:
         return (
           <Switch>
@@ -106,7 +88,6 @@ export function App(props) {
         );
     }
   };
-  // eslint-disable-next-line react/no-this-in-sfc
   return (
     <Wrapper>
       <Header level={roles} />
@@ -116,6 +97,7 @@ export function App(props) {
     </Wrapper>
   );
 }
+
 const mapStateToProps = createStructuredSelector({
   level: makeSelectLevel(),
   users: selectUser,
@@ -132,6 +114,10 @@ const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
 );
+App.propTypes = {
+  onfetchUser: PropsTypes.func,
+  onfetchData: PropsTypes.func,
+};
 export default compose(
   withConnect,
   memo,

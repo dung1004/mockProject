@@ -1,11 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable prefer-template */
 /* eslint-disable radix */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-undef */
-/* eslint-disable prettier/prettier */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-loop-func */
 import React, { Component } from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -13,161 +9,130 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import PropsTypes from 'prop-types';
 
 import Section from '../../components/Section';
 import Article from '../../components/Article';
 import ItemInfo from '../ItemInfo';
 import { selectUser } from '../App/selectors';
-import { fetchData } from '../App/actions'
+import { fetchData } from '../App/actions';
 
-
-// eslint-disable-next-line react/prefer-stateless-function
-class ControlledExpansionPanels extends Component {
+class index extends Component {
   getDataClass = () => {
     // lay id tren url
     const idUrlString = this.props.location.pathname;
-    // const idString = idUrlString.slice(0, -1);
-    const kq = idUrlString.match(/\d/g);
-    const idUrl = parseInt(kq);
-    console.log(this.props.dataClass.students);
+    const idString = idUrlString.slice(21);
 
-    if (this.props.dataClass.students) {
-      // const classId = this.props.dataClass.students.map(value => value.class_id);
-      const classId = this.props.dataClass.students.filter(value => value.class_id.filter(item => item === [2]));
-      console.log(classId);
-
+    // khoi tao bien
+    const dataClasses = this.props.dataClass.classes;
+    const dataTeachers = this.props.dataClass.teacher;
+    if (dataClasses) {
+      // lay tat ca lop co id bang id url
+      const dataClass = dataClasses.filter(item => item.id === idString);
+      if (dataTeachers) {
+        let itemClass;
+        let itemTeacher;
+        // xu ly lay thong tin teacher
+        for (itemClass of dataClass[0].teacherId) {
+          const dataTeacher = dataTeachers.filter(
+            item => item.id === itemClass,
+          );
+          for (itemTeacher of dataTeacher) {
+            return (
+              <ExpansionPanel>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel4bh-content"
+                  id="panel4bh-header"
+                >
+                  <Typography>{itemTeacher.id}</Typography>
+                  <Typography style={{ marginLeft: '20px', fontWeight: '900' }}>
+                    {itemTeacher.firstName + itemTeacher.lastName}
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <ItemInfo dataTeacher={itemTeacher} />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            );
+          }
+        }
+      }
     }
+    return true;
+  };
 
-    // this.props.dataClass.students.map(value => value.class_id) 
-  }
+  // lay du lieu hoc vien
+  getDataStudent = () => {
+    // lay id tren url
+    const idUrlString = this.props.location.pathname;
+    const idString = idUrlString.slice(21);
+    const dataStudents = this.props.dataClass.students;
 
-  render() {
-    console.log(this.props.dataClass.teachers);
-    console.log(this.props.dataClass);
-    console.log(this.getDataClass());
-    return (
-      <Article style={{width: '100%', display: 'flex'}}>
-        <Section style={{width: '50%', padding: '50px 5px'}}>
-          <h2 style={{ textAlign: "center" }}>Giáo Viên Đứng Lớp</h2>
-          <ExpansionPanel
-          >
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel4bh-content"
-              id="panel4bh-header"
-            >
-              <Typography >
-                4
-              </Typography>
-              <Typography >
-                NGUYỄN NGỌC VINH
-              </Typography>
-              <Typography>
-                Quảng Trạch
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <ItemInfo />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </Section>
-        <Section style={{width: '50%', padding: '50px 5px'}}>
-          <h2 style={{ textAlign: "center" }}>Danh Sách Học Viên</h2>
-          <ExpansionPanel
-          >
+    if (dataStudents) {
+      const arr = [];
+      // so sanh id voi id url va lay du lieu cua hoc vien
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < dataStudents.length; i++) {
+        dataStudents[i].classId.filter(item =>
+          item === idString ? arr.push(dataStudents[i]) : null,
+        );
+      }
+      // return
+      if (arr) {
+        return arr.map(value => (
+          <ExpansionPanel>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Typography >
-                1
-              </Typography>
-              <Typography >
-                NGUYỄN THANH DŨNG
-              </Typography>
-              <Typography>
-                Quảng Bình
+              <Typography>{value.id}</Typography>
+              <Typography style={{ paddingLeft: '10px' }}>
+                {`${value.firstName} ${value.lastName}`}
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <ItemInfo />
+              <ItemInfo value={value} />
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          <ExpansionPanel
-          >
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2bh-content"
-              id="panel2bh-header"
-            >
-              <Typography >
-                2
-              </Typography>
-              <Typography >
-                LÊ VĂN TÙNG
-              </Typography>
-              <Typography>
-                Đà Nẵng
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <ItemInfo />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-          >
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel3bh-content"
-              id="panel3bh-header"
-            >
-              <Typography >
-                3
-              </Typography>
-              <Typography >
-                NGUYỄN DUY THUẦN
-              </Typography>
-              <Typography>
-                Quảng Nam
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <ItemInfo />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-          >
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel4bh-content"
-              id="panel4bh-header"
-            >
-              <Typography >
-                4
-              </Typography>
-              <Typography >
-                NGUYỄN NGỌC VINH
-              </Typography>
-              <Typography>
-                Quảng Trạch
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <ItemInfo />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+        ));
+      }
+    }
+    return true;
+  };
+
+  render() {
+    return (
+      <Article style={{ width: '100%', display: 'flex' }}>
+        <Section style={{ width: '50%', padding: '50px 5px' }}>
+          <h2 style={{ textAlign: 'center' }}>Giáo Viên Đứng Lớp</h2>
+          {this.getDataClass()}
+        </Section>
+        <Section style={{ width: '50%', padding: '50px 5px' }}>
+          <h2 style={{ textAlign: 'center' }}>Danh Sách Học Viên</h2>
+          {this.getDataStudent()}
         </Section>
       </Article>
     );
   }
 }
 const mapStateToProps = createStructuredSelector({
-  dataClass: selectUser
-})
+  dataClass: selectUser,
+});
+
 const mapDispatchToProps = dispatch => ({
   onfetchUser: () => {
-    dispatch(fetchData())
+    dispatch(fetchData());
   },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(ControlledExpansionPanels)
+
+index.propTypes = {
+  location: PropsTypes.string,
+  dataClass: PropsTypes.object,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(index);
