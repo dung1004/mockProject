@@ -15,7 +15,7 @@ import MaterialTable from 'material-table';
 
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import { selectUser } from '../App/selectors';
+import { selectData } from '../App/selectors';
 import { fetchData } from '../App/actions';
 
 
@@ -60,7 +60,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 const mapStateToProps = createStructuredSelector({
-  dataUserStaffs: selectUser,
+  dataUserStaffs: selectData,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(About)

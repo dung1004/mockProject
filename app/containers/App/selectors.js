@@ -4,18 +4,18 @@ import initialState from './reducers';
 // const selectAllData = state => state.nhanvien || initialState;
 
 const selectRouter = state => state.router;
-const selectUser = state => state.app || initialState;
+const selectData = state => state.app || initialState;
 // const selectDataUser = state => state.app || initialState;
 const makeSelectLocation = () =>
   createSelector(
     selectRouter,
     routerState => routerState.location,
   );
-const makeSelectLevel = () =>
+const makeSelectUser = () =>
   createSelector(
-    selectUser,
-    levelState => levelState.level,
+    selectData,
+    levelState => levelState.user,
   );
 
 // eslint-disable-next-line prettier/prettier
-export { makeSelectLocation, makeSelectLevel, selectUser };
+export { makeSelectLocation, makeSelectUser, selectData };

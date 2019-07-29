@@ -1,23 +1,9 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable consistent-return */
-/* eslint-disable no-dupe-keys */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable no-shadow */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useEffect, memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -34,6 +20,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { withFormik, Field } from 'formik';
 import * as Yup from 'yup';
+import PropsTypes from 'prop-types';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -92,16 +79,13 @@ export function SignIn(props) {
   };
   const handleChange = event => {
     event.persist();
-    setValues(values => ({
+    setValues({
       ...values,
       [event.target.name]: event.target.value,
-    }));
+    });
   };
-  const renderRedirect = () => {
-    if (localStorage.getItem('token')) {
-      return <Redirect to="/" />;
-    }
-  };
+  const renderRedirect = () =>
+    localStorage.getItem('token') ? <Redirect to="/" /> : null;
   return (
     <div>
       {renderRedirect()}
@@ -252,15 +236,25 @@ const mapStateToProps = createStructuredSelector({
   err: makeSelectErr(),
   isLoggedIn: makeSelectLogged(),
 });
+
 const mapDispatchToProps = dispatch => ({
   onLoginRequest: (email, password, submit) => {
     dispatch(loginRequest(email, password, submit));
   },
 });
+
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
 );
+
+SignIn.propTypes = {
+  err: PropsTypes.string,
+  onLoginRequest: PropsTypes.func,
+  touched: PropsTypes.object,
+  errors: PropsTypes.object,
+};
+
 export default compose(
   withConnect,
   memo,

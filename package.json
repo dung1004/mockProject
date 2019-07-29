@@ -96,6 +96,7 @@
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
     "styled-components": "4.2.0",
+    "yarn": "^1.17.3",
     "yup": "^0.27.0"
   },
   "devDependencies": {

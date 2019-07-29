@@ -16,7 +16,7 @@ import { createStructuredSelector } from 'reselect';
 
 import Section from '../../components/Section';
 import ItemInfo from '../ItemInfo';
-import { selectUser } from '../App/selectors';
+import { selectData } from '../App/selectors';
 import { fetchData } from '../App/actions'
 
 
@@ -30,13 +30,13 @@ class ControlledExpansionPanels extends Component {
     const idUrl = parseInt(kq);
     console.log(this.props.dataClass.students);
 
-    if(this.props.dataClass.students) {
+    if (this.props.dataClass.students) {
       // const classId = this.props.dataClass.students.map(value => value.class_id);
       const classId = this.props.dataClass.students.filter(value => value.class_id.filter(item => item === [2]));
       console.log(classId);
-      
+
     }
-    
+
     // this.props.dataClass.students.map(value => value.class_id) 
   }
 
@@ -65,9 +65,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
@@ -88,9 +86,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
@@ -111,9 +107,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
@@ -134,9 +128,7 @@ class ControlledExpansionPanels extends Component {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Typography>
-                <ItemInfo />
-              </Typography>
+              <ItemInfo />
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </div>
@@ -145,7 +137,7 @@ class ControlledExpansionPanels extends Component {
   }
 }
 const mapStateToProps = createStructuredSelector({
-  dataClass: selectUser
+  dataClass: selectData
 })
 const mapDispatchToProps = dispatch => ({
   onfetchUser: () => {

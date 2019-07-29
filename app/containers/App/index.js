@@ -1,15 +1,8 @@
-/* eslint-disable import/named */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unreachable */
-/* eslint-disable react/prop-types */
-
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-// eslint-disable-next-line no-unused-vars
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -26,6 +19,8 @@ import NotPage from 'containers/NotFoundPage';
 import InfoUser from 'containers/InfoUser';
 import ItemInfo from 'containers/ItemInfo';
 import DetailsPage from 'containers/DetailsPage';
+import PropsTypes from 'prop-types';
+import FormSearch from '../FormSearch';
 
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
@@ -33,7 +28,7 @@ import Wrapper from '../../components/Wrapper';
 import reducer from './reducers';
 import saga from './saga';
 import { fetchUser, fetchData } from './actions';
-import { makeSelectLevel, selectUser } from './selectors';
+import { selectData, makeSelectLocation } from './selectors';
 
 const key = 'app';
 
@@ -44,9 +39,7 @@ export function App(props) {
     props.onfetchUser();
     props.onfetchData();
   }, []);
-  // console.log(props.users);
   let roles = 3;
-
   const tokenAccout = JSON.parse(localStorage.getItem('token'));
   if (tokenAccout) {
     roles = tokenAccout.level;
@@ -61,6 +54,7 @@ export function App(props) {
             <Route exact path="/student" component={Student} />
             <Route exact path="/teacher" component={GiaoVien} />
             <Route exact path="/staff" component={NhanVien} />
+            <Route exact path="/form-search" component={FormSearch} />
             <Route path="/teachers/info/:id" component={DetailsPage} />
             <Route path="/student/info/:id" component={DetailsPage} />
             <Route path="/staffs/info/:id" component={DetailsPage} />
@@ -70,7 +64,6 @@ export function App(props) {
             <Route path="" component={NotPage} />
           </Switch>
         );
-        break;
       case 1:
         return (
           <Switch>
@@ -78,12 +71,10 @@ export function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/teacher/info/:id" component={DetailsPage} />
             <Route path="/class/info-students/:id" component={InfoUser} />
-            {/* <Route exact path="/class/info/:id" component={InfoUser} /> */}
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
         );
-        break;
       case 2:
         return (
           <Switch>
@@ -95,7 +86,6 @@ export function App(props) {
             <Route path="" component={NotPage} />
           </Switch>
         );
-        break;
       default:
         return (
           <Switch>
@@ -106,19 +96,18 @@ export function App(props) {
         );
     }
   };
-  // eslint-disable-next-line react/no-this-in-sfc
   return (
     <Wrapper>
-      <Header level={roles} />
+      {props.path.pathname !== '/login' ? <Header level={roles} /> : null}
       <Article>{roleLink()}</Article>
-      <Footer />
+      {props.path.pathname !== '/login' ? <Footer /> : null}
       <GlobalStyle />
     </Wrapper>
   );
 }
 const mapStateToProps = createStructuredSelector({
-  level: makeSelectLevel(),
-  users: selectUser,
+  users: selectData,
+  path: makeSelectLocation(),
 });
 const mapDispatchToProps = dispatch => ({
   onfetchUser: () => {
@@ -132,6 +121,11 @@ const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
 );
+App.propTypes = {
+  onfetchUser: PropsTypes.func,
+  onfetchData: PropsTypes.func,
+  path: PropsTypes.object,
+};
 export default compose(
   withConnect,
   memo,

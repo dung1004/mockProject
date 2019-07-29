@@ -13,7 +13,7 @@ export default class ItemInfo extends Component {
   render() {
     return (
       <BoxCard style={{boxShadow:"none"}}>
-        <Grid container spacing={2} xs={12} justify="center">
+        <Grid item container spacing={2} xs={12} justify="center">
           <Grid item xs={6}>
             <ButtonAvt>
               <StyleAvt style={{borderRadius: '50%', marginRight: '20px'}}
@@ -25,7 +25,7 @@ export default class ItemInfo extends Component {
           <Grid item xs={6} container justify="center">
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
-                <h2 gutterBottom variant="subtitle1">
+                <h2 variant="subtitle1">
                   Nguyen Thanh Dung
                 </h2>
                 <StyleTheP variant="body1" color="textSecondary">

@@ -12,7 +12,7 @@ import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
 // import { makeSelectLevel } from '../App/selectors';
 import { fetchData } from '../App/actions';
-import { selectUser } from '../App/selectors';
+import { selectData } from '../App/selectors';
 
 class Students extends Component {
   render() {
@@ -49,6 +49,6 @@ const mapDispatchToProps = dispatch => ({
   },
 })
 const mapStateToProps = createStructuredSelector({
-  userStudent: selectUser,
+  userStudent: selectData,
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Students)

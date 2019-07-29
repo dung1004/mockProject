@@ -1,3 +1,4 @@
+/* eslint-disable no-const-assign */
 /* eslint-disable no-undef */
 /* eslint-disable consistent-return */
 /* eslint-disable block-scoped-var */
@@ -21,10 +22,6 @@ export function* getDataUser() {
     ...res.data,
   ]);
   const staffs = yield callApi('staff', 'get', null).then(res => [...res.data]);
-  // eslint-disable-next-line camelcase
-  // const account_login = yield callApi('account_login', 'get', null).then(
-  //   res => [...res.data],
-  // );
   const allData = {
     teacher,
     students,
@@ -37,13 +34,41 @@ export function* getDataUser() {
 
 export function* getUser() {
   if (JSON.parse(localStorage.getItem('token'))) {
-    var user = yield JSON.parse(localStorage.getItem('token'));
-    return yield put(fetchUserSuccess(user));
+    var dataUser = yield JSON.parse(localStorage.getItem('token'));
+    if (dataUser.level === 0) {
+      const staffs = yield callApi('staff', 'get', null).then(res => [
+        ...res.data,
+      ]);
+      const users = staffs.filter(value =>
+        value.email === dataUser.email ? value : null,
+      );
+      const user = { ...users[0] };
+      return yield put(fetchUserSuccess(user));
+    }
+    if (dataUser.level === 1) {
+      const teacher = yield callApi('teacher', 'get', null).then(res => [
+        ...res.data,
+      ]);
+      const users = teacher.filter(value =>
+        value.email === dataUser.email ? value : null,
+      );
+      const user = { ...users[0] };
+      return yield put(fetchUserSuccess(user));
+    }
+    if (ataUser.level === 2) {
+      const students = yield callApi('students', 'get', null).then(res => [
+        ...res.data,
+      ]);
+      const users = students.filter(value =>
+        value.email === dataUser.email ? value : null,
+      );
+      const user = { ...users[0] };
+      return yield put(fetchUserSuccess(user));
+    }
   }
-  return yield put(fetchUserSuccess(null));
 }
 
 export default function* sagaWatcher() {
-  yield takeEvery(FETCH_USER, getUser);
   yield takeEvery(FETCH_DATA, getDataUser);
+  yield takeEvery(FETCH_USER, getUser);
 }

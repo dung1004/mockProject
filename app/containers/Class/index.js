@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import { selectUser } from '../App/selectors';
+import { selectData } from '../App/selectors';
 import { fetchData } from '../App/actions'
 
 class Teachers extends Component {
@@ -66,7 +66,7 @@ class Teachers extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  dataClass: selectUser
+  dataClass: selectData
 })
 const mapDispatchToProps = dispatch => ({
   onfetchUser: () => {

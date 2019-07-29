@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as type from './constants';
 
-export const initialState = {};
+export const initialState = { data: {}, user: { level: 3 } };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -9,12 +9,12 @@ const appReducer = (state = initialState, action) => {
       state = { ...state };
       return { ...state };
     case type.FETCH_USER_SUCCESS:
-      state = { ...action.user };
+      state = { ...state, user: { ...action.user } };
       return { ...state };
     case type.FETCH_DATA:
       return { ...state };
     case type.FETCH_DATA_SUCCESS:
-      state = { ...action.allData };
+      state = { ...state, data: { ...action.allData } };
       return { ...state };
     default:
       return { ...state };

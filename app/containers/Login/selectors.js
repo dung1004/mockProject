@@ -23,7 +23,6 @@ const makeSelectLogged = () =>
     selectLog,
     loginState => loginState.isLoggedIn,
   );
-// export { selectLog };
 export {
   selectLog,
   makeSelectUsers,
