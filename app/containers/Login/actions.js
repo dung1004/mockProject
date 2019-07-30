@@ -8,10 +8,10 @@ export function loginRequest(email, password, submit) {
     submit,
   };
 }
-export function loginSuccess(level) {
+export function loginSuccess(userInfo) {
   return {
     type: type.LOGIN_SUCCESS,
-    level,
+    userInfo,
   };
 }
 

@@ -14,7 +14,7 @@ import BoxCard from './BoxCard';
 import StyleTheP from './StyleTheP';
 import StyleForm from './StyleForm';
 import StyleH3 from '../HomePage/StyleH3';
-import { selectUser } from '../App/selectors';
+import { selectData } from '../App/selectors';
 import { fetchData } from '../App/actions';
 
 class index extends Component {
@@ -288,7 +288,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 const mapStateToProps = createStructuredSelector({
-  users: selectUser,
+  users: selectData,
 });
 index.propTypes = {
   location: PropsTypes.string,

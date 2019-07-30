@@ -1,6 +1,4 @@
-/* eslint-disable radix */
 /* eslint-disable no-restricted-syntax */
-/* eslint-disable no-loop-func */
 import React, { Component } from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -14,7 +12,7 @@ import PropsTypes from 'prop-types';
 import Section from '../../components/Section';
 import Article from '../../components/Article';
 import ItemInfo from '../ItemInfo';
-import { selectUser } from '../App/selectors';
+import { selectData } from '../App/selectors';
 import { fetchData } from '../App/actions';
 
 class index extends Component {
@@ -22,7 +20,6 @@ class index extends Component {
     // lay id tren url
     const idUrlString = this.props.location.pathname;
     const idString = idUrlString.slice(21);
-
     // khoi tao bien
     const dataClasses = this.props.dataClass.classes;
     const dataTeachers = this.props.dataClass.teacher;
@@ -35,6 +32,7 @@ class index extends Component {
         // xu ly lay thong tin teacher
         for (itemClass of dataClass[0].teacherId) {
           const dataTeacher = dataTeachers.filter(
+            // eslint-disable-next-line no-loop-func
             item => item.id === itemClass,
           );
           for (itemTeacher of dataTeacher) {
@@ -118,7 +116,7 @@ class index extends Component {
   }
 }
 const mapStateToProps = createStructuredSelector({
-  dataClass: selectUser,
+  dataClass: selectData,
 });
 
 const mapDispatchToProps = dispatch => ({

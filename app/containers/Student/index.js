@@ -2,39 +2,33 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import PropsTypes from 'prop-types';
 
+import PropsTypes from 'prop-types';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
+// import { makeSelectLevel } from '../App/selectors';
 import { fetchData } from '../App/actions';
 import { selectData } from '../App/selectors';
 
-export function Index(props) {
-  const { students } = props.allData;
-  const { teacher } = props.allData;
-  const { staffs } = props.allData;
-  let listData;
-  if (students) {
-    listData = students.concat(teacher, staffs);
-  }
-  // console.log(listData);
+export function Students(props) {
   return (
     <Section>
       <MaterialTable
-        title="List PeoPle"
+        title="List Students"
         columns={[
           { title: 'ID', field: 'id' },
-          { title: 'NAME', field: 'firstName' },
+          { title: 'NAME', field: 'first_name' },
           { title: 'EMAIL', field: 'email' },
-          { title: 'PHONE', field: 'phoneNumber' },
+          { title: 'PHONE', field: 'phone_number' },
           {
             title: 'View Info',
+            // eslint-disable-next-line no-unused-vars
             render: rowData => (
-              <StyleLink to={`/people/info/${rowData.id}`}>View</StyleLink>
+              <StyleLink to={`/student/info/${rowData.id}`}>View</StyleLink>
             ),
           },
         ]}
-        data={listData}
+        data={props.userStudent.students}
         options={{
           sorting: true,
         }}
@@ -42,22 +36,19 @@ export function Index(props) {
     </Section>
   );
 }
-
 const mapDispatchToProps = dispatch => ({
   onfetchUser: () => {
     dispatch(fetchData());
   },
 });
-
 const mapStateToProps = createStructuredSelector({
-  allData: selectData,
+  userStudent: selectData,
 });
 
-Index.propTypes = {
-  allData: PropsTypes.any,
+Students.propTypes = {
+  userStudent: PropsTypes.object,
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Index);
+)(Students);

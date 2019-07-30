@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import * as type from './constants';
 
 export const initialState = {};
@@ -6,18 +5,24 @@ export const initialState = {};
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case type.LOGIN_REQUEST:
-      state = { ...action, submit: true };
-      return { ...state };
+      return { ...action, submit: true };
     case type.LOGIN_SUCCESS:
-      state = { ...state, isLoggedIn: true, level: action.level };
       localStorage.setItem(
         'token',
-        JSON.stringify({ email: state.email, level: state.level }),
+        JSON.stringify({
+          mail: action.userInfo.email,
+          level: action.userInfo.level,
+          id: action.userInfo.id,
+          name: action.userInfo.lastName,
+        }),
       );
-      return { ...state };
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: localStorage.getItem('token'),
+      };
     case type.LOGIN_FAILURE:
-      state = { err: action.err };
-      return { ...state };
+      return { err: action.err };
     default:
       return { ...state };
   }

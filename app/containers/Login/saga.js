@@ -1,39 +1,53 @@
-/* eslint-disable no-const-assign */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-undef */
-/* eslint-disable import/named */
-/* eslint-disable no-unused-vars */
 import { put, takeLatest, select } from 'redux-saga/effects';
 
 import * as type from './constants';
 import callApi from '../../utils/apiCaller';
 import { loginSuccess, loginFailure } from './actions';
 import { makeSelectUsers, makeSelectPassword } from './selectors';
-import { fetchUser } from '../App/actions';
 
 export function* login() {
-  const datas = yield callApi('account_login', 'get', null).then(res => [
+  const data = yield callApi('accountLogin', 'get', null).then(res => [
     ...res.data,
   ]);
   const emailUser = yield select(makeSelectUsers());
   const passwordUser = yield select(makeSelectPassword());
   let user = {};
-  yield datas.forEach(element => {
+  yield data && typeof data === 'string' ? data : null;
+  yield data.forEach(element => {
     if (element.email === emailUser) user = { ...element };
   });
-  // if (Object.keys(user).length) {
-  //   yield user.password === passwordUser
-  //     ? put(loginSuccess(user.level))
-  //     : put(loginFailure('Password không đúng'));
-  // } else {
-  //   yield put(loginFailure('Email không tồn tại'));
-  // }
-  // yield put(fetchUser());
   if (Object.keys(user).length) {
     if (user.password === passwordUser) {
-      yield put(loginSuccess(user.level));
-      yield put(fetchUser());
+      if (user.level === 0) {
+        const staffs = yield callApi('staff', 'get', null).then(res => [
+          ...res.data,
+        ]);
+        const users = staffs.filter(value =>
+          value.email === user.email ? value : null,
+        );
+        const userInfo = { ...users[0], level: user.level };
+        yield put(loginSuccess(userInfo));
+      }
+      if (user.level === 1) {
+        const teacher = yield callApi('teacher', 'get', null).then(res => [
+          ...res.data,
+        ]);
+        const users = teacher.filter(value =>
+          value.email === user.email ? value : null,
+        );
+        const userInfo = { ...users[0], level: user.level };
+        yield put(loginSuccess(userInfo));
+      }
+      if (user.level === 2) {
+        const students = yield callApi('students', 'get', null).then(res => [
+          ...res.data,
+        ]);
+        const users = students.filter(value =>
+          value.email === user.email ? value : null,
+        );
+        const userInfo = { ...users[0], level: user.level };
+        yield put(loginSuccess(userInfo));
+      }
     } else {
       yield put(loginFailure('Password không đúng'));
     }

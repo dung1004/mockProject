@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 
-import { FETCH_USER, FETCH_DATA } from './constants';
-import { fetchUserSuccess, fetchDataSuccess } from './actions';
+import { FETCH_DATA } from './constants';
+import { fetchDataSuccess } from './actions';
 import callApi from '../../utils/apiCaller';
 
 export function* getDataUser() {
@@ -15,9 +15,7 @@ export function* getDataUser() {
     ...res.data,
   ]);
   const staffs = yield callApi('staff', 'get', null).then(res => [...res.data]);
-  // const account_login = yield callApi('account_login', 'get', null).then(
-  //   res => [...res.data],
-  // );
+
   const allData = {
     teacher,
     students,
@@ -28,15 +26,6 @@ export function* getDataUser() {
   yield put(fetchDataSuccess(allData));
 }
 
-export function* getUser() {
-  if (JSON.parse(localStorage.getItem('token'))) {
-    const user = yield JSON.parse(localStorage.getItem('token'));
-    return yield put(fetchUserSuccess(user));
-  }
-  return yield put(fetchUserSuccess(null));
-}
-
 export default function* sagaWatcher() {
-  yield takeEvery(FETCH_USER, getUser);
   yield takeEvery(FETCH_DATA, getDataUser);
 }

@@ -1,12 +1,9 @@
-/* eslint-disable no-shadow */
 import React, { memo, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -82,17 +79,14 @@ export function SignIn(props) {
   };
   const handleChange = event => {
     event.persist();
-    setValues(values => ({
+    setValues({
       ...values,
       [event.target.name]: event.target.value,
-    }));
+    });
   };
-  const renderRedirect = () => {
-    if (localStorage.getItem('token')) {
-      return <Redirect to="/" />;
-    }
-    return true;
-  };
+
+  const renderRedirect = () =>
+    localStorage.getItem('token') ? <Redirect to="/" /> : null;
   return (
     <div>
       {renderRedirect()}
@@ -257,9 +251,9 @@ const withConnect = connect(
 
 SignIn.propTypes = {
   err: PropsTypes.string,
+  onLoginRequest: PropsTypes.func,
   touched: PropsTypes.object,
   errors: PropsTypes.object,
-  onLoginRequest: PropsTypes.func,
 };
 
 export default compose(

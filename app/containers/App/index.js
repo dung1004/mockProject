@@ -2,12 +2,12 @@ import React, { useEffect, memo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
-import PropsTypes from 'prop-types';
 
 import HomePage from 'containers/HomePage';
 import People from 'containers/People';
@@ -17,14 +17,16 @@ import NotPage from 'containers/NotFoundPage';
 import InfoUser from 'containers/InfoUser';
 import ItemInfo from 'containers/ItemInfo';
 import DetailsPage from 'containers/DetailsPage';
+import PropsTypes from 'prop-types';
+import FormSearch from '../FormSearch';
 
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
 import reducer from './reducers';
 import saga from './saga';
-import { fetchUser, fetchData } from './actions';
-import { makeSelectLevel, selectUser } from './selectors';
+import { fetchData } from './actions';
+import { selectData, makeSelectLocation } from './selectors';
 
 const key = 'app';
 
@@ -32,11 +34,10 @@ export function App(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   useEffect(() => {
-    props.onfetchUser();
+    // props.onfetchUser();
     props.onfetchData();
   }, []);
   let roles = 3;
-
   const tokenAccout = JSON.parse(localStorage.getItem('token'));
   if (tokenAccout) {
     roles = tokenAccout.level;
@@ -51,6 +52,7 @@ export function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/people/info/:id" component={DetailsPage} />
             <Route path="/info-user/:id" component={ItemInfo} />
+            <Route path="/form-search" component={FormSearch} />
             <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
@@ -90,22 +92,21 @@ export function App(props) {
   };
   return (
     <Wrapper>
-      <Header level={roles} />
+      {props.path.pathname !== '/login' ? (
+        <Header level={roles} user={tokenAccout} />
+      ) : null}
       <Article>{roleLink()}</Article>
-      <Footer />
+      {props.path.pathname !== '/login' ? <Footer /> : null}
       <GlobalStyle />
     </Wrapper>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  level: makeSelectLevel(),
-  users: selectUser,
+  users: selectData,
+  path: makeSelectLocation(),
 });
 const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchUser());
-  },
   onfetchData: () => {
     dispatch(fetchData());
   },
@@ -115,9 +116,10 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 App.propTypes = {
-  onfetchUser: PropsTypes.func,
   onfetchData: PropsTypes.func,
+  path: PropsTypes.object,
 };
+
 export default compose(
   withConnect,
   memo,

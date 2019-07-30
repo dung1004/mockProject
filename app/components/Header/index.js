@@ -5,14 +5,17 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PropsTypes from 'prop-types';
 
-import NavBar from './NavBar';
 import LinkHeader from './LinkHeader';
 import MenuLink from './MenuLink';
 import Accout from './Accout';
+import LinkAdmin from './LinkRole/LinkAdmin';
+import LinkTeacher from './LinkRole/LinkTeacher';
+import LinkStudent from './LinkRole/LinkStudent';
 
-export default function Header(props) {
+function Header(props) {
   const [values, setValues] = useState({
     level: props.level,
+    user: props.user,
   });
   useEffect(() => {
     setValues({ level: props.level });
@@ -23,67 +26,22 @@ export default function Header(props) {
       case 0:
         return (
           <React.Fragment>
-            <MenuLink>
-              <NavBar>
-                <LinkHeader exact to="/">
-                  Trang Chủ
-                </LinkHeader>
-              </NavBar>
-              <NavBar>
-                <LinkHeader to="/people">People</LinkHeader>
-              </NavBar>
-              {/* <NavBar>
-                <LinkHeader to="/staff">Nhân Viên</LinkHeader>
-              </NavBar>
-              <NavBar>
-                <LinkHeader to="/teacher">Giáo Viên</LinkHeader>
-              </NavBar>
-              <NavBar>
-                <LinkHeader to="/student">Học Viên</LinkHeader>
-              </NavBar> */}
-              <NavBar>
-                <LinkHeader exact to="/class">
-                  Lớp Học
-                </LinkHeader>
-              </NavBar>
-            </MenuLink>
-            <Accout />
+            <LinkAdmin />
+            <Accout user={values.user} />
           </React.Fragment>
         );
       case 1:
         return (
           <React.Fragment>
-            <MenuLink>
-              <NavBar>
-                <LinkHeader exact to="/">
-                  Trang Chủ
-                </LinkHeader>
-              </NavBar>
-              <NavBar>
-                <LinkHeader exact to="/class">
-                  Lớp Học
-                </LinkHeader>
-              </NavBar>
-            </MenuLink>
-            <Accout />
+            <LinkTeacher />
+            <Accout user={values.user} />
           </React.Fragment>
         );
       case 2:
         return (
           <React.Fragment>
-            <MenuLink>
-              <NavBar>
-                <LinkHeader exact to="/">
-                  Trang Chủ
-                </LinkHeader>
-              </NavBar>
-              <NavBar>
-                <LinkHeader exact to="/class">
-                  Lớp Học
-                </LinkHeader>
-              </NavBar>
-            </MenuLink>
-            <Accout />
+            <LinkStudent />
+            <Accout user={values.user} />
           </React.Fragment>
         );
       default:
@@ -103,7 +61,6 @@ export default function Header(props) {
     <AppBar position="static">
       <Toolbar style={{ justifyContent: 'space-between' }}>
         <Typography variant="h6">Trung Tâm Anh Ngữ</Typography>
-
         {quyenAdmin()}
       </Toolbar>
     </AppBar>
@@ -112,4 +69,7 @@ export default function Header(props) {
 
 Header.propTypes = {
   level: PropsTypes.number,
+  user: PropsTypes.object,
 };
+
+export default Header;
