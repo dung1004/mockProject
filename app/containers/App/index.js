@@ -27,7 +27,7 @@ import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
 import reducer from './reducers';
 import saga from './saga';
-import { fetchUser, fetchData } from './actions';
+import { fetchData } from './actions';
 import { selectData, makeSelectLocation } from './selectors';
 
 const key = 'app';
@@ -36,7 +36,7 @@ export function App(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   useEffect(() => {
-    props.onfetchUser();
+    // props.onfetchUser();
     props.onfetchData();
   }, []);
   let roles = 3;
@@ -98,7 +98,9 @@ export function App(props) {
   };
   return (
     <Wrapper>
-      {props.path.pathname !== '/login' ? <Header level={roles} /> : null}
+      {props.path.pathname !== '/login' ? (
+        <Header level={roles} user={tokenAccout} />
+      ) : null}
       <Article>{roleLink()}</Article>
       {props.path.pathname !== '/login' ? <Footer /> : null}
       <GlobalStyle />
@@ -108,11 +110,12 @@ export function App(props) {
 const mapStateToProps = createStructuredSelector({
   users: selectData,
   path: makeSelectLocation(),
+  // user: makeSelectUser(),
 });
 const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchUser());
-  },
+  // onfetchUser: () => {
+  //   dispatch(fetchUser());
+  // },
   onfetchData: () => {
     dispatch(fetchData());
   },
@@ -122,9 +125,10 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 App.propTypes = {
-  onfetchUser: PropsTypes.func,
+  // onfetchUser: PropsTypes.func,
   onfetchData: PropsTypes.func,
   path: PropsTypes.object,
+  // user: PropsTypes.object,
 };
 export default compose(
   withConnect,

@@ -6,8 +6,6 @@
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import MaterialTable from 'material-table';
@@ -15,7 +13,6 @@ import MaterialTable from 'material-table';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
 import { selectData } from '../App/selectors';
-import { fetchUser } from '../App/actions';
 
 
 class Giaovien extends Component {
@@ -51,13 +48,8 @@ class Giaovien extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchUser());
-  },
-});
 const mapStateToProps = createStructuredSelector({
   userTeacher: selectData,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Giaovien)
+export default connect(mapStateToProps)(Giaovien)
 

@@ -42,8 +42,11 @@ const StyledMenuItem = withStyles(theme => ({
   },
 }))(MenuItem);
 
-export default function Accout() {
+export default function Accout(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [valueUser, setValueUser] = React.useState({
+    user: props.user,
+  });
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -52,48 +55,48 @@ export default function Accout() {
     setAnchorEl(null);
   }
   function onLogOut() {
-    // logoutUser(true);
+    localStorage.removeItem('token');
+    if (!localStorage.getItem('token')) {
+      window.location.href = '/';
+    }
   }
-  useEffect(() => {
-    // setValues({ user: user });
-  });
   return (
     <React.Fragment>
-      <div>
-        <Button
-          aria-controls="customized-menu"
-          aria-haspopup="true"
-          variant="contained"
-          color="primary"
-          onClick={handleClick}
-        >
-          <i className="material-icons">account_circle </i>
-        </Button>
-        <StyledMenu
-          id="customized-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <StyledMenuItem>
-            <ListItemIcon>
-              <i className="material-icons">settings </i>
-            </ListItemIcon>
-            {/* <LinhAcc to={`/info-user/${values.user.id}`}>
-              <ListItemText
-                primary={values.user.first_name + values.user.last_name}
-              />
-            </LinhAcc> */}
-          </StyledMenuItem>
-          <StyledMenuItem onClick={onLogOut()}>
-            <ListItemIcon>
-              <i className="material-icons">exit_to_app</i>
-            </ListItemIcon>
-            <ListItemText primary="Đăng Xuất" />
-          </StyledMenuItem>
-        </StyledMenu>
-      </div>
+      {valueUser.user ? (
+        <div>
+          <Button
+            aria-controls="customized-menu"
+            aria-haspopup="true"
+            variant="contained"
+            color="primary"
+            onClick={handleClick}
+          >
+            <i className="material-icons">account_circle </i>
+          </Button>
+          <StyledMenu
+            id="customized-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <StyledMenuItem>
+              <ListItemIcon>
+                <i className="material-icons">settings </i>
+              </ListItemIcon>
+              <LinhAcc to={`/info-user/${valueUser.user.id}`}>
+                <ListItemText primary={valueUser.user.name} />
+              </LinhAcc>
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <i className="material-icons">exit_to_app</i>
+              </ListItemIcon>
+              <ListItemText primary="Đăng Xuất" onClick={onLogOut} />
+            </StyledMenuItem>
+          </StyledMenu>
+        </div>
+      ) : null}
     </React.Fragment>
   );
 }

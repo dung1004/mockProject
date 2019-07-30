@@ -15,6 +15,7 @@ import LinkStudent from './LinkRole/LinkStudent';
 function Header(props) {
   const [values, setValues] = useState({
     level: props.level,
+    user: props.user,
   });
   useEffect(() => {
     setValues({ level: props.level });
@@ -26,21 +27,21 @@ function Header(props) {
         return (
           <React.Fragment>
             <LinkAdmin />
-            <Accout />
+            <Accout user={values.user} />
           </React.Fragment>
         );
       case 1:
         return (
           <React.Fragment>
             <LinkTeacher />
-            <Accout />
+            <Accout user={values.user} />
           </React.Fragment>
         );
       case 2:
         return (
           <React.Fragment>
             <LinkStudent />
-            <Accout />
+            <Accout user={values.user} />
           </React.Fragment>
         );
       default:
@@ -68,6 +69,7 @@ function Header(props) {
 
 Header.propTypes = {
   level: PropsTypes.number,
+  user: PropsTypes.object,
 };
 
 export default Header;

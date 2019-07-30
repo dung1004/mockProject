@@ -12,12 +12,42 @@ export function* login() {
   const emailUser = yield select(makeSelectUsers());
   const passwordUser = yield select(makeSelectPassword());
   let user = {};
+  yield data && typeof data === 'string' ? data : null;
   yield data.forEach(element => {
     if (element.email === emailUser) user = { ...element };
   });
   if (Object.keys(user).length) {
     if (user.password === passwordUser) {
-      yield put(loginSuccess(user.level));
+      if (user.level === 0) {
+        const staffs = yield callApi('staff', 'get', null).then(res => [
+          ...res.data,
+        ]);
+        const users = staffs.filter(value =>
+          value.email === user.email ? value : null,
+        );
+        const userInfo = { ...users[0], level: user.level };
+        yield put(loginSuccess(userInfo));
+      }
+      if (user.level === 1) {
+        const teacher = yield callApi('teacher', 'get', null).then(res => [
+          ...res.data,
+        ]);
+        const users = teacher.filter(value =>
+          value.email === user.email ? value : null,
+        );
+        const userInfo = { ...users[0], level: user.level };
+        yield put(loginSuccess(userInfo));
+      }
+      if (user.level === 2) {
+        const students = yield callApi('students', 'get', null).then(res => [
+          ...res.data,
+        ]);
+        const users = students.filter(value =>
+          value.email === user.email ? value : null,
+        );
+        const userInfo = { ...users[0], level: user.level };
+        yield put(loginSuccess(userInfo));
+      }
     } else {
       yield put(loginFailure('Password không đúng'));
     }
