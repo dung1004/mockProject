@@ -1,46 +1,46 @@
-import React from 'react';
+import React, { useEffect, memo } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
+import MaterialTable from 'material-table';
+// import PropsTypes from 'prop-types';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
+import { createStructuredSelector } from 'reselect';
 
 import Section from '../../components/Section';
+import reducer from './reducers';
+import saga from './saga';
+import StyleLink from '../../components/StyleLink';
+import { getSearch } from './actions';
+
+const key = 'form';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  rootInput: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: 400,
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
   },
-  input: {
-    marginLeft: 8,
-    flex: 1,
+  dense: {
+    marginTop: 19,
   },
-  divider: {
-    width: 1,
-    height: 28,
-    margin: 4,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    marginLeft: 15,
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+  menu: {
+    width: 200,
   },
 }));
 
-export default function CustomizedInputBase() {
+export function FormSearch() {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
   const classes = useStyles();
   const [state, setState] = React.useState({
     search: '',
@@ -53,39 +53,109 @@ export default function CustomizedInputBase() {
     });
   };
 
+  useEffect(() => {
+    // props.onSearch(state.search);
+  }, [state]);
+
   return (
-    <Section className={classes.root}>
+    <div>
       {console.log(state)}
-      <Paper className={classes.rootInput}>
-        <InputBase
-          className={classes.input}
-          placeholder="Search ..."
+      <Section className={classes.root}>
+        <TextField
+          id="standard-search"
+          label="Search field"
+          type="search"
+          className={classes.textField}
+          margin="normal"
           name="search"
-          inputProps={{ 'aria-label': 'search ...' }}
           value={state.search}
           onChange={handleChange}
         />
-        <Divider className={classes.divider} />
-        <IconButton className={classes.iconButton} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="item-native-simple">Item</InputLabel>
-        <Select native value={state} onChange={handleChange} name="item">
+        <TextField
+          id="standard-select-currency-native"
+          select
+          label="Native select"
+          className={classes.textField}
+          name="select"
+          onChange={handleChange}
+          SelectProps={{
+            native: true,
+            MenuProps: {
+              className: classes.menu,
+            },
+          }}
+          helperText="Please select your item"
+          margin="normal"
+        >
           <option value="" />
-          <option value="staff">Nhân viên</option>
-          <option value="teacher">Giáo viên</option>
-          <option value="student">Học viên</option>
-          <option value="class">Lớp học</option>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="item-native-simple">{state.item}</InputLabel>
-        <Select native value={state} onChange={handleChange} name={state.item}>
+          <option value="anh1">Anh1</option>
+          <option value="anh2">Anh2</option>
+          <option value="anh3">Anh3</option>
+        </TextField>
+        <TextField
+          id="standard-select-currency-native"
+          select
+          label={state.select || 'Null'}
+          className={classes.textField}
+          name={state.select}
+          onChange={handleChange}
+          SelectProps={{
+            native: true,
+            MenuProps: {
+              className: classes.menu,
+            },
+          }}
+          helperText="Please select your item"
+          margin="normal"
+        >
           <option value="" />
-        </Select>
-      </FormControl>
-    </Section>
+          <option value="Em1">Em1</option>
+          <option value="Em2">Em2</option>
+          <option value="Em3">Em3</option>
+        </TextField>
+      </Section>
+      <Section>
+        <MaterialTable
+          title="List Giáo Viên"
+          columns={[
+            { title: 'ID', field: 'id' },
+            { title: 'NAME', field: 'first_name' },
+            { title: 'EMAIL', field: 'email' },
+            { title: 'PHONE', field: 'phone_number' },
+            {
+              title: 'View Info',
+              render: rowData => (
+                <StyleLink to={`/teachers/info/${rowData.id}`}>View</StyleLink>
+              ),
+            },
+          ]}
+          data={[]}
+          options={{
+            sorting: true,
+          }}
+        />
+      </Section>
+    </div>
   );
 }
+
+const mapStateToProps = createStructuredSelector({});
+const mapDispatchToProps = dispatch => ({
+  onSearch: value => {
+    dispatch(getSearch(value));
+  },
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+FormSearch.propTypes = {
+  // onSearch: PropsTypes.func,
+};
+
+export default compose(
+  withConnect,
+  memo,
+)(FormSearch);
