@@ -7,7 +7,7 @@ import PropsTypes from 'prop-types';
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
 import { selectData } from '../App/selectors';
-import { fetchData } from '../App/actions';
+// import { fetchData } from '../App/actions';
 
 class Teachers extends Component {
   render() {
@@ -62,15 +62,12 @@ const mapStateToProps = createStructuredSelector({
   dataClass: selectData,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchData());
-  },
-});
+// const mapDispatchToProps = dispatch => ({
+//   onfetchUser: () => {
+//     dispatch(fetchData());
+//   },
+// });
 Teachers.propTypes = {
   dataClass: PropsTypes.object,
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Teachers);
+export default connect(mapStateToProps)(Teachers);

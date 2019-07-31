@@ -1,15 +1,21 @@
 import * as type from './constants';
 
-export function getSearch(key) {
+export function getData() {
   return {
-    type: type.GET_SEARCH,
-    key,
+    type: type.GET_DATA,
   };
 }
 
-export function getSearchSuccess(values) {
+export function getDataSuccess(values) {
   return {
-    type: type.GET_SEARCH_SUCCESS,
+    type: type.GET_DATA_SUCCESS,
     values,
+  };
+}
+
+export function getKey(key) {
+  return {
+    type: type.GET_KEY,
+    key,
   };
 }

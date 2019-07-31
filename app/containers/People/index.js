@@ -6,7 +6,7 @@ import PropsTypes from 'prop-types';
 
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import { fetchData } from '../App/actions';
+// import { fetchData } from '../App/actions';
 import { selectData } from '../App/selectors';
 
 export function Index(props) {
@@ -46,11 +46,11 @@ export function Index(props) {
   );
 }
 
-const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchData());
-  },
-});
+// const mapDispatchToProps = dispatch => ({
+//   onfetchUser: () => {
+//     dispatch(fetchData());
+//   },
+// });
 
 const mapStateToProps = createStructuredSelector({
   allData: selectData,
@@ -62,5 +62,5 @@ Index.propTypes = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  // mapDispatchToProps,
 )(Index);

@@ -17,9 +17,8 @@ import Section from '../../components/Section';
 import reducer from './reducers';
 import saga from './saga';
 import StyleLink from '../../components/StyleLink';
-import { getSearch } from './actions';
-import { dataSearch } from './selectors';
-// import { selectData } from '../App/selectors';
+import { getData, getKey } from './actions';
+import { makeSelectData } from './selectors';
 
 const key = 'form';
 
@@ -46,7 +45,6 @@ export function FormSearch(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     search: '',
-    data: [],
   });
 
   // const onClickInput = () => {
@@ -61,12 +59,9 @@ export function FormSearch(props) {
   };
 
   useEffect(() => {
-    props.onSearch(state);
-    setState({
-      ...state,
-      data: props.data,
-    });
-  }, [state.search]);
+    props.onGetData();
+    props.ongetKey(state);
+  }, [state]);
 
   return (
     <div>
@@ -143,7 +138,7 @@ export function FormSearch(props) {
               ),
             },
           ]}
-          data={state.data}
+          data={props.data}
           options={{
             sorting: true,
           }}
@@ -154,12 +149,12 @@ export function FormSearch(props) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  data: dataSearch(),
+  data: makeSelectData(),
 });
+
 const mapDispatchToProps = dispatch => ({
-  onSearch: value => {
-    dispatch(getSearch(value));
-  },
+  onGetData: () => dispatch(getData()),
+  ongetKey: value => dispatch(getKey(value)),
 });
 
 const withConnect = connect(
@@ -168,8 +163,9 @@ const withConnect = connect(
 );
 
 FormSearch.propTypes = {
-  onSearch: PropsTypes.func,
+  onGetData: PropsTypes.func,
   data: PropsTypes.array,
+  ongetKey: PropsTypes.func,
 };
 
 export default compose(

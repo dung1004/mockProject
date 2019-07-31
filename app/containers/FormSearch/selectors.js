@@ -1,17 +1,16 @@
 import { createSelector } from 'reselect';
 import initialState from './reducers';
 
-const selectKeword = state => state.form || initialState;
+const selectData = state => state.form || initialState;
 
-const makeKeyWord = () =>
+const makeSelectData = () =>
   createSelector(
-    selectKeword,
-    loginState => loginState.keyword,
+    selectData,
+    datalState => datalState.data,
   );
-const dataSearch = () =>
+const makeSelectKey = () =>
   createSelector(
-    selectKeword,
-    loginState => loginState.data,
+    selectData,
+    datalState => datalState.key,
   );
-
-export { makeKeyWord, dataSearch };
+export { makeSelectData, makeSelectKey };

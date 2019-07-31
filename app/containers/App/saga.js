@@ -21,7 +21,6 @@ export function* getDataUser() {
     students,
     classes,
     staffs,
-    // account_login,
   };
   yield put(fetchDataSuccess(allData));
 }
