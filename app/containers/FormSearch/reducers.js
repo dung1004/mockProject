@@ -5,10 +5,9 @@ export const initialState = {};
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case type.GET_SEARCH:
-      return { ...state, keyword: action.key };
-    // case type.FETCH_DATA_SUCCESS:
-    //   state = { ...state, data: { ...action.allData } };
-    //   return { ...state };
+      return { keyword: action.key, data: action.data };
+    case type.GET_SEARCH_SUCCESS:
+      return { data: [...action.values] };
     default:
       return { ...state };
   }

@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 // import FormControl from '@material-ui/core/FormControl';
 // import Select from '@material-ui/core/Select';
 import MaterialTable from 'material-table';
-// import PropsTypes from 'prop-types';
+import PropsTypes from 'prop-types';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
@@ -18,6 +18,8 @@ import reducer from './reducers';
 import saga from './saga';
 import StyleLink from '../../components/StyleLink';
 import { getSearch } from './actions';
+import { dataSearch } from './selectors';
+// import { selectData } from '../App/selectors';
 
 const key = 'form';
 
@@ -38,13 +40,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function FormSearch() {
+export function FormSearch(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const classes = useStyles();
   const [state, setState] = React.useState({
     search: '',
+    data: [],
   });
+
+  // const onClickInput = () => {
+
+  // };
 
   const handleChange = event => {
     setState({
@@ -54,12 +61,15 @@ export function FormSearch() {
   };
 
   useEffect(() => {
-    // props.onSearch(state.search);
-  }, [state]);
+    props.onSearch(state);
+    setState({
+      ...state,
+      data: props.data,
+    });
+  }, [state.search]);
 
   return (
     <div>
-      {console.log(state)}
       <Section className={classes.root}>
         <TextField
           id="standard-search"
@@ -70,6 +80,7 @@ export function FormSearch() {
           name="search"
           value={state.search}
           onChange={handleChange}
+          // onClick={onClickInput}
         />
         <TextField
           id="standard-select-currency-native"
@@ -116,20 +127,23 @@ export function FormSearch() {
       </Section>
       <Section>
         <MaterialTable
-          title="List Giáo Viên"
+          title="List"
           columns={[
             { title: 'ID', field: 'id' },
-            { title: 'NAME', field: 'first_name' },
+            {
+              title: 'FULL NAME',
+              render: rowData => `${rowData.firstName} ${rowData.lastName}`,
+            },
             { title: 'EMAIL', field: 'email' },
-            { title: 'PHONE', field: 'phone_number' },
+            { title: 'PHONE', field: 'phoneNumber' },
             {
               title: 'View Info',
               render: rowData => (
-                <StyleLink to={`/teachers/info/${rowData.id}`}>View</StyleLink>
+                <StyleLink to={`/people/info/${rowData.id}`}>View</StyleLink>
               ),
             },
           ]}
-          data={[]}
+          data={state.data}
           options={{
             sorting: true,
           }}
@@ -139,7 +153,9 @@ export function FormSearch() {
   );
 }
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  data: dataSearch(),
+});
 const mapDispatchToProps = dispatch => ({
   onSearch: value => {
     dispatch(getSearch(value));
@@ -152,7 +168,8 @@ const withConnect = connect(
 );
 
 FormSearch.propTypes = {
-  // onSearch: PropsTypes.func,
+  onSearch: PropsTypes.func,
+  data: PropsTypes.array,
 };
 
 export default compose(

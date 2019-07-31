@@ -13,13 +13,10 @@ function LinkAdmin() {
         </LinkHeader>
       </NavBar>
       <NavBar>
-        <LinkHeader to="/staff">Nhân Viên</LinkHeader>
+        <LinkHeader to="/form-search">Search</LinkHeader>
       </NavBar>
       <NavBar>
-        <LinkHeader to="/teacher">Giáo Viên</LinkHeader>
-      </NavBar>
-      <NavBar>
-        <LinkHeader to="/student">Học Viên</LinkHeader>
+        <LinkHeader to="/people">People</LinkHeader>
       </NavBar>
       <NavBar>
         <LinkHeader exact to="/class">

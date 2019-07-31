@@ -24,7 +24,10 @@ export function Index(props) {
         title="List PeoPle"
         columns={[
           { title: 'ID', field: 'id' },
-          { title: 'NAME', field: 'firstName' },
+          {
+            title: 'FULL NAME',
+            render: rowData => `${rowData.firstName} ${rowData.lastName}`,
+          },
           { title: 'EMAIL', field: 'email' },
           { title: 'PHONE', field: 'phoneNumber' },
           {

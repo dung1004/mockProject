@@ -6,7 +6,12 @@ const selectKeword = state => state.form || initialState;
 const makeKeyWord = () =>
   createSelector(
     selectKeword,
-    loginState => loginState.key,
+    loginState => loginState.keyword,
+  );
+const dataSearch = () =>
+  createSelector(
+    selectKeword,
+    loginState => loginState.data,
   );
 
-export { makeKeyWord };
+export { makeKeyWord, dataSearch };

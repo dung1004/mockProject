@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-unresolved */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Redirect } from 'react-router-dom';
+import PropsTypes from 'prop-types';
+
 import LinhAcc from './LinkAccount';
 
 const StyledMenu = withStyles({
@@ -44,7 +42,7 @@ const StyledMenuItem = withStyles(theme => ({
 
 export default function Accout(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [valueUser, setValueUser] = React.useState({
+  const [valueUser] = React.useState({
     user: props.user,
   });
   function handleClick(event) {
@@ -100,3 +98,7 @@ export default function Accout(props) {
     </React.Fragment>
   );
 }
+
+Accout.propTypes = {
+  user: PropsTypes.object,
+};
