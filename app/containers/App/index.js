@@ -36,7 +36,7 @@ export function App(props) {
   useEffect(() => {
     // props.onfetchUser();
     props.onfetchData();
-  }, []);
+  }, [props.path.pathname]);
   let roles = 3;
   const tokenAccout = JSON.parse(localStorage.getItem('token'));
   if (tokenAccout) {

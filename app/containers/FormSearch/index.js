@@ -46,10 +46,12 @@ export function FormSearch(props) {
   const [state, setState] = React.useState({
     search: '',
   });
-
-  // const onClickInput = () => {
-
-  // };
+  const [isnChangeSelect, setSelect] = React.useState(true);
+  const onClickInput = event => {
+    if (event && event.target.value !== '') {
+      setSelect(false);
+    }
+  };
 
   const handleChange = event => {
     setState({
@@ -75,15 +77,15 @@ export function FormSearch(props) {
           name="search"
           value={state.search}
           onChange={handleChange}
-          // onClick={onClickInput}
         />
         <TextField
           id="standard-select-currency-native"
           select
-          label="Native select"
+          label="User select"
           className={classes.textField}
           name="select"
           onChange={handleChange}
+          onClick={onClickInput}
           SelectProps={{
             native: true,
             MenuProps: {
@@ -93,14 +95,15 @@ export function FormSearch(props) {
           helperText="Please select your item"
           margin="normal"
         >
-          <option value="" />
-          <option value="anh1">Anh1</option>
-          <option value="anh2">Anh2</option>
-          <option value="anh3">Anh3</option>
+          <option />
+          <option value="student">Students</option>
+          <option value="teacher">Teachers</option>
+          <option value="staff">Staffs</option>
         </TextField>
         <TextField
           id="standard-select-currency-native"
           select
+          disabled={isnChangeSelect}
           label={state.select || 'Null'}
           className={classes.textField}
           name={state.select}
