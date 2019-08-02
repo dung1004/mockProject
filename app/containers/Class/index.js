@@ -68,6 +68,6 @@ const mapStateToProps = createStructuredSelector({
 //   },
 // });
 Teachers.propTypes = {
-  dataClass: PropsTypes.object,
+  dataClass: PropsTypes.any,
 };
 export default connect(mapStateToProps)(Teachers);

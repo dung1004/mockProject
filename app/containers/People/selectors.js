@@ -13,4 +13,9 @@ const makeSelectKey = () =>
     selectData,
     datalState => datalState.key,
   );
-export { makeSelectData, makeSelectKey };
+const makeSelec = () =>
+  createSelector(
+    selectData,
+    datalState => datalState.keyFil,
+  );
+export { makeSelectData, makeSelectKey, makeSelec };

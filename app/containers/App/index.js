@@ -10,7 +10,6 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
 
 import HomePage from 'containers/HomePage';
-import People from 'containers/People';
 import Class from 'containers/Class';
 import Login from 'containers/Login';
 import NotPage from 'containers/NotFoundPage';
@@ -18,7 +17,7 @@ import InfoUser from 'containers/InfoUser';
 import ItemInfo from 'containers/ItemInfo';
 import DetailsPage from 'containers/DetailsPage';
 import PropsTypes from 'prop-types';
-import FormSearch from '../FormSearch';
+import People from '../People';
 
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
@@ -52,7 +51,6 @@ export function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/people/info/:id" component={DetailsPage} />
             <Route path="/info-user/:id" component={ItemInfo} />
-            <Route path="/form-search" component={FormSearch} />
             <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
@@ -64,7 +62,7 @@ export function App(props) {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/class" component={Class} />
             <Route path="/teacher/info/:id" component={DetailsPage} />
-            <Route path="/class/info-students/:id" component={InfoUser} />
+            <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>
@@ -75,7 +73,7 @@ export function App(props) {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/class" component={Class} />
             <Route path="/student/info/:id" component={DetailsPage} />
-            <Route path="/class/info-teachers/:id" component={InfoUser} />
+            <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
           </Switch>

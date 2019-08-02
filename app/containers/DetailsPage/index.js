@@ -15,7 +15,6 @@ import StyleTheP from './StyleTheP';
 import StyleForm from './StyleForm';
 import StyleH3 from '../HomePage/StyleH3';
 import { selectData } from '../App/selectors';
-import { fetchData } from '../App/actions';
 
 class index extends Component {
   constructor(props) {
@@ -23,17 +22,19 @@ class index extends Component {
     this.state = {
       trangthai: true,
       roles: 0,
-      data: [],
       dataUser: this.getDataAllUser(),
     };
   }
+
+  // componentDidMount() {
+  //   setTimeout(this.setState({ setTime: 1 }), 3000);
+  // }
 
   // lay du lieu tat ca
   getDataAllUser = () => {
     // lay id tren url
     const idUrlString = this.props.location.pathname;
     const idString = idUrlString.slice(13);
-
     // so sanh duong dan voi url
     if (idString !== null) {
       const { students } = this.props.users;
@@ -91,7 +92,8 @@ class index extends Component {
   // hieen thi form thong tin user
   showInfoStaffs = () => {
     const { dataUser } = this.state;
-    if (dataUser) {
+    console.log(dataUser);
+    if (dataUser && dataUser.length > 0) {
       return (
         <Grid container item spacing={2} xs={12} justify="center">
           <Grid item>
@@ -277,24 +279,16 @@ class index extends Component {
     return (
       <Section>
         {this.showFormEdit()}
-        {this.hideFormUser()}
+        {this.state.dataUser ? this.hideFormUser() : null}
       </Section>
     );
   }
 }
-const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchData());
-  },
-});
 const mapStateToProps = createStructuredSelector({
   users: selectData,
 });
 index.propTypes = {
-  location: PropsTypes.string,
-  users: PropsTypes.object,
+  location: PropsTypes.object,
+  users: PropsTypes.any,
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(index);
+export default connect(mapStateToProps)(index);

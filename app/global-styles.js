@@ -50,9 +50,6 @@ button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-contained
   padding: 0;
   background: none
 }
-section {
-  padding: 50px 100px
-}
 h6.MuiTypography-root.MuiTypography-h6 {
   font-size: 27px;
   font-weight: bold;

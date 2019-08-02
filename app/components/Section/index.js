@@ -1,3 +1,5 @@
 import styled from 'styled-components';
-// eslint-disable-next-line prettier/prettier
-export default styled.section``;
+
+export default styled.section`
+  padding: 50px 100px;
+`;

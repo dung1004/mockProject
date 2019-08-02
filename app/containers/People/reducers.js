@@ -10,6 +10,8 @@ const appReducer = (state = initialState, action) => {
       return { ...state, data: [...action.values] };
     case type.GET_KEY:
       return { ...state, key: action.key };
+    case type.GET_KEY_FILTER:
+      return { ...state, keyFil: [...new Set(action.item)] };
     default:
       return { ...state };
   }

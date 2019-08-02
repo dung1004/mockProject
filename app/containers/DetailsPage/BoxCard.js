@@ -4,5 +4,4 @@ export default styled(Paper)`
   max-width: 960px;
   margin: 0 auto;
   padding: 50px 0;
-  // text-align: center;
 `;

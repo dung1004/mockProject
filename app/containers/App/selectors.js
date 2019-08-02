@@ -16,4 +16,10 @@ const makeSelectUser = () =>
     levelState => levelState.user,
   );
 
+// const selectData = () =>
+//   createSelector(
+//     data,
+//     levelState => levelState.data,
+//   );
+
 export { makeSelectLocation, makeSelectUser, selectData };

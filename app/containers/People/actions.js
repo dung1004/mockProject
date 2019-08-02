@@ -19,3 +19,10 @@ export function getKey(key) {
     key,
   };
 }
+
+export function getKeyFilter(item) {
+  return {
+    type: type.GET_KEY_FILTER,
+    item,
+  };
+}

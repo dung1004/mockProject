@@ -13,9 +13,6 @@ function LinkAdmin() {
         </LinkHeader>
       </NavBar>
       <NavBar>
-        <LinkHeader to="/form-search">Search</LinkHeader>
-      </NavBar>
-      <NavBar>
         <LinkHeader to="/people">People</LinkHeader>
       </NavBar>
       <NavBar>
