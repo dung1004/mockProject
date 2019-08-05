@@ -1,12 +1,10 @@
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
 
 import HomePage from 'containers/HomePage';
@@ -22,20 +20,9 @@ import People from '../People';
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
-import reducer from './reducers';
-import saga from './saga';
-import { fetchData } from './actions';
-import { selectData, makeSelectLocation } from './selectors';
-
-const key = 'app';
+import { makeSelectLocation } from './selectors';
 
 export function App(props) {
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
-  useEffect(() => {
-    // props.onfetchUser();
-    props.onfetchData();
-  }, [props.path.pathname]);
   let roles = 3;
   const tokenAccout = JSON.parse(localStorage.getItem('token'));
   if (tokenAccout) {
@@ -101,20 +88,11 @@ export function App(props) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  users: selectData,
   path: makeSelectLocation(),
 });
-const mapDispatchToProps = dispatch => ({
-  onfetchData: () => {
-    dispatch(fetchData());
-  },
-});
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
+const withConnect = connect(mapStateToProps);
+
 App.propTypes = {
-  onfetchData: PropsTypes.func,
   path: PropsTypes.object,
 };
 

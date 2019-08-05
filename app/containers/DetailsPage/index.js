@@ -14,7 +14,7 @@ import BoxCard from './BoxCard';
 import StyleTheP from './StyleTheP';
 import StyleForm from './StyleForm';
 import StyleH3 from '../HomePage/StyleH3';
-import { selectData } from '../App/selectors';
+// import { selectData } from '../App/selectors';
 
 class index extends Component {
   constructor(props) {
@@ -92,7 +92,6 @@ class index extends Component {
   // hieen thi form thong tin user
   showInfoStaffs = () => {
     const { dataUser } = this.state;
-    console.log(dataUser);
     if (dataUser && dataUser.length > 0) {
       return (
         <Grid container item spacing={2} xs={12} justify="center">
@@ -285,7 +284,7 @@ class index extends Component {
   }
 }
 const mapStateToProps = createStructuredSelector({
-  users: selectData,
+  // users: selectData,
 });
 index.propTypes = {
   location: PropsTypes.object,

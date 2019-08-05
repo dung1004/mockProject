@@ -12,8 +12,8 @@ import PropsTypes from 'prop-types';
 import Section from '../../components/Section';
 import Article from '../../components/Article';
 import ItemInfo from '../ItemInfo';
-import { selectData } from '../App/selectors';
-import { fetchData } from '../App/actions';
+// import { selectData } from '../App/selectors';
+// import { fetchData } from '../App/actions';
 
 class index extends Component {
   getDataClass = () => {
@@ -116,14 +116,14 @@ class index extends Component {
   }
 }
 const mapStateToProps = createStructuredSelector({
-  dataClass: selectData,
+  // dataClass: selectData,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onfetchUser: () => {
-    dispatch(fetchData());
-  },
-});
+// const mapDispatchToProps = dispatch => ({
+//   onfetchUser: () => {
+//     dispatch(fetchData());
+//   },
+// });
 
 index.propTypes = {
   location: PropsTypes.string,
@@ -132,5 +132,5 @@ index.propTypes = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  // mapDispatchToProps,
 )(index);
