@@ -24,7 +24,6 @@ export function Teachers(props) {
   }, []);
   return (
     <Section>
-      {console.log(props.dataClass)}
       <MaterialTable
         title="Thông Tin Lớp Học"
         columns={[
