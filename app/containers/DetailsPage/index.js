@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 // import StyleTheP from './StyleTheP';
 import StyleAvt from './StyleAvt';
@@ -32,13 +33,34 @@ const useStyles = makeStyles(theme => ({
 export function DetailsPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+  const [onload, setStateOnload] = React.useState({
+    id: 0,
+  });
+  const userLevel = JSON.parse(localStorage.getItem('token'));
+  const [disabled, setDisabled] = React.useState({
+    is: true,
+  });
   useEffect(() => {
     props.onFetchUser();
-  }, []);
+    setStateOnload({ id: 1 });
+  }, [onload.id]);
   const classes = useStyles();
+  function editClick() {
+    setDisabled({
+      is: false,
+    });
+  }
+  function onCancel() {
+    setDisabled({
+      is: true,
+    });
+  }
+  function onBack() {
+    window.history.back();
+  }
   return (
     <Section>
-      {props.dataUser ? (
+      {props.dataUser && props.dataUser.length > 0 ? (
         <Grid container item spacing={2} xs={12} justify="center">
           <Grid item>
             <ButtonAvt>
@@ -62,7 +84,7 @@ export function DetailsPage(props) {
                   margin="normal"
                 />
                 <TextField
-                  disabled
+                  disabled={disabled.is}
                   id="standard-phone"
                   label="Phone Number"
                   defaultValue={props.dataUser[0].phoneNumber}
@@ -70,7 +92,7 @@ export function DetailsPage(props) {
                   margin="normal"
                 />
                 <TextField
-                  disabled
+                  disabled={disabled.is}
                   id="standard-gender"
                   label="Gender"
                   defaultValue={props.dataUser[0].gender}
@@ -79,7 +101,7 @@ export function DetailsPage(props) {
                 />
                 {props.dataUser[0].position ? (
                   <TextField
-                    disabled
+                    disabled={disabled.is}
                     id="standard-position"
                     label="Position"
                     defaultValue={props.dataUser[0].position}
@@ -89,7 +111,7 @@ export function DetailsPage(props) {
                 ) : null}
                 {props.dataUser[0].description ? (
                   <TextField
-                    disabled
+                    disabled={disabled.is}
                     id="standard-description"
                     label="Description"
                     defaultValue={props.dataUser[0].description}
@@ -100,7 +122,7 @@ export function DetailsPage(props) {
                 {props.dataUser[0].dateBirth ? (
                   <React.Fragment>
                     <TextField
-                      disabled
+                      disabled={disabled.is}
                       id="standard-dateBirth"
                       label="Date Birth"
                       defaultValue={props.dataUser[0].dateBirth}
@@ -108,7 +130,7 @@ export function DetailsPage(props) {
                       margin="normal"
                     />
                     <TextField
-                      disabled
+                      disabled={disabled.is}
                       id="standard-address"
                       label="Address"
                       defaultValue={props.dataUser[0].address}
@@ -117,42 +139,29 @@ export function DetailsPage(props) {
                     />
                   </React.Fragment>
                 ) : null}
-                {/* <StyleTheP variant="body1" color="textSecondary">
-                <b>ID:</b> {props.dataUser[0].id}
-              </StyleTheP>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>Email:</b> {}
-              </StyleTheP>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>Phone:</b> {props.dataUser[0].phoneNumber}
-              </StyleTheP>
-              <StyleTheP variant="body1" color="textSecondary">
-                <b>Gender:</b> {props.dataUser[0].gender}
-              </StyleTheP>
-              {props.dataUser[0].position ? (
-                <StyleTheP variant="body1" color="textSecondary">
-                  <b> Chức vụ: </b> {`${props.dataUser[0].position}`}
-                </StyleTheP>
-              ) : null}
-              {props.dataUser[0].description ? (
-                <StyleTheP variant="body1" color="textSecondary">
-                  <b> description: </b> {`${props.dataUser[0].description}`}
-                </StyleTheP>
-              ) : null}
-              {props.dataUser[0].dateBirth ? (
-                <React.Fragment>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b> DateBirth: </b> {`${props.dataUser[0].dateBirth}`}
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b> Address: </b> {`${props.dataUser[0].address}`}
-                  </StyleTheP>
-                </React.Fragment>
-              ) : null} */}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
+      ) : null}
+      <Button
+        onClick={
+          disabled.is === false && userLevel.level === 0 ? onCancel : onBack
+        }
+        variant="contained"
+        color="secondary"
+        type="reset"
+      >
+        {disabled.is === false && userLevel.level === 0 ? 'Cancel' : 'Back'}
+      </Button>
+      {userLevel.level === 0 ? (
+        <Button
+          onClick={disabled.is === true ? editClick : null}
+          variant="contained"
+          color="secondary"
+        >
+          {disabled.is === true ? 'Edit' : 'Save'}
+        </Button>
       ) : null}
     </Section>
   );

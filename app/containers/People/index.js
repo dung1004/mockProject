@@ -161,7 +161,7 @@ export function People(props) {
             {
               title: 'View Info',
               render: rowData => (
-                <StyleLink to={`/people/info/${rowData.id}`}>View</StyleLink>
+                <StyleLink to={`/user/info/${rowData.id}`}>View</StyleLink>
               ),
             },
           ]}

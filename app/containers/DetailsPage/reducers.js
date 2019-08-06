@@ -1,6 +1,6 @@
 import * as type from './constants';
 
-export const initialState = {};
+export const initialState = { user: [] };
 
 const detailsPageReducer = (state = initialState, action) => {
   switch (action.type) {
