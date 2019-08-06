@@ -12,7 +12,7 @@ import Class from 'containers/Class';
 import Login from 'containers/Login';
 import NotPage from 'containers/NotFoundPage';
 import InfoUser from 'containers/InfoUser';
-import ItemInfo from 'containers/ItemInfo';
+// import ItemInfo from 'containers/ItemInfo';
 import DetailsPage from 'containers/DetailsPage';
 import PropsTypes from 'prop-types';
 import People from '../People';
@@ -36,8 +36,7 @@ export function App(props) {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/people" component={People} />
             <Route exact path="/class" component={Class} />
-            <Route path="/people/info/:id" component={DetailsPage} />
-            <Route path="/info-user/:id" component={ItemInfo} />
+            <Route path="/user/info/:id" component={DetailsPage} />
             <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
@@ -48,7 +47,7 @@ export function App(props) {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/class" component={Class} />
-            <Route path="/teacher/info/:id" component={DetailsPage} />
+            <Route path="/user/info/:id" component={DetailsPage} />
             <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />
@@ -59,7 +58,7 @@ export function App(props) {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/class" component={Class} />
-            <Route path="/student/info/:id" component={DetailsPage} />
+            <Route path="/user/info/:id" component={DetailsPage} />
             <Route exact path="/class/info-students/:id" component={InfoUser} />
             <Route path="/login" component={Login} />
             <Route path="" component={NotPage} />

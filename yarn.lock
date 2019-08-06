@@ -998,7 +998,7 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@material-ui/core@^4.0.1", "@material-ui/core@^4.2.0":
+"@material-ui/core@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.2.0.tgz#fd57352c63a50bc28d8b0d61a779a55aba84f9c4"
   integrity sha512-kqwoCMpGaj3zJedihUuVZWjISh+T72KAXOwgk6VKNf+APMTB8yLByLSgSLDhXsliRBO/9Pda/0g/KzGY7R+irQ==
@@ -7222,13 +7222,12 @@ matcher@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.4"
 
-material-table@^1.40.1:
-  version "1.40.1"
-  resolved "https://registry.yarnpkg.com/material-table/-/material-table-1.40.1.tgz#988418b3996a0d15a7172188c17b0e4687f630f7"
-  integrity sha512-rZuGhNpXFzROlqJUVLH+E5yzt9MxaYVZfDNuHWtM9EWlbUGQJWuGQNcsSmdr0XeTCZkQvVnZYbEkRcUu+71rfQ==
+material-table@^1.44.0:
+  version "1.44.0"
+  resolved "https://registry.yarnpkg.com/material-table/-/material-table-1.44.0.tgz#b36ca491c85786168fc04de8ff5676605678b532"
+  integrity sha512-2K+xJKw0TJolN5zy5mYtg2SprlVxz8qrB58NZSCDWTZzuzwkx0nMVih3E74bzKXvAPTBmlLGhJEKzfUuwjUQqA==
   dependencies:
     "@date-io/date-fns" "^1.1.0"
-    "@material-ui/core" "^4.0.1"
     "@material-ui/pickers" "^3.0.0"
     classnames "^2.2.6"
     date-fns "^2.0.0-alpha.27"

@@ -82,7 +82,7 @@ export default function Accout(props) {
               <ListItemIcon>
                 <i className="material-icons">settings </i>
               </ListItemIcon>
-              <LinhAcc to={`/info-user/${valueUser.user.id}`}>
+              <LinhAcc to={`/user/info/${valueUser.user.id}`}>
                 <ListItemText primary={valueUser.user.name} />
               </LinhAcc>
             </StyledMenuItem>
