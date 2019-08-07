@@ -139,6 +139,27 @@ export function DetailsPage(props) {
                     />
                   </React.Fragment>
                 ) : null}
+                {disabled.is === true ? (
+                  <React.Fragment>
+                    <input
+                      accept="image/*"
+                      className={classes.input}
+                      style={{ display: 'none' }}
+                      id="raised-button-file"
+                      multiple
+                      type="file"
+                    />
+                    <label htmlFor="raised-button-file">
+                      <Button
+                        variant="raised"
+                        component="span"
+                        className={classes.button}
+                      >
+                        Upload
+                      </Button>
+                    </label>
+                  </React.Fragment>
+                ) : null}
               </Grid>
             </Grid>
           </Grid>
