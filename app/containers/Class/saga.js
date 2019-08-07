@@ -15,15 +15,35 @@ export function* getDataUser() {
     const classes = yield callApi('class', 'get', null).then(res => [
       ...res.data,
     ]);
+    const students = yield callApi('students', 'get', null).then(res => [
+      ...res.data,
+    ]);
     const token = JSON.parse(localStorage.getItem('token'));
+    const data = [];
+    const user = [];
     if (token) {
       switch (token.level) {
         case 0:
           yield put(fetchClassSuccess(classes));
           break;
         case 1:
+          classes.forEach(element => {
+            element.teacherId.filter(id =>
+              id === token.id ? data.push(element) : null,
+            );
+          });
+          yield put(fetchClassSuccess(data));
           break;
         case 2:
+          students.filter(item =>
+            item.email === token.mail ? user.push(item) : null,
+          );
+          classes.forEach(item => {
+            user[0].classId.filter(id =>
+              item.id === id ? data.push(item) : null,
+            );
+          });
+          yield put(fetchClassSuccess(data));
           break;
         default:
           break;

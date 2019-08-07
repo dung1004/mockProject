@@ -28,6 +28,13 @@ const useStyles = makeStyles(theme => ({
     width: 200,
     color: 'black!important',
   },
+  textFieldSelect: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    width: 200,
+  },
 }));
 
 export function DetailsPage(props) {
@@ -61,128 +68,152 @@ export function DetailsPage(props) {
   return (
     <Section>
       {props.dataUser && props.dataUser.length > 0 ? (
-        <Grid container item spacing={2} xs={12} justify="center">
-          <Grid item>
-            <ButtonAvt>
-              <StyleAvt alt="complex" src={props.dataUser[0].avatar} />
-            </ButtonAvt>
-          </Grid>
-          <Grid item xs={6} container justify="center">
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <h2 variant="subtitle1">
-                  {`${props.dataUser[0].firstName} ${
-                    props.dataUser[0].lastName
-                  }`}
-                </h2>
-                <TextField
-                  disabled
-                  id="standard-email"
-                  label="Email"
-                  defaultValue={props.dataUser[0].email}
-                  className={classes.textField}
-                  margin="normal"
-                />
-                <TextField
-                  disabled={disabled.is}
-                  id="standard-phone"
-                  label="Phone Number"
-                  defaultValue={props.dataUser[0].phoneNumber}
-                  className={classes.textField}
-                  margin="normal"
-                />
-                <TextField
-                  disabled={disabled.is}
-                  id="standard-gender"
-                  label="Gender"
-                  defaultValue={props.dataUser[0].gender}
-                  className={classes.textField}
-                  margin="normal"
-                />
-                {props.dataUser[0].position ? (
+        <div>
+          <Grid container item spacing={2} xs={12} justify="center">
+            <Grid item>
+              <ButtonAvt>
+                <StyleAvt alt="complex" src={props.dataUser[0].avatar} />
+              </ButtonAvt>
+            </Grid>
+            <Grid item xs={6} container justify="center">
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <h2 variant="subtitle1">
+                    {`${props.dataUser[0].firstName} ${
+                      props.dataUser[0].lastName
+                    }`}
+                  </h2>
                   <TextField
-                    disabled={disabled.is}
-                    id="standard-position"
-                    label="Position"
-                    defaultValue={props.dataUser[0].position}
+                    disabled
+                    id="standard-email"
+                    label="Email"
+                    defaultValue={props.dataUser[0].email}
                     className={classes.textField}
                     margin="normal"
                   />
-                ) : null}
-                {props.dataUser[0].description ? (
                   <TextField
                     disabled={disabled.is}
-                    id="standard-description"
-                    label="Description"
-                    defaultValue={props.dataUser[0].description}
+                    id="standard-phone"
+                    label="Phone Number"
+                    defaultValue={props.dataUser[0].phoneNumber}
                     className={classes.textField}
                     margin="normal"
                   />
-                ) : null}
-                {props.dataUser[0].dateBirth ? (
-                  <React.Fragment>
+                  <TextField
+                    disabled={disabled.is}
+                    id="standard-select-currency-native"
+                    select
+                    label="Gender select"
+                    className={classes.textFieldSelect}
+                    value={props.dataUser[0].gender}
+                    SelectProps={{
+                      native: true,
+                      MenuProps: {
+                        className: classes.menu,
+                      },
+                    }}
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </TextField>
+                  {props.dataUser[0].position ? (
                     <TextField
                       disabled={disabled.is}
-                      id="standard-dateBirth"
-                      label="Date Birth"
-                      defaultValue={props.dataUser[0].dateBirth}
+                      id="standard-select-standard-position"
+                      select
+                      label="Position select"
+                      className={classes.textFieldSelect}
+                      value={props.dataUser[0].position}
+                      SelectProps={{
+                        native: true,
+                        MenuProps: {
+                          className: classes.menu,
+                        },
+                      }}
+                    >
+                      <option value="Giám đốc">Giám đốc</option>
+                      <option value="Nhân viên">Nhân viên</option>
+                      <option value="Phó Giám Đốc">Phó Giám Đốc</option>
+                    </TextField>
+                  ) : null}
+                  {props.dataUser[0].description ? (
+                    <TextField
+                      disabled={disabled.is}
+                      id="standard-description"
+                      label="Description"
+                      defaultValue={props.dataUser[0].description}
                       className={classes.textField}
                       margin="normal"
                     />
-                    <TextField
-                      disabled={disabled.is}
-                      id="standard-address"
-                      label="Address"
-                      defaultValue={props.dataUser[0].address}
-                      className={classes.textField}
-                      margin="normal"
-                    />
-                  </React.Fragment>
-                ) : null}
-                {disabled.is === true ? (
-                  <React.Fragment>
-                    <input
-                      accept="image/*"
-                      className={classes.input}
-                      style={{ display: 'none' }}
-                      id="raised-button-file"
-                      multiple
-                      type="file"
-                    />
-                    <label htmlFor="raised-button-file">
-                      <Button
-                        variant="raised"
-                        component="span"
-                        className={classes.button}
-                      >
-                        Upload
-                      </Button>
-                    </label>
-                  </React.Fragment>
-                ) : null}
+                  ) : null}
+                  {props.dataUser[0].dateBirth ? (
+                    <React.Fragment>
+                      <TextField
+                        disabled={disabled.is}
+                        id="date"
+                        label="Birthday"
+                        type="date"
+                        defaultValue={props.dataUser[0].dateBirth}
+                        className={classes.textFieldSelect}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <TextField
+                        disabled={disabled.is}
+                        id="standard-address"
+                        label="Address"
+                        defaultValue={props.dataUser[0].address}
+                        className={classes.textFieldSe}
+                        margin="normal"
+                      />
+                    </React.Fragment>
+                  ) : null}
+                  {disabled.is === false ? (
+                    <React.Fragment>
+                      <input
+                        accept="image/*"
+                        className={classes.input}
+                        style={{ display: 'none' }}
+                        id="raised-button-file"
+                        multiple
+                        type="file"
+                      />
+                      <label htmlFor="raised-button-file">
+                        <Button
+                          // variant="raised"
+                          component="span"
+                          className={classes.button}
+                        >
+                          Upload
+                        </Button>
+                      </label>
+                    </React.Fragment>
+                  ) : null}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      ) : null}
-      <Button
-        onClick={
-          disabled.is === false && userLevel.level === 0 ? onCancel : onBack
-        }
-        variant="contained"
-        color="secondary"
-        type="reset"
-      >
-        {disabled.is === false && userLevel.level === 0 ? 'Cancel' : 'Back'}
-      </Button>
-      {userLevel.level === 0 ? (
-        <Button
-          onClick={disabled.is === true ? editClick : null}
-          variant="contained"
-          color="secondary"
-        >
-          {disabled.is === true ? 'Edit' : 'Save'}
-        </Button>
+          <Button
+            onClick={
+              disabled.is === false && userLevel.level === 0 ? onCancel : onBack
+            }
+            variant="contained"
+            color="secondary"
+            type="reset"
+          >
+            {disabled.is === false && userLevel.level === 0 ? 'Cancel' : 'Back'}
+          </Button>
+          {userLevel.level === 0 ? (
+            <Button
+              onClick={disabled.is === true ? editClick : null}
+              variant="contained"
+              color="secondary"
+            >
+              {disabled.is === true ? 'Edit' : 'Save'}
+            </Button>
+          ) : null}
+        </div>
       ) : null}
     </Section>
   );
