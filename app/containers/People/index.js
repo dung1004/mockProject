@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: '50px  0',
+    marginBottom: '30px',
   },
   table: {
     paddingTop: 2,
