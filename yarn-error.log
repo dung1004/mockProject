@@ -14,7 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/home/den/Desktop/mockProject/node_modules/material-table/LICENSE'
+  Error: EACCES: permission denied, mkdir '/home/den/Desktop/mockProject/node_modules/@babel/core/node_modules/source-map'
 
 npm manifest: 
   {
@@ -91,6 +91,7 @@ npm manifest:
       "compression": "1.7.4",
       "connected-react-router": "6.4.0",
       "cross-env": "5.2.0",
+      "date-fns": "^1.30.1",
       "express": "4.16.4",
       "fontfaceobserver": "2.1.0",
       "formik": "^1.5.8",
@@ -101,7 +102,7 @@ npm manifest:
       "invariant": "2.2.4",
       "ip": "1.1.5",
       "lodash": "^4.17.14",
-      "material-table": "^1.41.0",
+      "material-table": "^1.47.0",
       "minimist": "1.2.0",
       "prop-types": "15.7.2",
       "react": "16.8.6",
@@ -110,6 +111,7 @@ npm manifest:
       "react-intl": "2.8.0",
       "react-redux": "7.0.2",
       "react-router-dom": "5.0.0",
+      "react-toastify": "^5.3.2",
       "redux": "4.0.1",
       "redux-saga": "1.0.2",
       "reselect": "4.0.0",
@@ -1196,7 +1198,7 @@ Lockfile:
       "@types/istanbul-reports" "^1.1.1"
       "@types/yargs" "^12.0.9"
   
-  "@material-ui/core@^4.0.1", "@material-ui/core@^4.2.0":
+  "@material-ui/core@^4.2.0":
     version "4.2.0"
     resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.2.0.tgz#fd57352c63a50bc28d8b0d61a779a55aba84f9c4"
     integrity sha512-kqwoCMpGaj3zJedihUuVZWjISh+T72KAXOwgk6VKNf+APMTB8yLByLSgSLDhXsliRBO/9Pda/0g/KzGY7R+irQ==
@@ -7420,13 +7422,12 @@ Lockfile:
     dependencies:
       escape-string-regexp "^1.0.4"
   
-  material-table@^1.40.1:
-    version "1.40.1"
-    resolved "https://registry.yarnpkg.com/material-table/-/material-table-1.40.1.tgz#988418b3996a0d15a7172188c17b0e4687f630f7"
-    integrity sha512-rZuGhNpXFzROlqJUVLH+E5yzt9MxaYVZfDNuHWtM9EWlbUGQJWuGQNcsSmdr0XeTCZkQvVnZYbEkRcUu+71rfQ==
+  material-table@^1.44.0:
+    version "1.44.0"
+    resolved "https://registry.yarnpkg.com/material-table/-/material-table-1.44.0.tgz#b36ca491c85786168fc04de8ff5676605678b532"
+    integrity sha512-2K+xJKw0TJolN5zy5mYtg2SprlVxz8qrB58NZSCDWTZzuzwkx0nMVih3E74bzKXvAPTBmlLGhJEKzfUuwjUQqA==
     dependencies:
       "@date-io/date-fns" "^1.1.0"
-      "@material-ui/core" "^4.0.1"
       "@material-ui/pickers" "^3.0.0"
       classnames "^2.2.6"
       date-fns "^2.0.0-alpha.27"
@@ -9314,6 +9315,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
     integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
   
+  react-lifecycles-compat@^3.0.4:
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+    integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+  
   react-redux@7.0.2:
     version "7.0.2"
     resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.0.2.tgz#34b280a3482aaf60e7d4a504b1295165cbe6b86a"
@@ -9392,6 +9398,26 @@ Lockfile:
     dependencies:
       "@babel/runtime" "^7.4.2"
       dom-testing-library "^3.19.0"
+  
+  react-toastify@^5.3.2:
+    version "5.3.2"
+    resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-5.3.2.tgz#9de4b426656587722f7e2f99f5f90e974ba5fee6"
+    integrity sha512-YHTTey7JWqXVkkBIeJ34PAvQELmGfLEGCx9bu68aIZYd+kRU2u9k/nG3AydgbX/uevIb4QNpeeE98DjkooMs5w==
+    dependencies:
+      "@babel/runtime" "^7.4.2"
+      classnames "^2.2.6"
+      prop-types "^15.7.2"
+      react-transition-group "^2.6.1"
+  
+  react-transition-group@^2.6.1:
+    version "2.9.0"
+    resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
+    integrity sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==
+    dependencies:
+      dom-helpers "^3.4.0"
+      loose-envify "^1.4.0"
+      prop-types "^15.6.2"
+      react-lifecycles-compat "^3.0.4"
   
   react-transition-group@^4.0.0:
     version "4.2.1"

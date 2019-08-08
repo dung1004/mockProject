@@ -6,7 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -15,18 +14,19 @@ import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import Hidden from '@material-ui/core/Hidden';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { withFormik, Field } from 'formik';
 import * as Yup from 'yup';
 import PropsTypes from 'prop-types';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { loginRequest } from './actions';
 import reducer from './reducer';
-import { makeSelectErr, makeSelectLogged } from './selectors';
+import { makeSelectLogged } from './selectors';
 import saga from './saga';
 
 const key = 'login';
@@ -84,19 +84,14 @@ function SignIn(props) {
       [event.target.name]: event.target.value,
     });
   };
-
   const renderRedirect = () =>
     localStorage.getItem('token') ? <Redirect to="/" /> : null;
+
   return (
     <div>
       {renderRedirect()}
       <Container component="main" maxWidth="xs">
-        <Box component="div" mt={2} mb={5}>
-          <Hidden xsDown>
-            {props.err ? (
-              <Paper className={classes.paperErr}>{props.err}</Paper>
-            ) : null}
-          </Hidden>
+        <Box component="div" mt={15} mb={5}>
           <CssBaseline />
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -210,6 +205,7 @@ function SignIn(props) {
           </div>
         </Box>
       </Container>
+      <ToastContainer autoClose={5000} />
     </div>
   );
 }
@@ -234,8 +230,7 @@ const FormikForm = withFormik({
 })(SignIn);
 
 const mapStateToProps = createStructuredSelector({
-  err: makeSelectErr(),
-  isLoggedIn: makeSelectLogged(),
+  login: makeSelectLogged(),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -250,7 +245,7 @@ const withConnect = connect(
 );
 
 SignIn.propTypes = {
-  err: PropsTypes.string,
+  login: PropsTypes.bool,
   onLoginRequest: PropsTypes.func,
   touched: PropsTypes.object,
   errors: PropsTypes.object,

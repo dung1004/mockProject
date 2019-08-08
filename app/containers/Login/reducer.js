@@ -5,7 +5,7 @@ export const initialState = {};
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case type.LOGIN_REQUEST:
-      return { ...action, submit: true };
+      return { ...state, submit: true };
     case type.LOGIN_SUCCESS:
       localStorage.setItem(
         'token',
@@ -22,7 +22,7 @@ const loginReducer = (state = initialState, action) => {
         user: localStorage.getItem('token'),
       };
     case type.LOGIN_FAILURE:
-      return { err: action.err };
+      return { ...state };
     default:
       return { ...state };
   }

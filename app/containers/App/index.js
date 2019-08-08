@@ -38,7 +38,7 @@ function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/user/info/:id" component={DetailsPage} />
             <Route exact path="/class/info/:id" component={InfoUser} />
-            <Route path="/login" component={Login} />
+            {/* <Route path="/login" component={Login} /> */}
             <Route path="" component={NotPage} />
           </Switch>
         );
@@ -49,7 +49,7 @@ function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/user/info/:id" component={DetailsPage} />
             <Route exact path="/class/info/:id" component={InfoUser} />
-            <Route path="/login" component={Login} />
+            {/* <Route path="/login" component={Login} /> */}
             <Route path="" component={NotPage} />
           </Switch>
         );
@@ -60,7 +60,7 @@ function App(props) {
             <Route exact path="/class" component={Class} />
             <Route path="/user/info/:id" component={DetailsPage} />
             <Route exact path="/class/info/:id" component={InfoUser} />
-            <Route path="/login" component={Login} />
+            {/* <Route path="/login" component={Login} /> */}
             <Route path="" component={NotPage} />
           </Switch>
         );
