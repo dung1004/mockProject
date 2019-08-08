@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function SignIn(props) {
+function SignIn(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const [values, setValues] = useState({

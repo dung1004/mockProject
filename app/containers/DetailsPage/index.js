@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function DetailsPage(props) {
+function DetailsPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const [onload, setStateOnload] = React.useState({

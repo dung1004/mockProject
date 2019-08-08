@@ -20,8 +20,9 @@ import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';
 import Wrapper from '../../components/Wrapper';
 import { makeSelectLocation } from './selectors';
+import GlobalLoading from '../GlobalLoading';
 
-export function App(props) {
+function App(props) {
   let roles = 3;
   const tokenAccout = JSON.parse(localStorage.getItem('token'));
   if (tokenAccout) {
@@ -75,6 +76,7 @@ export function App(props) {
   };
   return (
     <Wrapper>
+      <GlobalLoading />
       {props.path.pathname !== '/login' ? (
         <Header level={roles} user={tokenAccout} />
       ) : null}

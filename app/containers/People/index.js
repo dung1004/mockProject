@@ -30,8 +30,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '50px  0',
-    marginBottom: '30px',
+    padding: '10px  0 30px 0',
+    marginBottom: '10px',
   },
   table: {
     paddingTop: 2,
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function People(props) {
+function People(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const classes = useStyles();
@@ -80,6 +80,7 @@ export function People(props) {
   return (
     <div>
       <SectionForm>
+        <h2 style={{ textAlign: 'center' }}>Danh sách người dùng</h2>
         <Paper className={classes.root}>
           <TextField
             id="standard-search"

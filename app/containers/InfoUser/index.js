@@ -20,7 +20,7 @@ import ItemInfo from '../ItemInfo';
 
 const key = 'info';
 
-export function Info(props) {
+function Info(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   useEffect(() => {

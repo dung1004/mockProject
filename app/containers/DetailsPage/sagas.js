@@ -1,11 +1,13 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 
 import { FETCH_USER } from './constants';
 import { fetchUserSuccess } from './actions';
 import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
+import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 export function* getDataUser() {
+  yield put(showLoading());
   const teacher = yield callApi('teacher', 'get', null).then(res => [
     ...res.data,
   ]);
@@ -20,8 +22,9 @@ export function* getDataUser() {
     const user = yield allData.filter(item => item.id === id);
     yield put(fetchUserSuccess(user));
   }
+  yield put(hideLoading());
 }
 
 export default function* sagaWatcher() {
-  yield takeEvery(FETCH_USER, getDataUser);
+  yield takeLatest(FETCH_USER, getDataUser);
 }

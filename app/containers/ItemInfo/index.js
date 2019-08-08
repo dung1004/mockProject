@@ -7,7 +7,7 @@ import ButtonAvt from '../DetailsPage/ButtonAvt';
 import StyleAvt from '../DetailsPage/StyleAvt';
 import StyleTheP from '../DetailsPage/StyleTheP';
 
-export function ItemInfo(props) {
+function ItemInfo(props) {
   const { teacher, student } = props;
   function showDataInfo() {
     if (teacher) {

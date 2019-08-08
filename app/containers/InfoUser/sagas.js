@@ -1,12 +1,14 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 
 import { GET_DATA } from './constants';
 import { getDataSuccess } from './actions';
 import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
+import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 export function* getDataInfo() {
   try {
+    yield put(showLoading());
     const classes = yield callApi('class', 'get', null).then(res => [
       ...res.data,
     ]);
@@ -22,6 +24,7 @@ export function* getDataInfo() {
     const getTeacher = [];
     const getClass = [];
     const getStudent = [];
+    yield put(hideLoading());
     if (token) {
       switch (token.level) {
         case 0:
@@ -66,5 +69,5 @@ export function* getDataInfo() {
 }
 
 export default function* sagaWatcher() {
-  yield takeEvery(GET_DATA, getDataInfo);
+  yield takeLatest(GET_DATA, getDataInfo);
 }

@@ -16,7 +16,7 @@ import saga from './saga';
 
 const key = 'class';
 
-export function Teachers(props) {
+function Teachers(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   useEffect(() => {
@@ -28,7 +28,7 @@ export function Teachers(props) {
         title="Thông Tin Lớp Học"
         columns={[
           { title: 'STT', field: 'id' },
-          { title: 'Tên Lớp', field: 'classWeekday.roomNumber' },
+          { title: 'Phòng học', field: 'classWeekday.roomNumber' },
           { title: 'Tên Khóa Học', field: 'name' },
           { title: 'Ngày bắt đầu', field: 'startDay' },
           { title: 'Ngày kết thúc', field: 'endDay' },

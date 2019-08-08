@@ -1,8 +1,9 @@
-import { takeEvery, put, select } from 'redux-saga/effects';
+import { takeLatest, put, select, delay } from 'redux-saga/effects';
 import { GET_DATA } from './constants';
 import callApi from '../../utils/apiCaller';
 import { getDataSuccess, getKeyFilter } from './actions';
 import { makeSelectKey } from './selectors';
+import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 function switchCase(keySelect, dataSt, dataTc, dataSf) {
   switch (keySelect) {
@@ -42,7 +43,9 @@ function filterData(arr, keySearch) {
 }
 
 export function* getDataForm() {
+  yield delay(500);
   try {
+    yield put(showLoading());
     const teacher = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,
     ]);
@@ -52,7 +55,7 @@ export function* getDataForm() {
     const staffs = yield callApi('staff', 'get', null).then(res => [
       ...res.data,
     ]);
-
+    yield put(hideLoading());
     const allData = {
       teacher,
       students,
@@ -124,5 +127,5 @@ export function* getDataForm() {
 }
 
 export default function* sagaWatcher() {
-  yield takeEvery(GET_DATA, getDataForm);
+  yield takeLatest(GET_DATA, getDataForm);
 }

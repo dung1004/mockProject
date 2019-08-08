@@ -4,8 +4,10 @@ import * as type from './constants';
 import callApi from '../../utils/apiCaller';
 import { loginSuccess, loginFailure } from './actions';
 import { makeSelectUsers, makeSelectPassword } from './selectors';
+import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 export function* login() {
+  yield put(showLoading());
   const data = yield callApi('accountLogin', 'get', null).then(res => [
     ...res.data,
   ]);
@@ -54,6 +56,7 @@ export function* login() {
   } else {
     yield put(loginFailure('Email không tồn tại'));
   }
+  yield put(hideLoading());
 }
 
 export default function* sagaWatcher() {
