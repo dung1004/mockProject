@@ -12,7 +12,6 @@ import Class from 'containers/Class';
 import Login from 'containers/Login';
 import NotPage from 'containers/NotFoundPage';
 import InfoUser from 'containers/InfoUser';
-// import ItemInfo from 'containers/ItemInfo';
 import DetailsPage from 'containers/DetailsPage';
 import PropsTypes from 'prop-types';
 import People from '../People';
