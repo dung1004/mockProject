@@ -6,9 +6,6 @@ import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
 
 export function* getDataInfo() {
-  //   const students = yield callApi('students', 'get', null).then(res => [
-  //     ...res.data,
-  //   ]);
   try {
     const classes = yield callApi('class', 'get', null).then(res => [
       ...res.data,
@@ -42,8 +39,21 @@ export function* getDataInfo() {
           yield put(getDataSuccess(getStudent, getTeacher));
           break;
         case 1:
+          students.forEach(student => {
+            student.classId.filter(classId =>
+              classId === id ? getStudent.push(student) : null,
+            );
+          });
+          yield put(getDataSuccess(getStudent, getTeacher));
           break;
         case 2:
+          classes.forEach(cla => (cla.id === id ? getClass.push(cla) : null));
+          getClass[0].teacherId.forEach(tId => {
+            teachers.filter(teacher =>
+              teacher.id === tId ? getTeacher.push(teacher) : null,
+            );
+          });
+          yield put(getDataSuccess(getStudent, getTeacher));
           break;
         default:
           break;

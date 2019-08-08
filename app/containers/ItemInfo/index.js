@@ -103,8 +103,8 @@ export function ItemInfo(props) {
 }
 
 ItemInfo.propTypes = {
-  student: PropsTypes.object.isRequired,
-  teacher: PropsTypes.object.isRequired,
+  student: PropsTypes.object,
+  teacher: PropsTypes.object,
 };
 
 export default ItemInfo;

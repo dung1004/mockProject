@@ -8,17 +8,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PropsTypes from 'prop-types';
 
-// import MaterialTable from 'material-table';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import Section from '../../components/Section';
-// import StyleLink from '../../components/StyleLink';
 import { getData } from './actions';
 import reducer from './reducers';
 import { makeSelectStudent, makeSelectTeacher } from './selectors';
 import saga from './sagas';
-import Article from '../../components/Article';
 import ItemInfo from '../ItemInfo';
 
 const key = 'info';
@@ -30,7 +27,7 @@ export function Info(props) {
     props.onGetData();
   }, []);
   return (
-    <Article style={{ width: '100%', display: 'flex' }}>
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       {props.teachers && props.teachers.length > 0 ? (
         <Section style={{ width: '50%', padding: '50px 5px' }}>
           <h2 style={{ textAlign: 'center' }}>Giáo Viên Đứng Lớp</h2>
@@ -75,7 +72,7 @@ export function Info(props) {
           ))}
         </Section>
       ) : null}
-    </Article>
+    </div>
   );
 }
 
