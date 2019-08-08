@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropsTypes from 'prop-types';
 
@@ -7,11 +7,10 @@ import ButtonAvt from '../DetailsPage/ButtonAvt';
 import StyleAvt from '../DetailsPage/StyleAvt';
 import StyleTheP from '../DetailsPage/StyleTheP';
 
-export default class ItemInfo extends Component {
-  showDataInfo = () => {
-    const { dataTeacher } = this.props;
-    const { value } = this.props;
-    if (value) {
+export function ItemInfo(props) {
+  const { teacher, student } = props;
+  function showDataInfo() {
+    if (teacher) {
       return (
         <React.Fragment>
           <Grid container spacing={2} item xs={12} justify="center">
@@ -20,7 +19,7 @@ export default class ItemInfo extends Component {
                 <StyleAvt
                   style={{ borderRadius: '50%', marginRight: '20px' }}
                   alt="complex"
-                  src={value.avatar}
+                  src={teacher.avatar}
                 />
               </ButtonAvt>
             </Grid>
@@ -28,26 +27,23 @@ export default class ItemInfo extends Component {
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
                   <h2 variant="subtitle1">
-                    {value.firstName + value.lastName}
+                    {teacher.firstName + teacher.lastName}
                   </h2>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>ID:</b> {value.id}
+                    <b>ID:</b> {teacher.id}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>Email:</b> {value.email}
+                    <b>Email:</b> {teacher.email}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
                     <b>Phone:</b>
-                    {value.phone_number}
+                    {teacher.phone_number}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>Gender:</b> {value.gender}
+                    <b>Gender:</b> {teacher.gender}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>date_birth:</b> {value.date_birth}
-                  </StyleTheP>
-                  <StyleTheP variant="body1" color="textSecondary">
-                    <b>address:</b> {value.address}
+                    <b>Description:</b> {teacher.description}
                   </StyleTheP>
                 </Grid>
               </Grid>
@@ -56,7 +52,7 @@ export default class ItemInfo extends Component {
         </React.Fragment>
       );
     }
-    if (dataTeacher) {
+    if (student) {
       return (
         <React.Fragment>
           <Grid container spacing={2} item xs={12} justify="center">
@@ -65,7 +61,7 @@ export default class ItemInfo extends Component {
                 <StyleAvt
                   style={{ borderRadius: '50%', marginRight: '20px' }}
                   alt="complex"
-                  src={dataTeacher.avatar}
+                  src={student.avatar}
                 />
               </ButtonAvt>
             </Grid>
@@ -73,23 +69,26 @@ export default class ItemInfo extends Component {
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
                   <h2 variant="subtitle1">
-                    {dataTeacher.firstName + dataTeacher.lastName}
+                    {student.firstName + student.lastName}
                   </h2>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>ID:</b> {dataTeacher.id}
+                    <b>ID:</b> {student.id}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>Email:</b> {dataTeacher.email}
+                    <b>Email:</b> {student.email}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
                     <b>Phone:</b>
-                    {dataTeacher.phone_number}
+                    {student.phone_number}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>Gender:</b> {dataTeacher.gender}
+                    <b>Gender:</b> {student.gender}
                   </StyleTheP>
                   <StyleTheP variant="body1" color="textSecondary">
-                    <b>Description:</b> {dataTeacher.description}
+                    <b>date_birth:</b> {student.date_birth}
+                  </StyleTheP>
+                  <StyleTheP variant="body1" color="textSecondary">
+                    <b>address:</b> {student.address}
                   </StyleTheP>
                 </Grid>
               </Grid>
@@ -98,17 +97,14 @@ export default class ItemInfo extends Component {
         </React.Fragment>
       );
     }
-    return true;
-  };
-
-  render() {
-    return (
-      <BoxCard style={{ boxShadow: 'none' }}>{this.showDataInfo()}</BoxCard>
-    );
+    return null;
   }
+  return <BoxCard style={{ boxShadow: 'none' }}>{showDataInfo()}</BoxCard>;
 }
 
 ItemInfo.propTypes = {
-  value: PropsTypes.object,
-  dataTeacher: PropsTypes.object,
+  student: PropsTypes.object.isRequired,
+  teacher: PropsTypes.object.isRequired,
 };
+
+export default ItemInfo;

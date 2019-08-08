@@ -53,9 +53,7 @@ export function Teachers(props) {
           {
             title: 'View Info',
             render: rowData => (
-              <StyleLink to={`/class/info-students/${rowData.id}`}>
-                View
-              </StyleLink>
+              <StyleLink to={`/class/info/${rowData.id}`}>View</StyleLink>
             ),
           },
         ]}
