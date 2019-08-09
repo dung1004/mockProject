@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeEvery } from 'redux-saga/effects';
 
 import { FETCH_CLASS } from './constants';
 import { fetchClassSuccess } from './actions';
@@ -60,5 +60,5 @@ export function* getDataUser() {
 }
 
 export default function* sagaWatcher() {
-  yield takeLatest(FETCH_CLASS, getDataUser);
+  yield takeEvery(FETCH_CLASS, getDataUser);
 }

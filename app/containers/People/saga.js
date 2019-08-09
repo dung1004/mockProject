@@ -3,7 +3,6 @@ import { GET_DATA } from './constants';
 import callApi from '../../utils/apiCaller';
 import { getDataSuccess, getKeyFilter } from './actions';
 import { makeSelectKey } from './selectors';
-import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 function switchCase(keySelect, dataSt, dataTc, dataSf) {
   switch (keySelect) {
@@ -36,16 +35,24 @@ function getPois(arr) {
 function filterData(arr, keySearch) {
   return arr.filter(
     item =>
-      item.firstName.toLowerCase().indexOf(keySearch.toLowerCase()) > -1 ||
-      item.email.toLowerCase().indexOf(keySearch.toLowerCase()) > -1 ||
-      item.lastName.toLowerCase().indexOf(keySearch.toLowerCase()) > -1,
+      item.firstName
+        .trim()
+        .toLowerCase()
+        .includes(keySearch.trim().toLowerCase()) ||
+      item.email
+        .trim()
+        .toLowerCase()
+        .includes(keySearch.trim().toLowerCase()) ||
+      item.lastName
+        .trim()
+        .toLowerCase()
+        .includes(keySearch.trim().toLowerCase()),
   );
 }
 
 export function* getDataForm() {
   yield delay(500);
   try {
-    yield put(showLoading());
     const teacher = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,
     ]);
@@ -55,7 +62,6 @@ export function* getDataForm() {
     const staffs = yield callApi('staff', 'get', null).then(res => [
       ...res.data,
     ]);
-    yield put(hideLoading());
     const allData = {
       teacher,
       students,

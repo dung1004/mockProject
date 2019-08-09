@@ -1,4 +1,4 @@
-import { put, takeLatest, select } from 'redux-saga/effects';
+import { put, takeEvery, select } from 'redux-saga/effects';
 
 import { GET_DATA } from './constants';
 import { getDataSuccess } from './actions';
@@ -69,5 +69,5 @@ export function* getDataInfo() {
 }
 
 export default function* sagaWatcher() {
-  yield takeLatest(GET_DATA, getDataInfo);
+  yield takeEvery(GET_DATA, getDataInfo);
 }
