@@ -121,34 +121,36 @@ function People(props) {
             <option value="teacher">Teachers</option>
             <option value="staff">Staffs</option>
           </TextField>
-          <TextField
-            id="standard-select-currency-native"
-            select
-            disabled={isChangeSelect}
-            label={state.select || 'Null'}
-            className={classes.textField}
-            name={state.select}
-            onChange={handleChange}
-            SelectProps={{
-              native: true,
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            helperText="Please select your item"
-            margin="normal"
-          >
-            <option value="" />
-            {props.fil ? (
-              props.fil.map(item => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))
-            ) : (
+          {!isChangeSelect ? (
+            <TextField
+              id="standard-select-currency-native"
+              select
+              disabled={isChangeSelect}
+              label={state.select || 'Null'}
+              className={classes.textField}
+              name={state.select}
+              onChange={handleChange}
+              SelectProps={{
+                native: true,
+                MenuProps: {
+                  className: classes.menu,
+                },
+              }}
+              helperText="Please select your item"
+              margin="normal"
+            >
               <option value="" />
-            )}
-          </TextField>
+              {props.fil ? (
+                props.fil.map(item => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))
+              ) : (
+                <option value="" />
+              )}
+            </TextField>
+          ) : null}
         </Paper>
       </SectionForm>
       <Section className={classes.table}>

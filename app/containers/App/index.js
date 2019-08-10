@@ -15,7 +15,6 @@ import InfoUser from 'containers/InfoUser';
 import DetailsPage from 'containers/DetailsPage';
 import PropsTypes from 'prop-types';
 import People from '../People';
-// import Peoplee from '../Peoplee';
 
 import GlobalStyle from '../../global-styles';
 import Article from '../../components/Article';

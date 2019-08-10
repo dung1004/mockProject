@@ -3,7 +3,6 @@ import { put, takeEvery } from 'redux-saga/effects';
 import { FETCH_CLASS } from './constants';
 import { fetchClassSuccess } from './actions';
 import callApi from '../../utils/apiCaller';
-import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 export function* getDataUser() {
   //   const teacher = yield callApi('teacher', 'get', null).then(res => [
@@ -13,7 +12,6 @@ export function* getDataUser() {
   //     ...res.data,
   //   ]);
   try {
-    yield put(showLoading());
     const classes = yield callApi('class', 'get', null).then(res => [
       ...res.data,
     ]);
@@ -23,7 +21,6 @@ export function* getDataUser() {
     const token = JSON.parse(localStorage.getItem('token'));
     const data = [];
     const user = [];
-    yield put(hideLoading());
     if (token) {
       switch (token.level) {
         case 0:

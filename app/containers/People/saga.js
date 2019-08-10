@@ -35,15 +35,11 @@ function getPois(arr) {
 function filterData(arr, keySearch) {
   return arr.filter(
     item =>
-      item.firstName
+      `${item.firstName} ${item.lastName}`
         .trim()
         .toLowerCase()
         .includes(keySearch.trim().toLowerCase()) ||
       item.email
-        .trim()
-        .toLowerCase()
-        .includes(keySearch.trim().toLowerCase()) ||
-      item.lastName
         .trim()
         .toLowerCase()
         .includes(keySearch.trim().toLowerCase()),
