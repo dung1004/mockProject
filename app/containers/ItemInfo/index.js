@@ -6,9 +6,11 @@ import BoxCard from '../DetailsPage/BoxCard';
 import ButtonAvt from '../DetailsPage/ButtonAvt';
 import StyleAvt from '../DetailsPage/StyleAvt';
 import StyleTheP from '../DetailsPage/StyleTheP';
+import StyleLink from './styleLink';
 
 function ItemInfo(props) {
   const { teacher, student } = props;
+  const token = JSON.parse(localStorage.getItem('token'));
   function showDataInfo() {
     if (teacher) {
       return (
@@ -45,6 +47,13 @@ function ItemInfo(props) {
                   <StyleTheP variant="body1" color="textSecondary">
                     <b>Description:</b> {teacher.description}
                   </StyleTheP>
+                  {token && token.level === 0 ? (
+                    <div style={{ marginTop: 20 }}>
+                      <StyleLink to={`/user/info/${teacher.id}`}>
+                        Edit
+                      </StyleLink>
+                    </div>
+                  ) : null}
                 </Grid>
               </Grid>
             </Grid>
@@ -90,6 +99,13 @@ function ItemInfo(props) {
                   <StyleTheP variant="body1" color="textSecondary">
                     <b>address:</b> {student.address}
                   </StyleTheP>
+                  {token && token.level === 0 ? (
+                    <div style={{ marginTop: 20 }}>
+                      <StyleLink to={`/user/info/${student.id}`}>
+                        Edit
+                      </StyleLink>
+                    </div>
+                  ) : null}
                 </Grid>
               </Grid>
             </Grid>
