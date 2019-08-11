@@ -35,6 +35,28 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     width: 200,
   },
+  button: {
+    backgroundColor: '#3939af',
+    margin: 10,
+  },
+  divBtn: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+  },
+  buttonUp: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    margin: 10,
+    color: 'black',
+    border: '1px solid blue',
+    '&:hover': {
+      color: 'white',
+      backgroundColor: 'rgba(0, 0, 0, 0.38)',
+    },
+  },
+  labelUp: {
+    display: 'flex',
+  },
 }));
 
 function DetailsPage(props) {
@@ -179,12 +201,11 @@ function DetailsPage(props) {
                         multiple
                         type="file"
                       />
-                      <label htmlFor="raised-button-file">
-                        <Button
-                          // variant="raised"
-                          component="span"
-                          className={classes.button}
-                        >
+                      <label
+                        htmlFor="raised-button-file"
+                        className={classes.labelUp}
+                      >
+                        <Button component="span" className={classes.buttonUp}>
                           Upload
                         </Button>
                       </label>
@@ -194,25 +215,33 @@ function DetailsPage(props) {
               </Grid>
             </Grid>
           </Grid>
-          <Button
-            onClick={
-              disabled.is === false && userLevel.level === 0 ? onCancel : onBack
-            }
-            variant="contained"
-            color="secondary"
-            type="reset"
-          >
-            {disabled.is === false && userLevel.level === 0 ? 'Cancel' : 'Back'}
-          </Button>
-          {userLevel.level === 0 ? (
+          <div className={classes.divBtn}>
             <Button
-              onClick={disabled.is === true ? editClick : null}
+              className={classes.button}
+              onClick={
+                disabled.is === false && userLevel.level === 0
+                  ? onCancel
+                  : onBack
+              }
               variant="contained"
               color="secondary"
+              type="reset"
             >
-              {disabled.is === true ? 'Edit' : 'Save'}
+              {disabled.is === false && userLevel.level === 0
+                ? 'Cancel'
+                : 'Back'}
             </Button>
-          ) : null}
+            {userLevel.level === 0 ? (
+              <Button
+                className={classes.button}
+                onClick={disabled.is === true ? editClick : null}
+                variant="contained"
+                color="secondary"
+              >
+                {disabled.is === true ? 'Edit' : 'Save'}
+              </Button>
+            ) : null}
+          </div>
         </div>
       ) : null}
     </Section>
