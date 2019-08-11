@@ -8,5 +8,10 @@ const makeSelectClass = () =>
     selectData,
     classState => classState.dataClass,
   );
+const makeDay = () =>
+  createSelector(
+    selectData,
+    classState => classState.day,
+  );
 
-export { makeSelectClass };
+export { makeSelectClass, makeDay };
