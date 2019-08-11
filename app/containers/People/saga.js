@@ -4,6 +4,7 @@ import callApi from '../../utils/apiCaller';
 import { getDataSuccess, getKeyFilter } from './actions';
 import { makeSelectKey } from './selectors';
 
+// lay data theo key
 function switchCase(keySelect, dataSt, dataTc, dataSf) {
   switch (keySelect) {
     case 'student':
@@ -17,6 +18,7 @@ function switchCase(keySelect, dataSt, dataTc, dataSf) {
   }
 }
 
+// lay ten truong can filter
 function getPois(arr) {
   const posi = [];
   const sex = [];
@@ -32,6 +34,7 @@ function getPois(arr) {
   return sex;
 }
 
+// filter data
 function filterData(arr, keySearch) {
   return arr.filter(
     item =>
@@ -51,7 +54,7 @@ export function* getDataForm() {
   try {
     const teacher = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,
-    ]);
+    ]); // goi Api lay data
     const students = yield callApi('students', 'get', null).then(res => [
       ...res.data,
     ]);
@@ -73,7 +76,7 @@ export function* getDataForm() {
     if (key.student && key.student !== '') {
       filter = 'gender';
       value = key.student;
-    }
+    } // kiem tra key va tra ve truong va gia tri
     if (key.teacher && key.teacher !== '') {
       filter = 'gender';
       value = key.teacher;
@@ -82,6 +85,8 @@ export function* getDataForm() {
       filter = 'position';
       value = key.staff;
     }
+
+    // kiem tra cac key va tra ve ket qua
     if (key.search && key.search !== '') {
       if (key.select && key.select !== '') {
         const sortData = yield switchCase(
