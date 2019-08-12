@@ -4,9 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import PropsTypes from 'prop-types';
 
 import Img from './Img';
 import BoxImg from './BoxImg';
@@ -24,7 +21,6 @@ import StyleH3 from './StyleH3';
 import TitleTheP from './TitleTheP';
 import Section from '../../components/Section';
 import Article from '../../components/Article';
-import { makeSelectLogged } from '../Login/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,25 +33,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function HomePage(props) {
-  const [values, setValues] = useState({
-    isLoggedIn: props.isLogin,
-  });
+function HomePage() {
   const classes = useStyles();
+  const [login, setLogin] = useState({
+    is: true,
+  });
   const notify = () => {
-    if (localStorage.getItem('token') && values.isLoggedIn) {
-      return toast.success('Đăng nhập thành công !', {
+    if (login.is === true && localStorage.getItem('login') === 'd') {
+      toast.success('Đăng nhập thành công !', {
         position: toast.POSITION.TOP_RIGHT,
       });
+    } else {
+      return null;
     }
     return null;
   };
   useEffect(() => {
-    setValues({
-      isLoggedIn: false,
-    });
     notify();
-  }, []);
+    localStorage.setItem('login', 's');
+    setLogin({
+      is: false,
+    });
+  }, [login.is]);
   return (
     <Article>
       <BoxImg>
@@ -189,15 +188,4 @@ function HomePage(props) {
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-  isLogin: makeSelectLogged(),
-});
-
-HomePage.propTypes = {
-  isLogin: PropsTypes.bool,
-};
-
-export default connect(
-  mapStateToProps,
-  null,
-)(HomePage);
+export default HomePage;

@@ -16,6 +16,7 @@ const loginReducer = (state = initialState, action) => {
           name: action.userInfo.lastName,
         }),
       );
+      localStorage.setItem('login', 'd');
       return {
         ...state,
         isLoggedIn: true,
