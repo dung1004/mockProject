@@ -130,7 +130,7 @@ function Teachers(props) {
         <MaterialTable
           title="Thông Tin Lớp Học"
           columns={[
-            { title: 'STT', field: 'id' },
+            // { title: 'STT', field: 'id' },
             { title: 'Phòng học', field: 'classWeekday.roomNumber' },
             { title: 'Tên Khóa Học', field: 'name' },
             { title: 'Ngày bắt đầu', field: 'startDay' },

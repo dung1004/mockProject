@@ -8,5 +8,14 @@ const makeSelectUser = () =>
     selectUser,
     userState => userState.user,
   );
-
-export { makeSelectUser };
+const selectUserCst = () =>
+  createSelector(
+    selectUser,
+    userState => userState.userCst,
+  );
+const selectSave = () =>
+  createSelector(
+    selectUser,
+    userState => userState.isSave,
+  );
+export { makeSelectUser, selectUserCst, selectSave };

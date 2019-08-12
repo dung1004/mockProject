@@ -9,14 +9,15 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// import StyleTheP from './StyleTheP';
 import StyleAvt from './StyleAvt';
 import ButtonAvt from './ButtonAvt';
 import reducer from './reducers';
-import { makeSelectUser } from './selectors';
+import { makeSelectUser, selectSave } from './selectors';
 import saga from './sagas';
-import { fetchUser } from './actions';
+import { fetchUser, editUser, calcelEdit } from './actions';
 import Section from '../../components/Section';
 
 const key = 'detpage';
@@ -62,24 +63,54 @@ const useStyles = makeStyles(theme => ({
 function DetailsPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const [onload, setStateOnload] = React.useState({
-    id: 0,
-  });
   const userLevel = JSON.parse(localStorage.getItem('token'));
   const [disabled, setDisabled] = React.useState({
     is: true,
   });
   useEffect(() => {
     props.onFetchUser();
-    setStateOnload({ id: 1 });
-  }, [onload.id]);
+  }, []);
   const classes = useStyles();
+  const [state, setState] = React.useState();
   function editClick() {
+    const {
+      id,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      gender,
+      position,
+      description,
+      dateBirth,
+      address,
+      avatar,
+    } = props.dataUser;
     setDisabled({
       is: false,
     });
+    setState({
+      id,
+      firstName,
+      lastName,
+      email,
+      phoneNumber: phoneNumber || '',
+      gender: gender || '',
+      position: position || '',
+      description: description || '',
+      dateBirth: dateBirth || '',
+      address: address || '',
+      avatar: avatar || '',
+    });
   }
   function onCancel() {
+    setDisabled({
+      is: true,
+    });
+    props.onCancelEdit();
+  }
+  function onSave() {
+    props.onEditUser(state);
     setDisabled({
       is: true,
     });
@@ -87,39 +118,69 @@ function DetailsPage(props) {
   function onBack() {
     window.history.back();
   }
+  const handleChange = event => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+
   return (
     <Section>
-      {props.dataUser && props.dataUser.length > 0 ? (
+      {props.dataUser && Object.keys(props.dataUser).length > 0 ? (
         <div>
           <Grid container item spacing={2} xs={12} justify="center">
             <Grid item>
               <ButtonAvt>
-                <StyleAvt alt="complex" src={props.dataUser[0].avatar} />
+                <StyleAvt alt="complex" src={props.dataUser.avatar} />
               </ButtonAvt>
             </Grid>
             <Grid item xs={6} container justify="center">
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
-                  <h2 variant="subtitle1">
-                    {`${props.dataUser[0].firstName} ${
-                      props.dataUser[0].lastName
-                    }`}
-                  </h2>
+                  {disabled.is ? (
+                    <h2 variant="subtitle1">
+                      {`${props.dataUser.firstName} ${props.dataUser.lastName}`}
+                    </h2>
+                  ) : null}
+                  {!disabled.is ? (
+                    <div>
+                      <TextField
+                        id="standard-name"
+                        label="First Name"
+                        onChange={handleChange}
+                        defaultValue={props.dataUser.firstName}
+                        className={classes.textField}
+                        margin="normal"
+                        name="firstName"
+                      />
+                      <TextField
+                        id="standard-name"
+                        label="Last Name"
+                        onChange={handleChange}
+                        defaultValue={props.dataUser.lastName}
+                        className={classes.textField}
+                        margin="normal"
+                        name="lastName"
+                      />
+                    </div>
+                  ) : null}
                   <TextField
-                    disabled
+                    disabled={disabled.is || true}
                     id="standard-email"
                     label="Email"
-                    defaultValue={props.dataUser[0].email}
+                    onChange={handleChange}
+                    value={props.dataUser.email}
                     className={classes.textField}
                     margin="normal"
+                    name="email"
                   />
                   <TextField
                     disabled={disabled.is}
                     id="standard-phone"
                     label="Phone Number"
-                    defaultValue={props.dataUser[0].phoneNumber}
+                    onChange={handleChange}
+                    value={props.dataUser.phoneNumber}
                     className={classes.textField}
                     margin="normal"
+                    name="phoneNumber"
                   />
                   <TextField
                     disabled={disabled.is}
@@ -127,7 +188,9 @@ function DetailsPage(props) {
                     select
                     label="Gender select"
                     className={classes.textFieldSelect}
-                    value={props.dataUser[0].gender}
+                    value={props.dataUser.gender}
+                    onChange={handleChange}
+                    name="gender"
                     SelectProps={{
                       native: true,
                       MenuProps: {
@@ -138,14 +201,16 @@ function DetailsPage(props) {
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </TextField>
-                  {props.dataUser[0].position ? (
+                  {props.dataUser.position ? (
                     <TextField
                       disabled={disabled.is}
                       id="standard-select-standard-position"
                       select
                       label="Position select"
                       className={classes.textFieldSelect}
-                      value={props.dataUser[0].position}
+                      value={props.dataUser.position}
+                      name="position"
+                      onChange={handleChange}
                       SelectProps={{
                         native: true,
                         MenuProps: {
@@ -158,24 +223,30 @@ function DetailsPage(props) {
                       <option value="Phó Giám Đốc">Phó Giám Đốc</option>
                     </TextField>
                   ) : null}
-                  {props.dataUser[0].description ? (
+                  {props.dataUser.description ? (
                     <TextField
                       disabled={disabled.is}
                       id="standard-description"
                       label="Description"
-                      defaultValue={props.dataUser[0].description}
+                      name="description"
+                      multiline
+                      rowsMax="5"
+                      onChange={handleChange}
+                      value={props.dataUser.description}
                       className={classes.textField}
                       margin="normal"
                     />
                   ) : null}
-                  {props.dataUser[0].dateBirth ? (
+                  {props.dataUser.dateBirth ? (
                     <React.Fragment>
                       <TextField
                         disabled={disabled.is}
                         id="date"
                         label="Birthday"
                         type="date"
-                        defaultValue={props.dataUser[0].dateBirth}
+                        name="dateBirth"
+                        onChange={handleChange}
+                        value={props.dataUser.dateBirth}
                         className={classes.textFieldSelect}
                         InputLabelProps={{
                           shrink: true,
@@ -185,7 +256,9 @@ function DetailsPage(props) {
                         disabled={disabled.is}
                         id="standard-address"
                         label="Address"
-                        defaultValue={props.dataUser[0].address}
+                        name="address"
+                        onChange={handleChange}
+                        value={props.dataUser.address}
                         className={classes.textFieldSe}
                         margin="normal"
                       />
@@ -206,7 +279,7 @@ function DetailsPage(props) {
                         className={classes.labelUp}
                       >
                         <Button component="span" className={classes.buttonUp}>
-                          Upload
+                          Upload Avatar
                         </Button>
                       </label>
                     </React.Fragment>
@@ -234,7 +307,7 @@ function DetailsPage(props) {
             {userLevel.level === 0 ? (
               <Button
                 className={classes.button}
-                onClick={disabled.is === true ? editClick : null}
+                onClick={disabled.is === true ? editClick : onSave}
                 variant="contained"
                 color="secondary"
               >
@@ -244,16 +317,24 @@ function DetailsPage(props) {
           </div>
         </div>
       ) : null}
+      <ToastContainer autoClose={2000} />
     </Section>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
   dataUser: makeSelectUser(),
+  isSave: selectSave(),
 });
 const mapDispatchToProps = dispatch => ({
   onFetchUser: () => {
     dispatch(fetchUser());
+  },
+  onEditUser: values => {
+    dispatch(editUser(values));
+  },
+  onCancelEdit: () => {
+    dispatch(calcelEdit());
   },
 });
 const withConnect = connect(
@@ -262,7 +343,10 @@ const withConnect = connect(
 );
 DetailsPage.propTypes = {
   onFetchUser: PropsTypes.func,
-  dataUser: PropsTypes.array,
+  dataUser: PropsTypes.object,
+  onEditUser: PropsTypes.func,
+  onCancelEdit: PropsTypes.func,
+  // isSave: PropsTypes.bool,
 };
 
 export default compose(
