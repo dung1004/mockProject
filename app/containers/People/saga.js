@@ -50,7 +50,7 @@ function filterData(arr, keySearch) {
 }
 
 export function* getDataForm() {
-  yield delay(500);
+  yield delay(100);
   try {
     const teacher = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,
