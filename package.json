@@ -82,13 +82,8 @@
     "intl": "1.2.5",
     "invariant": "2.2.4",
     "ip": "1.1.5",
-<<<<<<< HEAD
-    "lodash": "^4.17.15",
-    "material-table": "^1.40.1",
-=======
     "lodash": "^4.17.14",
     "material-table": "^1.47.0",
->>>>>>> demo
     "minimist": "1.2.0",
     "prop-types": "15.7.2",
     "react": "16.8.6",
