@@ -2,6 +2,8 @@ import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { ToastContainer } from 'react-toastify';
+
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -152,6 +154,7 @@ function People(props) {
           }}
         />
       </Section>
+      <ToastContainer autoClose={2000} />
     </div>
   );
 }
