@@ -155,7 +155,7 @@ function People(props) {
       </SectionForm>
       <Section className={classes.table}>
         <MaterialTable
-          title="List User"
+          title={state.select ? `List ${state.select}` : 'List user'}
           columns={[
             { title: 'ID', field: 'id' },
             {
