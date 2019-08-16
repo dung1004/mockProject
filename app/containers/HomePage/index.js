@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
@@ -35,26 +35,20 @@ const useStyles = makeStyles(theme => ({
 
 function HomePage() {
   const classes = useStyles();
-  const [login, setLogin] = useState({
-    is: true,
-  });
-  const notify = () => {
-    if (login.is === true && localStorage.getItem('login') === 'd') {
-      toast.success('Đăng nhập thành công !', {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    } else {
-      return null;
-    }
-    return null;
-  };
-  useEffect(() => {
-    notify();
-    localStorage.setItem('login', 's');
-    setLogin({
-      is: false,
+  const notify = () =>
+    toast.success('Đăng nhập thành công !', {
+      position: toast.POSITION.TOP_RIGHT,
     });
-  }, [login.is]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('isLoggedIn')) {
+      localStorage.setItem('isLoggedIn', false);
+    } else if (JSON.parse(localStorage.getItem('isLoggedIn')) === true) {
+      notify();
+      localStorage.setItem('isLoggedIn', false);
+    }
+  }, []);
+
   return (
     <Article>
       <BoxImg>

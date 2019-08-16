@@ -1,4 +1,4 @@
-import { put, takeLatest, delay } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 
 import { FETCH_CLASS, GET_SEARCH, GET_WEEKDAY } from './constants';
 import { fetchClassSuccess, getSearchSuccess } from './actions';
@@ -82,7 +82,7 @@ function* getsearch(payload) {
   const weekday = [];
   // kiem tra keyword
   if (keyWord) {
-    yield delay(500);
+    // yield delay(500);
     const classes = dayGlobal.data.filter(cl =>
       cl.name
         .trim()

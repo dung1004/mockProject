@@ -29,6 +29,7 @@ const linkRoute = {
     { id: 3, href: '/class', main: Class, exact: true },
     { id: 4, href: '/user/info/:id', main: DetailsPage, exact: false },
     { id: 5, href: '/class/info/:id', main: InfoUser, exact: false },
+    { id: 6, href: '/login', main: Login, exact: true },
     { id: 6, href: '', main: NotPage, exact: false },
   ],
   level12: [
@@ -36,6 +37,7 @@ const linkRoute = {
     { id: 2, href: '/class', main: Class, exact: true },
     { id: 3, href: '/user/info/:id', main: DetailsPage, exact: false },
     { id: 4, href: '/class/info/:id', main: InfoUser, exact: false },
+    { id: 6, href: '/login', main: Login, exact: true },
     { id: 5, href: '', main: NotPage, exact: false },
   ],
   level3: [

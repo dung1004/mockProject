@@ -1,4 +1,4 @@
-import { takeLatest, put, select, delay } from 'redux-saga/effects';
+import { takeLatest, put, select } from 'redux-saga/effects';
 import { GET_DATA } from './constants';
 import callApi from '../../utils/apiCaller';
 import { getDataSuccess, getKeyFilter } from './actions';
@@ -50,7 +50,7 @@ function filterData(arr, keySearch) {
 }
 
 export function* getDataForm() {
-  yield delay(500);
+  // yield delay(500);
   try {
     const teacher = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,

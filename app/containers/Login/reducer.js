@@ -1,6 +1,8 @@
 import * as type from './constants';
 
-export const initialState = {};
+export const initialState = {
+  isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')),
+};
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -16,7 +18,7 @@ const loginReducer = (state = initialState, action) => {
           name: action.userInfo.lastName,
         }),
       );
-      localStorage.setItem('login', 'd');
+      localStorage.setItem('isLoggedIn', true);
       return {
         ...state,
         isLoggedIn: true,
