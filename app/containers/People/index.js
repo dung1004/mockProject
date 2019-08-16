@@ -2,7 +2,6 @@ import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -20,34 +19,9 @@ import saga from './saga';
 import StyleLink from '../../components/StyleLink';
 import { getData, getKey } from './actions';
 import { makeSelectData, makeSelec } from './selectors';
+import useStyles from './styles';
 
 const key = 'form';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    margin: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '10px  0 30px 0',
-    marginBottom: '10px',
-  },
-  table: {
-    paddingTop: 2,
-  },
-  textField: {
-    marginLeft: theme.spacing(5),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
-}));
 
 function People(props) {
   useInjectReducer({ key, reducer });
