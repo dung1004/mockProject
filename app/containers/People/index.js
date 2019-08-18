@@ -20,7 +20,7 @@ import reducer from './reducers';
 import saga from './saga';
 import StyleLink from '../../components/StyleLink';
 import { getData } from './actions';
-import { makeSelectData } from './selectors';
+import { makeSelectData, makeUsers } from './selectors';
 import useStyles from './styles';
 
 const key = 'form';
@@ -30,11 +30,7 @@ function People(props) {
   useInjectSaga({ key, saga });
 
   const classes = useStyles();
-  const { data } = props;
-  const [state, setState] = React.useState({
-    search: '',
-    data,
-  });
+  const [state, setState] = React.useState({});
   const [isChangeSelect, setSelect] = React.useState(true);
   const onClickInput = event => {
     if (event && event.target.value !== '') {
@@ -44,17 +40,46 @@ function People(props) {
     }
   };
 
+  function filterData(arr, keyword) {
+    return arr.filter(
+      item =>
+        `${item.firstName} ${item.lastName}`
+          .trim()
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()) ||
+        item.email
+          .trim()
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()) ||
+        item.phoneNumber.trim().includes(keyword.trim()),
+    );
+  }
+
   const handleChange = event => {
+    const { value } = event.target;
+    const data = filterData(props.data, value);
     setState({
-      ...state,
-      [event.target.name]: event.target.value,
+      data,
+    });
+  };
+
+  const handleChangeSelect = event => {
+    const { value } = event.target;
+    setState({
+      data: props.users[`${value}`],
     });
   };
 
   useEffect(() => {
     props.onGetData();
-    // props.onGetKey(state);
   }, []);
+
+  useEffect(() => {
+    setState({
+      data: props.data,
+      users: props.users,
+    });
+  }, [props.data]);
 
   return (
     <div>
@@ -68,7 +93,6 @@ function People(props) {
             margin="normal"
             name="search"
             placeholder="Search user"
-            value={state.search}
             onChange={handleChange}
             InputProps={{
               startAdornment: (
@@ -84,7 +108,7 @@ function People(props) {
             label="User select"
             className={classes.textField}
             name="select"
-            onChange={handleChange}
+            onChange={handleChangeSelect}
             onClick={onClickInput}
             SelectProps={{
               native: true,
@@ -96,9 +120,9 @@ function People(props) {
             margin="normal"
           >
             <option value="" />
-            <option value="student">Students</option>
-            <option value="teacher">Teachers</option>
-            <option value="staff">Staffs</option>
+            <option value="students">Students</option>
+            <option value="teachers">Teachers</option>
+            <option value="staffs">Staffs</option>
           </TextField>
           {!isChangeSelect ? (
             <TextField
@@ -150,7 +174,7 @@ function People(props) {
               ),
             },
           ]}
-          data={data}
+          data={state.data || props.data}
           options={{
             sorting: true,
             search: false,
@@ -164,12 +188,12 @@ function People(props) {
 
 const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
-  // fil: makeSelec(),
+  users: makeUsers(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetData: () => dispatch(getData()),
-  // onGetKey: value => dispatch(getKey(value)),
+  // onSearch: value => dispatch(onSearch(value)),
 });
 
 const withConnect = connect(
@@ -180,8 +204,8 @@ const withConnect = connect(
 People.propTypes = {
   onGetData: PropsTypes.func,
   data: PropsTypes.array,
-  // onGetKey: PropsTypes.func,
-  // fil: PropsTypes.array,
+  // onSearch: PropsTypes.func,
+  users: PropsTypes.object,
 };
 
 export default compose(

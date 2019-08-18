@@ -1,8 +1,7 @@
-import { takeLatest, put, delay } from 'redux-saga/effects';
+import { takeLatest, put } from 'redux-saga/effects';
 import { GET_DATA } from './constants';
 import callApi from '../../utils/apiCaller';
 import { getDataSuccess, getDataFail } from './actions';
-// import { makeSelectKey } from './selectors';
 
 // // lay data theo key
 // function switchCase(keySelect, dataSt, dataTc, dataSf) {
@@ -50,9 +49,8 @@ import { getDataSuccess, getDataFail } from './actions';
 // }
 
 export function* getDataForm() {
-  yield delay(100);
   try {
-    const teacher = yield callApi('teacher', 'get', null).then(res => [
+    const teachers = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,
     ]);
     const students = yield callApi('students', 'get', null).then(res => [
@@ -62,12 +60,11 @@ export function* getDataForm() {
       ...res.data,
     ]);
     const allData = {
-      teacher,
+      teachers,
       students,
       staffs,
     };
-    const data = [...allData.staffs, ...allData.students, ...allData.teacher];
-    yield put(getDataSuccess(data));
+    yield put(getDataSuccess(allData));
     // const dataStaff = [...allData.staffs];
     // const dataStudent = [...allData.students];
     // const dataTeacher = [...allData.teacher];

@@ -13,27 +13,18 @@ export function getData() {
     type: type.GET_DATA,
   };
 }
-
 export function getDataSuccess(values) {
   return {
     type: type.GET_DATA_SUCCESS,
     values,
   };
 }
-
 export function getDataFail(err) {
   toastTify(err);
   return {
     type: type.GET_DATA_FAIL,
   };
 }
-
-// export function getKey(key) {
-//   return {
-//     type: type.GET_KEY,
-//     key,
-//   };
-// }
 
 // export function getKeyFilter(item) {
 //   return {

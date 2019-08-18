@@ -8,15 +8,10 @@ const makeSelectData = () =>
     selectData,
     datalState => datalState.data,
   );
-// const makeSelectKey = () =>
-//   createSelector(
-//     selectData,
-//     datalState => datalState.key,
-//   );
-// const makeSelec = () =>
-//   createSelector(
-//     selectData,
-//     datalState => datalState.keyFil,
-//   );
+const makeUsers = () =>
+  createSelector(
+    selectData,
+    datalState => datalState.users,
+  );
 // export { makeSelectData, makeSelectKey, makeSelec };
-export { makeSelectData };
+export { makeSelectData, makeUsers };
