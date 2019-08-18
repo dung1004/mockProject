@@ -28,16 +28,16 @@ export function getDataFail(err) {
   };
 }
 
-export function getKey(key) {
-  return {
-    type: type.GET_KEY,
-    key,
-  };
-}
+// export function getKey(key) {
+//   return {
+//     type: type.GET_KEY,
+//     key,
+//   };
+// }
 
-export function getKeyFilter(item) {
-  return {
-    type: type.GET_KEY_FILTER,
-    item,
-  };
-}
+// export function getKeyFilter(item) {
+//   return {
+//     type: type.GET_KEY_FILTER,
+//     item,
+//   };
+// }

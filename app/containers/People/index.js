@@ -19,8 +19,8 @@ import SectionForm from './SectionForm';
 import reducer from './reducers';
 import saga from './saga';
 import StyleLink from '../../components/StyleLink';
-import { getData, getKey } from './actions';
-import { makeSelectData, makeSelec } from './selectors';
+import { getData } from './actions';
+import { makeSelectData } from './selectors';
 import useStyles from './styles';
 
 const key = 'form';
@@ -28,9 +28,12 @@ const key = 'form';
 function People(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+
   const classes = useStyles();
+  const { data } = props;
   const [state, setState] = React.useState({
     search: '',
+    data,
   });
   const [isChangeSelect, setSelect] = React.useState(true);
   const onClickInput = event => {
@@ -50,8 +53,8 @@ function People(props) {
 
   useEffect(() => {
     props.onGetData();
-    props.onGetKey(state);
-  }, [state]);
+    // props.onGetKey(state);
+  }, []);
 
   return (
     <div>
@@ -116,7 +119,7 @@ function People(props) {
               margin="normal"
             >
               <option value="" />
-              {props.fil ? (
+              {/* {props.fil ? (
                 props.fil.map(item => (
                   <option key={item} value={item}>
                     {item}
@@ -124,7 +127,7 @@ function People(props) {
                 ))
               ) : (
                 <option value="" />
-              )}
+              )} */}
             </TextField>
           ) : null}
         </Paper>
@@ -147,7 +150,7 @@ function People(props) {
               ),
             },
           ]}
-          data={props.data}
+          data={data}
           options={{
             sorting: true,
             search: false,
@@ -161,12 +164,12 @@ function People(props) {
 
 const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
-  fil: makeSelec(),
+  // fil: makeSelec(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetData: () => dispatch(getData()),
-  onGetKey: value => dispatch(getKey(value)),
+  // onGetKey: value => dispatch(getKey(value)),
 });
 
 const withConnect = connect(
@@ -177,8 +180,8 @@ const withConnect = connect(
 People.propTypes = {
   onGetData: PropsTypes.func,
   data: PropsTypes.array,
-  onGetKey: PropsTypes.func,
-  fil: PropsTypes.array,
+  // onGetKey: PropsTypes.func,
+  // fil: PropsTypes.array,
 };
 
 export default compose(
