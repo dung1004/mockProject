@@ -40,7 +40,7 @@ function People(props) {
     }
   };
 
-  function filterData(arr, keyword) {
+  function filterData(arr, keyword = '') {
     return arr.filter(
       item =>
         `${item.firstName} ${item.lastName}`
@@ -61,18 +61,39 @@ function People(props) {
     if (isChangeSelect) {
       dataUser = props.data;
     } else {
-      dataUser = props.users[`${state.select}`];
+      const keySwith = swithCase(state.filII);
+      const users = props.users[`${state.select}`];
+      dataUser = users.filter(user => user[keySwith.filters] === keySwith.item);
     }
     const data = filterData(dataUser, value);
     setState({
       ...state,
+      search: value,
       data,
     });
   };
 
   const handleChangeSelect = event => {
     const { value } = event.target;
-    if (value) {
+    if (state.search && state.search !== '') {
+      if (value && value !== '') {
+        const data = filterData(props.users[`${value}`], state.search);
+        const items = getPois(data);
+        setState({
+          ...state,
+          select: value,
+          data,
+          items,
+        });
+      } else {
+        const data = filterData(props.data, state.search);
+        setState({
+          ...state,
+          data,
+          select: '',
+        });
+      }
+    } else if (value && value !== '') {
       const items = getPois(props.users[`${value}`]);
       setState({
         ...state,
@@ -80,12 +101,62 @@ function People(props) {
         data: props.users[`${value}`],
         items,
       });
+    } else {
+      setState({
+        ...state,
+        data: props.data,
+        select: '',
+      });
     }
   };
 
+  function swithCase(value) {
+    const keySwith = {};
+    switch (state.select) {
+      case 'students':
+        keySwith.filters = 'gender';
+        keySwith.item = value;
+        return keySwith;
+      case 'teachers':
+        keySwith.filters = 'gender';
+        keySwith.item = value;
+        return keySwith;
+      case 'staffs':
+        keySwith.filters = 'position';
+        keySwith.item = value;
+        return keySwith;
+      default:
+        return keySwith;
+    }
+  }
+
   const handleChangeII = event => {
     const { value } = event.target;
-    console.log(value);
+    if (value && value !== '') {
+      const data = filterData(props.users[state.select], state.search);
+      const keySwith = swithCase(value);
+      const users = data.filter(
+        user => user[keySwith.filters] === keySwith.item,
+      );
+      setState({
+        ...state,
+        data: users,
+        filII: value,
+      });
+    } else {
+      let dataUser;
+      if (state.select) {
+        dataUser = props.users[`${state.select}`];
+      } else {
+        dataUser = props.data;
+      }
+      const data = filterData(dataUser, state.search);
+      setState({
+        ...state,
+        data,
+        filII: '',
+      });
+    }
   };
 
   function getPois(arr) {
@@ -191,7 +262,11 @@ function People(props) {
       </SectionForm>
       <Section className={classes.table}>
         <MaterialTable
-          title={state.select ? `List ${state.select}` : 'List user'}
+          title={
+            state.select && state.select !== ''
+              ? `List ${state.select}`
+              : 'List user'
+          }
           columns={[
             { title: 'ID', field: 'id' },
             {
