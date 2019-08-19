@@ -2,7 +2,6 @@ import React, { useEffect, memo } from 'react';
 import MaterialTable from 'material-table';
 import { Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
@@ -20,34 +19,9 @@ import reducer from './reducers';
 import { makeSelectClass, makeDay } from './selectors';
 import saga from './saga';
 import SectionForm from './SectionForm';
+import useStyles from './styles';
 
 const key = 'class';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    margin: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '10px  0 30px 0',
-    marginBottom: '10px',
-  },
-  table: {
-    paddingTop: 2,
-  },
-  textField: {
-    marginLeft: theme.spacing(5),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
-}));
 
 function Teachers(props) {
   useInjectReducer({ key, reducer });
