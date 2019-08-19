@@ -57,18 +57,51 @@ function People(props) {
 
   const handleChange = event => {
     const { value } = event.target;
-    const data = filterData(props.data, value);
+    let dataUser;
+    if (isChangeSelect) {
+      dataUser = props.data;
+    } else {
+      dataUser = props.users[`${state.select}`];
+    }
+    const data = filterData(dataUser, value);
     setState({
+      ...state,
       data,
     });
   };
 
   const handleChangeSelect = event => {
     const { value } = event.target;
-    setState({
-      data: props.users[`${value}`],
-    });
+    if (value) {
+      const items = getPois(props.users[`${value}`]);
+      setState({
+        ...state,
+        select: value,
+        data: props.users[`${value}`],
+        items,
+      });
+    }
   };
+
+  const handleChangeII = event => {
+    const { value } = event.target;
+    console.log(value);
+  };
+
+  function getPois(arr) {
+    const posi = [];
+    const sex = [];
+    arr.forEach(element => {
+      if (element.position) {
+        posi.push(element.position);
+      }
+      sex.push(element.gender);
+    });
+    if (posi.length > 0) {
+      return [...new Set(posi)];
+    }
+    return [...new Set(sex)];
+  }
 
   useEffect(() => {
     props.onGetData();
@@ -132,7 +165,7 @@ function People(props) {
               label={state.select || 'Null'}
               className={classes.textField}
               name={state.select}
-              onChange={handleChange}
+              onChange={handleChangeII}
               SelectProps={{
                 native: true,
                 MenuProps: {
@@ -143,15 +176,15 @@ function People(props) {
               margin="normal"
             >
               <option value="" />
-              {/* {props.fil ? (
-                props.fil.map(item => (
+              {state.items ? (
+                state.items.map(item => (
                   <option key={item} value={item}>
                     {item}
                   </option>
                 ))
               ) : (
                 <option value="" />
-              )} */}
+              )}
             </TextField>
           ) : null}
         </Paper>
