@@ -137,6 +137,7 @@ function Teachers(props) {
             { title: 'Ngày kết thúc', field: 'endDay' },
             {
               title: 'Lịch dạy',
+              field: 'classWeekday.weekdayHours.weekday',
               render: rowData => {
                 const weekdayHours = rowData.classWeekday.weekdayHours.map(
                   item => `${item.weekday}, `,
@@ -146,6 +147,7 @@ function Teachers(props) {
             },
             {
               title: 'Giờ dạy',
+              field: 'classWeekday.weekdayHours.hours',
               render: rowData => {
                 const hours = rowData.classWeekday.weekdayHours.map(
                   item => `${item.hours}, `,
@@ -160,7 +162,16 @@ function Teachers(props) {
               ),
             },
           ]}
+          // parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
           data={dataClass}
+          // detailPanel={rowData => (
+          //   <div style={{ height: '40px' }}>
+          //     {rowData.id} {rowData.name} {rowData.weekdayHours}
+          //   </div>
+          // )}
+          // icons={{
+          //   DetailPanel: (this.props => 'A'),
+          // }}
           options={{
             sorting: true,
             search: false,

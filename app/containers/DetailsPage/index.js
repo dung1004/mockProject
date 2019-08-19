@@ -72,6 +72,7 @@ function DetailsPage(props) {
   }, []);
   const classes = useStyles();
   const [state, setState] = React.useState();
+
   function editClick() {
     const {
       id,
@@ -111,6 +112,7 @@ function DetailsPage(props) {
   }
   function onSave() {
     props.onEditUser(state);
+
     setDisabled({
       is: true,
     });
@@ -118,8 +120,27 @@ function DetailsPage(props) {
   function onBack() {
     window.history.back();
   }
+
   const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.value });
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  // load avatar
+  const handleChangeAvt = event => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+    const file = event.target.files[0];
+    getBase64(file).then(base64 => {
+      setState({
+        ...state,
+        avatar: base64,
+      });
+    });
   };
 
   return (
@@ -129,7 +150,12 @@ function DetailsPage(props) {
           <Grid container item spacing={2} xs={12} justify="center">
             <Grid item>
               <ButtonAvt>
-                <StyleAvt alt="complex" src={props.dataUser.avatar} />
+                <StyleAvt
+                  alt="complex"
+                  src={
+                    state && state.avatar ? state.avatar : props.dataUser.avatar
+                  }
+                />
               </ButtonAvt>
             </Grid>
             <Grid item xs={6} container justify="center">
@@ -267,12 +293,14 @@ function DetailsPage(props) {
                   {disabled.is === false ? (
                     <React.Fragment>
                       <input
+                        name="avatar"
                         accept="image/*"
                         className={classes.input}
                         style={{ display: 'none' }}
                         id="raised-button-file"
                         multiple
                         type="file"
+                        onChange={handleChangeAvt}
                       />
                       <label
                         htmlFor="raised-button-file"
@@ -337,6 +365,15 @@ const mapDispatchToProps = dispatch => ({
     dispatch(calcelEdit());
   },
 });
+
+// format avt
+const getBase64 = file =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
