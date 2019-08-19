@@ -1,6 +1,6 @@
 import * as type from './constants';
 
-export const initialState = { dataClass: [] };
+export const initialState = { data: {} };
 
 const classReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -9,17 +9,17 @@ const classReducer = (state = initialState, action) => {
     case type.FETCH_CLASS_SUCCESS:
       return {
         ...state,
-        dataClass: [...action.data],
-        day: [...new Set(action.day)],
+        data: action.data,
+        // day: [...new Set(action.day)],
       };
-    case type.GET_SEARCH_SUCCESS:
-      return {
-        ...state,
-        dataClass: [...action.values],
-        day: [...new Set(action.day)],
-      };
-    case type.GET_WEEKDAY_SUCCSESS:
-      return { ...state, dataClass: [...action.values] };
+    // case type.GET_SEARCH_SUCCESS:
+    //   return {
+    //     ...state,
+    //     dataClass: [...action.values],
+    //     day: [...new Set(action.day)],
+    //   };
+    // case type.GET_WEEKDAY_SUCCSESS:
+    //   return { ...state, dataClass: [...action.values] };
     default:
       return { ...state };
   }

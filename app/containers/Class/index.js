@@ -14,31 +14,74 @@ import { createStructuredSelector } from 'reselect';
 
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
-import { fetchClass, getSearch, getWeekClass } from './actions';
+import { fetchClass } from './actions';
 import reducer from './reducers';
-import { makeSelectClass, makeDay } from './selectors';
+import { makeSelectClass } from './selectors';
 import saga from './saga';
 import SectionForm from './SectionForm';
 import useStyles from './styles';
 
 const key = 'class';
+const admin = 0;
+const student = 1;
+const teacher = 2;
+let yes = true;
 
 function Teachers(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+
   const classes = useStyles();
   const [isCheck, setCheck] = React.useState(false);
+  const [state, setState] = React.useState({
+    data: [],
+    day: [],
+  });
+  const token = JSON.parse(localStorage.getItem('token'));
+
   useEffect(() => {
     props.onFetchClass();
   }, []);
+  if (token && props.data && props.data.dataClass) {
+    const weekday = [];
+    switch (token.level) {
+      case admin:
+        props.data.dataClass.forEach(element =>
+          element.classWeekday.weekdayHours.filter(item =>
+            item.weekday !== '' ? weekday.push(item.weekday) : null,
+          ),
+        );
+        if (yes) {
+          setState({
+            ...state,
+            data: props.data.dataClass,
+            day: [...new Set(weekday)],
+          });
+        }
+        yes = false;
+        break;
+      case student:
+        break;
+      case teacher:
+        break;
+      default:
+        break;
+    }
+    // }
+  }
+
   const handleChange = ev => {
     const { value } = ev.target;
-    props.onSearchClass(value);
+    // props.onSearchClass(value);
+    console.log(value);
   };
+
   const handleChangeSelect = ev => {
     const { value } = ev.target;
-    props.getWeekClass(value);
+    // props.getWeekClass(value);
+    console.log(value);
   };
+
   const onClickInput = ev => {
     if (ev && ev.target.value !== '') {
       setCheck(true);
@@ -47,7 +90,9 @@ function Teachers(props) {
     }
   };
 
-  const { day, dataClass } = props;
+  // const { day, dataClass } = props;
+  console.log(props.data);
+  console.log(state);
   return (
     <div>
       <SectionForm>
@@ -88,8 +133,8 @@ function Teachers(props) {
             margin="normal"
           >
             <option value="" />
-            {day ? (
-              day.map(item => (
+            {state.day ? (
+              state.day.map(item => (
                 <option key={item} value={item}>
                   {item}
                 </option>
@@ -134,7 +179,7 @@ function Teachers(props) {
               ),
             },
           ]}
-          data={dataClass}
+          data={state.data || props.data.dataClass}
           options={{
             sorting: true,
             search: false,
@@ -146,19 +191,19 @@ function Teachers(props) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  dataClass: makeSelectClass(),
-  day: makeDay(),
+  data: makeSelectClass(),
+  // day: makeDay(),
 });
 const mapDispatchToProps = dispatch => ({
   onFetchClass: () => {
     dispatch(fetchClass());
   },
-  onSearchClass: keyWord => {
-    dispatch(getSearch(keyWord));
-  },
-  getWeekClass: keyWord => {
-    dispatch(getWeekClass(keyWord));
-  },
+  // onSearchClass: keyWord => {
+  //   dispatch(getSearch(keyWord));
+  // },
+  // getWeekClass: keyWord => {
+  //   dispatch(getWeekClass(keyWord));
+  // },
 });
 const withConnect = connect(
   mapStateToProps,
@@ -166,10 +211,10 @@ const withConnect = connect(
 );
 Teachers.propTypes = {
   onFetchClass: PropsTypes.func,
-  dataClass: PropsTypes.array,
-  onSearchClass: PropsTypes.func,
-  day: PropsTypes.array,
-  getWeekClass: PropsTypes.func,
+  data: PropsTypes.object,
+  // onSearchClass: PropsTypes.func,
+  // day: PropsTypes.array,
+  // getWeekClass: PropsTypes.func,
 };
 
 export default compose(
