@@ -33,11 +33,8 @@ function People(props) {
   const [state, setState] = React.useState({});
   const [isChangeSelect, setSelect] = React.useState(true);
   const onClickInput = event => {
-    if (event && event.target.value !== '') {
-      setSelect(false);
-    } else {
-      setSelect(true);
-    }
+    const is = event.target.value === '';
+    setSelect(is);
   };
 
   function filterData(arr, keyword = '') {
@@ -54,61 +51,6 @@ function People(props) {
         item.phoneNumber.trim().includes(keyword.trim()),
     );
   }
-
-  const handleChange = event => {
-    const { value } = event.target;
-    let dataUser;
-    if (isChangeSelect) {
-      dataUser = props.data;
-    } else {
-      const keySwith = swithCase(state.filII);
-      const users = props.users[`${state.select}`];
-      dataUser = users.filter(user => user[keySwith.filters] === keySwith.item);
-    }
-    const data = filterData(dataUser, value);
-    setState({
-      ...state,
-      search: value,
-      data,
-    });
-  };
-
-  const handleChangeSelect = event => {
-    const { value } = event.target;
-    if (state.search && state.search !== '') {
-      if (value && value !== '') {
-        const data = filterData(props.users[`${value}`], state.search);
-        const items = getPois(data);
-        setState({
-          ...state,
-          select: value,
-          data,
-          items,
-        });
-      } else {
-        const data = filterData(props.data, state.search);
-        setState({
-          ...state,
-          data,
-          select: '',
-        });
-      }
-    } else if (value && value !== '') {
-      const items = getPois(props.users[`${value}`]);
-      setState({
-        ...state,
-        select: value,
-        data: props.users[`${value}`],
-        items,
-      });
-    } else {
-      setState({
-        ...state,
-        data: props.data,
-        select: '',
-      });
-    }
-  };
 
   function swithCase(value) {
     const keySwith = {};
@@ -130,33 +72,73 @@ function People(props) {
     }
   }
 
-  const handleChangeII = event => {
+  const handleChange = event => {
     const { value } = event.target;
-    if (value && value !== '') {
-      const data = filterData(props.users[state.select], state.search);
-      const keySwith = swithCase(value);
-      const users = data.filter(
-        user => user[keySwith.filters] === keySwith.item,
-      );
+    const arrUser = props.users[state.select];
+    const keySwith =
+      !isChangeSelect && state.filII ? swithCase(state.filII) : null;
+    const users =
+      !isChangeSelect && keySwith
+        ? arrUser.filter(user => user[keySwith.filters] === keySwith.item)
+        : arrUser;
+    const dataUser = isChangeSelect ? props.data : users;
+    const data = filterData(dataUser, value);
+    setState({
+      ...state,
+      search: value,
+      data,
+    });
+  };
+
+  const handleChangeSelect = event => {
+    const { value } = event.target;
+    if (state.search && state.search !== '') {
+      const data = value
+        ? filterData(props.users[value], state.search)
+        : filterData(props.data, state.search);
+      const items = value && data ? getPois(data) : null;
+
+      const updatedState = {
+        ...state,
+        select: value || '',
+        data,
+        ...(items ? { items } : {}),
+      };
+
+      setState(updatedState);
+    } else if (value && value !== '') {
+      const items = getPois(props.users[value]);
       setState({
         ...state,
-        data: users,
-        filII: value,
+        select: value,
+        data: props.users[`${value}`],
+        items,
       });
     } else {
-      let dataUser;
-      if (state.select) {
-        dataUser = props.users[`${state.select}`];
-      } else {
-        dataUser = props.data;
-      }
-      const data = filterData(dataUser, state.search);
       setState({
         ...state,
-        data,
-        filII: '',
+        data: props.data,
+        select: '',
       });
     }
+  };
+
+  const handleChangeII = event => {
+    const { value } = event.target;
+    const dataUser = state.select ? props.users[`${state.select}`] : props.data;
+    const data = value
+      ? filterData(props.users[state.select], state.search)
+      : filterData(dataUser, state.search);
+    const keySwith = value ? swithCase(value) : null;
+    const users = value
+      ? data.filter(user => user[keySwith.filters] === keySwith.item)
+      : null;
+    const updatedState = {
+      ...state,
+      data: value ? users : data,
+      filII: value || '',
+    };
+    setState(updatedState);
   };
 
   function getPois(arr) {
@@ -168,10 +150,8 @@ function People(props) {
       }
       sex.push(element.gender);
     });
-    if (posi.length > 0) {
-      return [...new Set(posi)];
-    }
-    return [...new Set(sex)];
+    const value = posi.length > 0 ? [...new Set(posi)] : [...new Set(sex)];
+    return value;
   }
 
   useEffect(() => {
