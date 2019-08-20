@@ -14,12 +14,38 @@ function* getDataUser() {
     ...res.data,
   ]);
   const staffs = yield callApi('staff', 'get', null).then(res => [...res.data]);
+  const allClass = yield callApi('class', 'get', null).then(res => [
+    ...res.data,
+  ]);
   const allData = [...teacher, ...students, ...staffs];
+  // console.log(allClass);
+
   if (allData) {
     const path = yield select(makeSelectLocation());
     const id = yield path.pathname.slice(11);
+    // lay thong tin cua 1 user
     const user = yield allData.filter(item => item.id === id);
-    const data = { ...user[0] };
+    // lay tat ca cac lop dang day cua 1 gv
+    const classes = [];
+    yield allClass.forEach(item => {
+      item.teacherId.filter(itemClass =>
+        itemClass === id ? classes.push(item) : null,
+      );
+    });
+    // lay tat ca lop hoc cua 1 hv
+    const idClass = [];
+    if (user[0] && user[0].classId) {
+      user[0].classId.forEach(emtai => {
+        allClass.filter(value =>
+          emtai === value.id ? idClass.push(value) : null,
+        );
+      });
+    }
+
+    const data = { ...user[0], classes, idClass };
+    // console.log(idClass);
+    // console.log(data);
+
     yield put(fetchUserSuccess(data));
   }
 }
