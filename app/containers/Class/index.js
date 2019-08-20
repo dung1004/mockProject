@@ -12,6 +12,7 @@ import PropsTypes from 'prop-types';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
+import Skeleton from 'react-loading-skeleton';
 
 import Section from '../../components/Section';
 import StyleLink from '../../components/StyleLink';
@@ -127,45 +128,49 @@ function Teachers(props) {
         </Paper>
       </SectionForm>
       <Section className={classes.table}>
-        <MaterialTable
-          title="Thông Tin Lớp Học"
-          columns={[
-            // { title: 'STT', field: 'id' },
-            { title: 'Phòng học', field: 'classWeekday.roomNumber' },
-            { title: 'Tên Khóa Học', field: 'name' },
-            { title: 'Ngày bắt đầu', field: 'startDay' },
-            { title: 'Ngày kết thúc', field: 'endDay' },
-            {
-              title: 'Lịch dạy',
-              render: rowData => {
-                const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.weekday}, `,
-                );
-                return weekdayHours;
+        {dataClass && dataClass.length > 0 ? (
+          <MaterialTable
+            title="Thông Tin Lớp Học"
+            columns={[
+              // { title: 'STT', field: 'id' },
+              { title: 'Phòng học', field: 'classWeekday.roomNumber' },
+              { title: 'Tên Khóa Học', field: 'name' },
+              { title: 'Ngày bắt đầu', field: 'startDay' },
+              { title: 'Ngày kết thúc', field: 'endDay' },
+              {
+                title: 'Lịch dạy',
+                render: rowData => {
+                  const weekdayHours = rowData.classWeekday.weekdayHours.map(
+                    item => `${item.weekday}, `,
+                  );
+                  return weekdayHours;
+                },
               },
-            },
-            {
-              title: 'Giờ dạy',
-              render: rowData => {
-                const hours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.hours}, `,
-                );
-                return hours;
+              {
+                title: 'Giờ dạy',
+                render: rowData => {
+                  const hours = rowData.classWeekday.weekdayHours.map(
+                    item => `${item.hours}, `,
+                  );
+                  return hours;
+                },
               },
-            },
-            {
-              title: 'View Info',
-              render: rowData => (
-                <StyleLink to={`/class/info/${rowData.id}`}>View</StyleLink>
-              ),
-            },
-          ]}
-          data={dataClass}
-          options={{
-            sorting: true,
-            search: false,
-          }}
-        />
+              {
+                title: 'View Info',
+                render: rowData => (
+                  <StyleLink to={`/class/info/${rowData.id}`}>View</StyleLink>
+                ),
+              },
+            ]}
+            data={dataClass}
+            options={{
+              sorting: true,
+              search: false,
+            }}
+          />
+        ) : (
+          <Skeleton count={7} height={40} />
+        )}
       </Section>
     </div>
   );

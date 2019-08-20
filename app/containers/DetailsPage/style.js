@@ -44,4 +44,7 @@ export const useStyles = makeStyles(theme => ({
     paddingLeft: 100,
     fontSize: 27,
   },
+  loadTitle: {
+    paddingLeft: 200,
+  },
 }));

@@ -12,6 +12,8 @@ import PropsTypes from 'prop-types';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
+// import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from 'react-loading-skeleton';
 
 import Section from '../../components/Section';
 import SectionForm from './SectionForm';
@@ -154,29 +156,33 @@ function People(props) {
         </Paper>
       </SectionForm>
       <Section className={classes.table}>
-        <MaterialTable
-          title={state.select ? `List ${state.select}` : 'List user'}
-          columns={[
-            { title: 'ID', field: 'id' },
-            {
-              title: 'FULL NAME',
-              render: rowData => `${rowData.firstName} ${rowData.lastName}`,
-            },
-            { title: 'EMAIL', field: 'email' },
-            { title: 'PHONE', field: 'phoneNumber' },
-            {
-              title: 'View Info',
-              render: rowData => (
-                <StyleLink to={`/user/info/${rowData.id}`}>View</StyleLink>
-              ),
-            },
-          ]}
-          data={props.data}
-          options={{
-            sorting: true,
-            search: false,
-          }}
-        />
+        {props.data && props.data.length > 0 ? (
+          <MaterialTable
+            title={state.select ? `List ${state.select}` : 'List user'}
+            columns={[
+              { title: 'ID', field: 'id' },
+              {
+                title: 'FULL NAME',
+                render: rowData => `${rowData.firstName} ${rowData.lastName}`,
+              },
+              { title: 'EMAIL', field: 'email' },
+              { title: 'PHONE', field: 'phoneNumber' },
+              {
+                title: 'View Info',
+                render: rowData => (
+                  <StyleLink to={`/user/info/${rowData.id}`}>View</StyleLink>
+                ),
+              },
+            ]}
+            data={props.data}
+            options={{
+              sorting: true,
+              search: false,
+            }}
+          />
+        ) : (
+          <Skeleton count={7} height={40} />
+        )}
       </Section>
     </div>
   );

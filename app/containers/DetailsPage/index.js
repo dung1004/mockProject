@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MaterialTable from 'material-table';
-// import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from 'react-loading-skeleton';
 
 import StyleAvt from './StyleAvt';
 import ButtonAvt from './ButtonAvt';
@@ -87,11 +87,11 @@ function DetailsPage(props) {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const { dataUser } = props;
+  const { dataUser = false } = props;
 
   return (
     <Section>
-      {props.dataUser && Object.keys(props.dataUser).length > 0 ? (
+      {props.dataUser ? (
         <Grid
           container
           item
@@ -102,23 +102,38 @@ function DetailsPage(props) {
           {
             <Paper>
               <div>
-                <h2 className={classes.titleH2}>Thông tin cá nhân</h2>
+                {props.dataUser && Object.keys(props.dataUser).length > 0 ? (
+                  <h2 className={classes.titleH2}>Thông tin cá nhân</h2>
+                ) : (
+                  <Skeleton width={300} height={50} />
+                )}
               </div>
               <Grid container item spacing={2} xs={12} justify="center">
-                <Grid item>
-                  <ButtonAvt>
-                    <StyleAvt alt="complex" src={props.dataUser.avatar} />
-                  </ButtonAvt>
-                </Grid>
+                {props.dataUser.avatar ? (
+                  <Grid item>
+                    <ButtonAvt>
+                      <StyleAvt alt="complex" src={props.dataUser.avatar} />
+                    </ButtonAvt>
+                  </Grid>
+                ) : (
+                  <Skeleton circle height={250} width={250} />
+                )}
+
                 <Grid item xs={6} container justify="center">
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
                       {disabled.is ? (
-                        <h2 variant="subtitle1">
-                          {`${props.dataUser.firstName} ${
-                            props.dataUser.lastName
-                          }`}
-                        </h2>
+                        <React.Fragment>
+                          {Object.keys(props.dataUser).length > 0 ? (
+                            <h2 variant="subtitle1">
+                              {`${props.dataUser.firstName} ${
+                                props.dataUser.lastName
+                              }`}
+                            </h2>
+                          ) : (
+                            <Skeleton height={50} />
+                          )}
+                        </React.Fragment>
                       ) : null}
                       {!disabled.is ? (
                         <div>
@@ -142,45 +157,59 @@ function DetailsPage(props) {
                           />
                         </div>
                       ) : null}
-                      <TextField
-                        disabled={disabled.is || true}
-                        id="standard-email"
-                        label="Email"
-                        onChange={handleChange}
-                        value={props.dataUser.email}
-                        className={classes.textField}
-                        margin="normal"
-                        name="email"
-                      />
-                      <TextField
-                        disabled={disabled.is}
-                        id="standard-phone"
-                        label="Phone Number"
-                        onChange={handleChange}
-                        value={props.dataUser.phoneNumber}
-                        className={classes.textField}
-                        margin="normal"
-                        name="phoneNumber"
-                      />
-                      <TextField
-                        disabled={disabled.is}
-                        id="standard-select-currency-native"
-                        select
-                        label="Gender select"
-                        className={classes.textFieldSelect}
-                        value={props.dataUser.gender}
-                        onChange={handleChange}
-                        name="gender"
-                        SelectProps={{
-                          native: true,
-                          MenuProps: {
-                            className: classes.menu,
-                          },
-                        }}
-                      >
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </TextField>
+                      {props.dataUser.email ? (
+                        <TextField
+                          disabled={disabled.is || true}
+                          id="standard-email"
+                          label="Email"
+                          onChange={handleChange}
+                          value={props.dataUser.email}
+                          className={classes.textField}
+                          margin="normal"
+                          name="email"
+                        />
+                      ) : (
+                        <Skeleton width={150} height={50} />
+                      )}
+                      {props.dataUser.phoneNumber ? (
+                        <TextField
+                          disabled={disabled.is}
+                          id="standard-phone"
+                          label="Phone Number"
+                          onChange={handleChange}
+                          value={props.dataUser.phoneNumber}
+                          className={classes.textField}
+                          margin="normal"
+                          name="phoneNumber"
+                        />
+                      ) : (
+                        <Skeleton width={150} height={50} />
+                      )}
+
+                      {props.dataUser.gender ? (
+                        <TextField
+                          disabled={disabled.is}
+                          id="standard-select-currency-native"
+                          select
+                          label="Gender select"
+                          className={classes.textFieldSelect}
+                          value={props.dataUser.gender}
+                          onChange={handleChange}
+                          name="gender"
+                          SelectProps={{
+                            native: true,
+                            MenuProps: {
+                              className: classes.menu,
+                            },
+                          }}
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </TextField>
+                      ) : (
+                        <Skeleton width={150} height={50} />
+                      )}
+
                       {props.dataUser.position ? (
                         <TextField
                           disabled={disabled.is}
@@ -202,7 +231,9 @@ function DetailsPage(props) {
                           <option value="Nhân viên">Nhân viên</option>
                           <option value="Phó Giám Đốc">Phó Giám Đốc</option>
                         </TextField>
-                      ) : null}
+                      ) : (
+                        <Skeleton width={150} height={50} />
+                      )}
                       {props.dataUser.description ? (
                         <TextField
                           disabled={disabled.is}
@@ -272,75 +303,87 @@ function DetailsPage(props) {
                 </Grid>
               </Grid>
               <div className={classes.divBtn}>
-                <Button
-                  className={classes.button}
-                  onClick={
-                    disabled.is === false && userLevel.level === 0
-                      ? onCancel
-                      : onBack
-                  }
-                  variant="contained"
-                  color="secondary"
-                  type="reset"
-                >
-                  {disabled.is === false && userLevel.level === 0
-                    ? 'Cancel'
-                    : 'Back'}
-                </Button>
-                {userLevel.level === 0 ? (
-                  <Button
-                    className={classes.button}
-                    onClick={disabled.is === true ? editClick : onSave}
-                    variant="contained"
-                    color="secondary"
-                  >
-                    {disabled.is === true ? 'Edit' : 'Save'}
-                  </Button>
-                ) : null}
+                {props.dataUser && Object.keys(props.dataUser).length > 0 ? (
+                  <React.Fragment>
+                    <Button
+                      className={classes.button}
+                      onClick={
+                        disabled.is === false && userLevel.level === 0
+                          ? onCancel
+                          : onBack
+                      }
+                      variant="contained"
+                      color="secondary"
+                      type="reset"
+                    >
+                      {disabled.is === false && userLevel.level === 0
+                        ? 'Cancel'
+                        : 'Back'}
+                    </Button>
+                    {userLevel.level === 0 ? (
+                      <Button
+                        className={classes.button}
+                        onClick={disabled.is === true ? editClick : onSave}
+                        variant="contained"
+                        color="secondary"
+                      >
+                        {disabled.is === true ? 'Edit' : 'Save'}
+                      </Button>
+                    ) : null}
+                  </React.Fragment>
+                ) : (
+                  <Skeleton width={300} height={50} />
+                )}
               </div>
             </Paper>
           }
         </Grid>
       ) : null}
-      {dataUser && dataUser.classes && dataUser.classes.length > 0 ? (
-        <MaterialTable
-          title="Thông tin giảng dạy"
-          columns={[
-            { title: 'STT', field: 'id' },
-            { title: 'Phòng học', field: 'classWeekday.roomNumber' }, // classWeekday.roomNumber
-            { title: 'Tên Khóa Học', field: 'name' },
-            { title: 'Ngày bắt đầu', field: 'startDay' },
-            { title: 'Ngày kết thúc', field: 'endDay' },
-            {
-              title: 'Lịch dạy',
-              field: 'lichday',
-              render: rowData => {
-                const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.weekday}`,
-                );
-                return weekdayHours;
-              },
-            },
-            {
-              title: 'Giờ dạy',
-              field: 'gioday',
-              render: rowData => {
-                const hours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.hours}, `,
-                );
-                return hours;
-              },
-            },
-          ]}
-          data={props.dataUser.classes}
-          options={{
-            sorting: false,
-            search: false,
-            showFirstLastPageButtons: false,
-            paging: false,
-          }}
-        />
-      ) : null}
+      {dataUser && dataUser.classes ? (
+        <React.Fragment>
+          {dataUser.classes.length > 0 ? (
+            <MaterialTable
+              title="Thông tin giảng dạy"
+              columns={[
+                { title: 'STT', field: 'id' },
+                { title: 'Phòng học', field: 'classWeekday.roomNumber' }, // classWeekday.roomNumber
+                { title: 'Tên Khóa Học', field: 'name' },
+                { title: 'Ngày bắt đầu', field: 'startDay' },
+                { title: 'Ngày kết thúc', field: 'endDay' },
+                {
+                  title: 'Lịch dạy',
+                  field: 'lichday',
+                  render: rowData => {
+                    const weekdayHours = rowData.classWeekday.weekdayHours.map(
+                      item => `${item.weekday}`,
+                    );
+                    return weekdayHours;
+                  },
+                },
+                {
+                  title: 'Giờ dạy',
+                  field: 'gioday',
+                  render: rowData => {
+                    const hours = rowData.classWeekday.weekdayHours.map(
+                      item => `${item.hours}, `,
+                    );
+                    return hours;
+                  },
+                },
+              ]}
+              data={props.dataUser.classes}
+              options={{
+                sorting: false,
+                search: false,
+                showFirstLastPageButtons: false,
+                paging: false,
+              }}
+            />
+          ) : null}
+        </React.Fragment>
+      ) : (
+        <Skeleton height={100} />
+      )}
       {dataUser && dataUser.idClass && dataUser.idClass.length > 0 ? (
         <MaterialTable
           title="Lịch học của học viên"
