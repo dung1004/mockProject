@@ -26,6 +26,10 @@ const admin = 0;
 const student = 1;
 const teacher = 2;
 let yes = true;
+const dataConst = {
+  data: [],
+  weekday: [],
+};
 
 function Teachers(props) {
   useInjectReducer({ key, reducer });
@@ -42,57 +46,115 @@ function Teachers(props) {
   useEffect(() => {
     props.onFetchClass();
   }, []);
+
   if (token && props.data && props.data.dataClass) {
+    const { dataClass, dataStudent } = props.data;
     const weekday = [];
+    const data = [];
+    const user = [];
+
     switch (token.level) {
       case admin:
-        props.data.dataClass.forEach(element =>
+        dataClass.forEach(element =>
           element.classWeekday.weekdayHours.filter(item =>
             item.weekday !== '' ? weekday.push(item.weekday) : null,
           ),
         );
-        if (yes) {
-          setState({
-            ...state,
-            data: props.data.dataClass,
-            day: [...new Set(weekday)],
-          });
-        }
-        yes = false;
         break;
       case student:
+        dataClass.forEach(element => {
+          element.teacherId.filter(id =>
+            id === token.id ? data.push(element) : null,
+          );
+        });
+        data.forEach(element =>
+          element.classWeekday.weekdayHours.filter(item =>
+            item.weekday !== '' ? weekday.push(item.weekday) : null,
+          ),
+        );
         break;
       case teacher:
+        dataStudent.filter(item =>
+          item.email === token.mail ? user.push(item) : null,
+        );
+        dataClass.forEach(item => {
+          user[0].classId.filter(id =>
+            item.id === id ? data.push(item) : null,
+          );
+        });
+        data.forEach(element =>
+          element.classWeekday.weekdayHours.filter(item =>
+            item.weekday !== '' ? weekday.push(item.weekday) : null,
+          ),
+        );
         break;
       default:
         break;
     }
-    // }
+    if (yes) {
+      setState({
+        ...state,
+        data: token.level === admin ? dataClass : data,
+        day: [...new Set(weekday)],
+      });
+    }
+    yes = false;
   }
 
   const handleChange = ev => {
     const { value } = ev.target;
-    // props.onSearchClass(value);
-    console.log(value);
+    const { dataClass } = props.data;
+    const weekday = [];
+    const allClass = dataClass.filter(cl =>
+      cl.name
+        .trim()
+        .toLowerCase()
+        .includes(value.trim().toLowerCase()),
+    );
+    allClass.forEach(element =>
+      element.classWeekday.weekdayHours.filter(item =>
+        item.weekday !== '' ? weekday.push(item.weekday) : null,
+      ),
+    );
+    dataConst.data = allClass;
+    dataConst.weekday = weekday;
+    setState({
+      ...state,
+      data: allClass,
+      day: [...new Set(weekday)],
+      search: value,
+    });
   };
 
   const handleChangeSelect = ev => {
     const { value } = ev.target;
-    // props.getWeekClass(value);
-    console.log(value);
+    const { dataClass } = props.data;
+
+    function getClass(arr, k = '') {
+      const data = [];
+      arr.forEach(cla =>
+        cla.classWeekday.weekdayHours.filter(item =>
+          item.weekday === k ? data.push(cla) : null,
+        ),
+      );
+      return data;
+    }
+    const filterClass =
+      state.search && value
+        ? getClass(dataConst.data, value)
+        : getClass(dataClass, value);
+
+    setState({
+      ...state,
+      data: value ? filterClass : dataConst.data,
+    });
   };
 
   const onClickInput = ev => {
-    if (ev && ev.target.value !== '') {
-      setCheck(true);
-    } else {
-      setCheck(false);
-    }
+    const check = !!(ev && ev.target.value !== '');
+    setCheck(check);
   };
 
-  // const { day, dataClass } = props;
-  console.log(props.data);
-  console.log(state);
   return (
     <div>
       <SectionForm>
@@ -102,9 +164,9 @@ function Teachers(props) {
             id="standard-search"
             type="search"
             className={classes.textField}
+            disabled={isCheck}
             margin="normal"
             name="search"
-            disabled={isCheck}
             placeholder="Search user"
             onChange={handleChange}
             InputProps={{
@@ -158,7 +220,7 @@ function Teachers(props) {
               title: 'Lịch dạy',
               render: rowData => {
                 const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.weekday}, `,
+                  item => <p key={item.weekday}>{item.weekday}</p>,
                 );
                 return weekdayHours;
               },
@@ -166,9 +228,9 @@ function Teachers(props) {
             {
               title: 'Giờ dạy',
               render: rowData => {
-                const hours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.hours}, `,
-                );
+                const hours = rowData.classWeekday.weekdayHours.map(item => (
+                  <p key={item.hours}>{item.hours}</p>
+                ));
                 return hours;
               },
             },
@@ -192,29 +254,22 @@ function Teachers(props) {
 
 const mapStateToProps = createStructuredSelector({
   data: makeSelectClass(),
-  // day: makeDay(),
 });
+
 const mapDispatchToProps = dispatch => ({
   onFetchClass: () => {
     dispatch(fetchClass());
   },
-  // onSearchClass: keyWord => {
-  //   dispatch(getSearch(keyWord));
-  // },
-  // getWeekClass: keyWord => {
-  //   dispatch(getWeekClass(keyWord));
-  // },
 });
+
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
 );
+
 Teachers.propTypes = {
   onFetchClass: PropsTypes.func,
   data: PropsTypes.object,
-  // onSearchClass: PropsTypes.func,
-  // day: PropsTypes.array,
-  // getWeekClass: PropsTypes.func,
 };
 
 export default compose(

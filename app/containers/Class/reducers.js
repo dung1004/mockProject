@@ -10,7 +10,6 @@ const classReducer = (state = initialState, action) => {
       return {
         ...state,
         data: action.data,
-        // day: [...new Set(action.day)],
       };
     // case type.GET_SEARCH_SUCCESS:
     //   return {
