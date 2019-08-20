@@ -32,10 +32,17 @@ function People(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({});
   const [isChangeSelect, setSelect] = React.useState(true);
-  const onClickInput = event => {
-    const is = event.target.value === '';
-    setSelect(is);
-  };
+
+  useEffect(() => {
+    props.onGetData();
+  }, []);
+
+  useEffect(() => {
+    setState({
+      data: props.data,
+      users: props.users,
+    });
+  }, [props.data]);
 
   function filterData(arr, keyword = '') {
     return arr.filter(
@@ -71,6 +78,24 @@ function People(props) {
         return keySwith;
     }
   }
+
+  function getPois(arr) {
+    const posi = [];
+    const sex = [];
+    arr.forEach(element => {
+      if (element.position) {
+        posi.push(element.position);
+      }
+      sex.push(element.gender);
+    });
+    const value = posi.length > 0 ? [...new Set(posi)] : [...new Set(sex)];
+    return value;
+  }
+
+  const onClickInput = event => {
+    const is = event.target.value === '';
+    setSelect(is);
+  };
 
   const handleChange = event => {
     const { value } = event.target;
@@ -129,30 +154,6 @@ function People(props) {
     };
     setState(updatedState);
   };
-
-  function getPois(arr) {
-    const posi = [];
-    const sex = [];
-    arr.forEach(element => {
-      if (element.position) {
-        posi.push(element.position);
-      }
-      sex.push(element.gender);
-    });
-    const value = posi.length > 0 ? [...new Set(posi)] : [...new Set(sex)];
-    return value;
-  }
-
-  useEffect(() => {
-    props.onGetData();
-  }, []);
-
-  useEffect(() => {
-    setState({
-      data: props.data,
-      users: props.users,
-    });
-  }, [props.data]);
 
   return (
     <div>
