@@ -141,7 +141,7 @@ function Teachers(props) {
                 title: 'Lịch dạy',
                 render: rowData => {
                   const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                    item => `${item.weekday}, `,
+                    item => <p>{item.weekday}</p>,
                   );
                   return weekdayHours;
                 },
@@ -149,9 +149,9 @@ function Teachers(props) {
               {
                 title: 'Giờ dạy',
                 render: rowData => {
-                  const hours = rowData.classWeekday.weekdayHours.map(
-                    item => `${item.hours}, `,
-                  );
+                  const hours = rowData.classWeekday.weekdayHours.map(item => (
+                    <p>{item.hours}</p>
+                  ));
                   return hours;
                 },
               },

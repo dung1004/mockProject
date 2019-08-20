@@ -355,7 +355,7 @@ function DetailsPage(props) {
                   field: 'lichday',
                   render: rowData => {
                     const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                      item => `${item.weekday}`,
+                      item => <p>{item.weekday}</p>,
                     );
                     return weekdayHours;
                   },
@@ -365,7 +365,7 @@ function DetailsPage(props) {
                   field: 'gioday',
                   render: rowData => {
                     const hours = rowData.classWeekday.weekdayHours.map(
-                      item => `${item.hours}, `,
+                      item => <p>{item.hours}</p>,
                     );
                     return hours;
                   },
@@ -398,7 +398,7 @@ function DetailsPage(props) {
               field: 'lichday',
               render: rowData => {
                 const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.weekday}`,
+                  item => <p>{item.weekday}</p>,
                 );
                 return weekdayHours;
               },
@@ -407,9 +407,9 @@ function DetailsPage(props) {
               title: 'Giờ học',
               field: 'gioday',
               render: rowData => {
-                const hours = rowData.classWeekday.weekdayHours.map(
-                  item => `${item.hours}, `,
-                );
+                const hours = rowData.classWeekday.weekdayHours.map(item => (
+                  <p>{item.hours}</p>
+                ));
                 return hours;
               },
             },
