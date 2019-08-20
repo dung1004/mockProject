@@ -92,35 +92,24 @@ function People(props) {
 
   const handleChangeSelect = event => {
     const { value } = event.target;
-    if (state.search && state.search !== '') {
-      const data = value
+    let items;
+    let data;
+    if (state.search) {
+      const dataUser = value
         ? filterData(props.users[value], state.search)
         : filterData(props.data, state.search);
-      const items = value && data ? getPois(data) : null;
-
-      const updatedState = {
-        ...state,
-        select: value || '',
-        data,
-        ...(items ? { items } : {}),
-      };
-
-      setState(updatedState);
-    } else if (value && value !== '') {
-      const items = getPois(props.users[value]);
-      setState({
-        ...state,
-        select: value,
-        data: props.users[`${value}`],
-        items,
-      });
+      items = value && dataUser ? getPois(dataUser) : null;
+      data = dataUser;
     } else {
-      setState({
-        ...state,
-        data: props.data,
-        select: '',
-      });
+      items = value ? getPois(props.users[value]) : null;
+      data = value ? props.users[value] : props.data;
     }
+    setState({
+      ...state,
+      data,
+      ...(items ? { items } : {}),
+      select: value || '',
+    });
   };
 
   const handleChangeII = event => {
