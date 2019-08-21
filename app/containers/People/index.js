@@ -2,7 +2,8 @@ import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { ToastContainer } from 'react-toastify';
+
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -20,64 +21,141 @@ import SectionForm from './SectionForm';
 import reducer from './reducers';
 import saga from './saga';
 import StyleLink from '../../components/StyleLink';
-import { getData, getKey } from './actions';
-import { makeSelectData, makeSelec } from './selectors';
+import { getData } from './actions';
+import { makeSelectData, makeUsers } from './selectors';
+import useStyles from './styles';
 
 const key = 'form';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    margin: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '10px  0 30px 0',
-    marginBottom: '10px',
-  },
-  table: {
-    paddingTop: 2,
-  },
-  textField: {
-    marginLeft: theme.spacing(5),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
-}));
 
 function People(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const classes = useStyles();
-  const [state, setState] = React.useState({
-    search: '',
-  });
-  const [isChangeSelect, setSelect] = React.useState(true);
-  const onClickInput = event => {
-    if (event && event.target.value !== '') {
-      setSelect(false);
-    } else {
-      setSelect(true);
-    }
-  };
 
-  const handleChange = event => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-  };
+  const classes = useStyles();
+  const [state, setState] = React.useState({});
+  const [isChangeSelect, setSelect] = React.useState(true);
 
   useEffect(() => {
     props.onGetData();
-    props.onGetKey(state);
-  }, [state]);
+  }, []);
+
+  useEffect(() => {
+    setState({
+      data: props.data,
+      users: props.users,
+    });
+  }, [props.data]);
+
+  function filterData(arr, keyword = '') {
+    return arr.filter(
+      item =>
+        `${item.firstName} ${item.lastName}`
+          .trim()
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()) ||
+        item.email
+          .trim()
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()) ||
+        item.phoneNumber.trim().includes(keyword.trim()),
+    );
+  }
+
+  function swithCase(value) {
+    const keySwith = {};
+    switch (state.select) {
+      case 'students':
+        keySwith.filters = 'gender';
+        keySwith.item = value;
+        return keySwith;
+      case 'teachers':
+        keySwith.filters = 'gender';
+        keySwith.item = value;
+        return keySwith;
+      case 'staffs':
+        keySwith.filters = 'position';
+        keySwith.item = value;
+        return keySwith;
+      default:
+        return keySwith;
+    }
+  }
+
+  function getPois(arr) {
+    const posi = [];
+    const sex = [];
+    arr.forEach(element => {
+      if (element.position) {
+        posi.push(element.position);
+      }
+      sex.push(element.gender);
+    });
+    const value = posi.length > 0 ? [...new Set(posi)] : [...new Set(sex)];
+    return value;
+  }
+
+  const onClickInput = event => {
+    const is = event.target.value === '';
+    setSelect(is);
+  };
+
+  const handleChange = event => {
+    const { value } = event.target;
+    const arrUser = props.users[state.select];
+    const keySwith =
+      !isChangeSelect && state.filII ? swithCase(state.filII) : null;
+    const users =
+      !isChangeSelect && keySwith
+        ? arrUser.filter(user => user[keySwith.filters] === keySwith.item)
+        : arrUser;
+    const dataUser = isChangeSelect ? props.data : users;
+    const data = filterData(dataUser, value);
+    setState({
+      ...state,
+      search: value,
+      data,
+    });
+  };
+
+  const handleChangeSelect = event => {
+    const { value } = event.target;
+    let items;
+    let data;
+    if (state.search) {
+      const dataUser = value
+        ? filterData(props.users[value], state.search)
+        : filterData(props.data, state.search);
+      items = value && dataUser ? getPois(dataUser) : null;
+      data = dataUser;
+    } else {
+      items = value ? getPois(props.users[value]) : null;
+      data = value ? props.users[value] : props.data;
+    }
+    setState({
+      ...state,
+      data,
+      ...(items ? { items } : {}),
+      select: value || '',
+    });
+  };
+
+  const handleChangeII = event => {
+    const { value } = event.target;
+    const dataUser = state.select ? props.users[`${state.select}`] : props.data;
+    const data = value
+      ? filterData(props.users[state.select], state.search)
+      : filterData(dataUser, state.search);
+    const keySwith = value ? swithCase(value) : null;
+    const users = value
+      ? data.filter(user => user[keySwith.filters] === keySwith.item)
+      : null;
+    const updatedState = {
+      ...state,
+      data: value ? users : data,
+      filII: value || '',
+    };
+    setState(updatedState);
+  };
 
   return (
     <div>
@@ -91,7 +169,6 @@ function People(props) {
             margin="normal"
             name="search"
             placeholder="Search user"
-            value={state.search}
             onChange={handleChange}
             InputProps={{
               startAdornment: (
@@ -107,7 +184,7 @@ function People(props) {
             label="User select"
             className={classes.textField}
             name="select"
-            onChange={handleChange}
+            onChange={handleChangeSelect}
             onClick={onClickInput}
             SelectProps={{
               native: true,
@@ -119,9 +196,9 @@ function People(props) {
             margin="normal"
           >
             <option value="" />
-            <option value="student">Students</option>
-            <option value="teacher">Teachers</option>
-            <option value="staff">Staffs</option>
+            <option value="students">Students</option>
+            <option value="teachers">Teachers</option>
+            <option value="staffs">Staffs</option>
           </TextField>
           {!isChangeSelect ? (
             <TextField
@@ -131,7 +208,7 @@ function People(props) {
               label={state.select || 'Null'}
               className={classes.textField}
               name={state.select}
-              onChange={handleChange}
+              onChange={handleChangeII}
               SelectProps={{
                 native: true,
                 MenuProps: {
@@ -142,15 +219,15 @@ function People(props) {
               margin="normal"
             >
               <option value="" />
-              {props.fil ? (
-                props.fil.map(item => (
+              {state.items ? (
+                state.items.map(item => (
                   <option key={item} value={item}>
                     {item}
                   </option>
                 ))
               ) : (
-                <option value="" />
-              )}
+                  <option value="" />
+                )}
             </TextField>
           ) : null}
         </Paper>
@@ -181,21 +258,23 @@ function People(props) {
             }}
           />
         ) : (
-          <Skeleton count={7} height={40} />
-        )}
+            <Skeleton count={7} height={40} />
+          )}
+
       </Section>
+      <ToastContainer autoClose={2000} />
     </div>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
   data: makeSelectData(),
-  fil: makeSelec(),
+  users: makeUsers(),
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetData: () => dispatch(getData()),
-  onGetKey: value => dispatch(getKey(value)),
+  // onSearch: value => dispatch(onSearch(value)),
 });
 
 const withConnect = connect(
@@ -206,8 +285,8 @@ const withConnect = connect(
 People.propTypes = {
   onGetData: PropsTypes.func,
   data: PropsTypes.array,
-  onGetKey: PropsTypes.func,
-  fil: PropsTypes.array,
+  // onSearch: PropsTypes.func,
+  users: PropsTypes.object,
 };
 
 export default compose(
