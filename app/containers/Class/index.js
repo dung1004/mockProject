@@ -24,9 +24,8 @@ import useStyles from './styles';
 
 const key = 'class';
 const admin = 0;
-const student = 1;
-const teacher = 2;
-let yes = true;
+const teacher = 1;
+const student = 2;
 const dataConst = {
   data: [],
   weekday: [],
@@ -44,63 +43,70 @@ function Teachers(props) {
   });
   const token = JSON.parse(localStorage.getItem('token'));
 
+  function getWeeday(arr) {
+    const weekday = [];
+    arr.forEach(element =>
+      element.classWeekday.weekdayHours.filter(item =>
+        item.weekday !== '' ? weekday.push(item.weekday) : null,
+      ),
+    );
+    return weekday;
+  }
+
+  function getUser(arr) {
+    return arr.filter(item => item.email === token.mail);
+  }
+
+  function getClassTeacher(arr) {
+    const data = [];
+    arr.forEach(element => {
+      element.teacherId.filter(id =>
+        id === token.id ? data.push(element) : null,
+      );
+    });
+    return data;
+  }
+
+  function getClassStudent(arr, user) {
+    const data = [];
+    arr.forEach(item => {
+      user[0].classId.filter(id => (item.id === id ? data.push(item) : null));
+    });
+    return data;
+  }
+
+  function checkRole(role, arrClass, arrStudent) {
+    const dataUser = role === student ? getUser(arrStudent) : null;
+
+    const dataClassTeacher =
+      role === teacher ? getClassTeacher(arrClass) : null;
+
+    const data = role === student ? getClassStudent(arrClass, dataUser) : null;
+
+    const dataWeeday =
+      role === student || role === teacher
+        ? getWeeday(role === student ? data : dataClassTeacher)
+        : getWeeday(arrClass);
+
+    const dataClass = dataClassTeacher || data;
+
+    setState({
+      ...state,
+      data: role === admin ? arrClass : dataClass,
+      day: [...new Set(dataWeeday)],
+    });
+  }
+
   useEffect(() => {
     props.onFetchClass();
   }, []);
 
-  if (token && props.data && props.data.dataClass) {
-    const { dataClass, dataStudent } = props.data;
-    const weekday = [];
-    const data = [];
-    const user = [];
-
-    switch (token.level) {
-      case admin:
-        dataClass.forEach(element =>
-          element.classWeekday.weekdayHours.filter(item =>
-            item.weekday !== '' ? weekday.push(item.weekday) : null,
-          ),
-        );
-        break;
-      case student:
-        dataClass.forEach(element => {
-          element.teacherId.filter(id =>
-            id === token.id ? data.push(element) : null,
-          );
-        });
-        data.forEach(element =>
-          element.classWeekday.weekdayHours.filter(item =>
-            item.weekday !== '' ? weekday.push(item.weekday) : null,
-          ),
-        );
-        break;
-      case teacher:
-        dataStudent.filter(item =>
-          item.email === token.mail ? user.push(item) : null,
-        );
-        dataClass.forEach(item => {
-          user[0].classId.filter(id =>
-            item.id === id ? data.push(item) : null,
-          );
-        });
-        data.forEach(element =>
-          element.classWeekday.weekdayHours.filter(item =>
-            item.weekday !== '' ? weekday.push(item.weekday) : null,
-          ),
-        );
-        break;
-      default:
-        break;
+  useEffect(() => {
+    if (token && props.data && props.data.dataClass) {
+      const { dataClass, dataStudent } = props.data;
+      checkRole(token.level, dataClass, dataStudent);
     }
-    if (yes) {
-      setState({
-        ...state,
-        data: token.level === admin ? dataClass : data,
-        day: [...new Set(weekday)],
-      });
-    }
-    yes = false;
-  }
+  }, [props.data]);
 
   const handleChange = ev => {
     const { value } = ev.target;
@@ -127,19 +133,19 @@ function Teachers(props) {
     });
   };
 
+  function getClass(arr, k = '') {
+    const data = [];
+    arr.forEach(cla =>
+      cla.classWeekday.weekdayHours.filter(item =>
+        item.weekday === k ? data.push(cla) : null,
+      ),
+    );
+    return data;
+  }
+
   const handleChangeSelect = ev => {
     const { value } = ev.target;
     const { dataClass } = props.data;
-
-    function getClass(arr, k = '') {
-      const data = [];
-      arr.forEach(cla =>
-        cla.classWeekday.weekdayHours.filter(item =>
-          item.weekday === k ? data.push(cla) : null,
-        ),
-      );
-      return data;
-    }
     const filterClass =
       state.search && value
         ? getClass(dataConst.data, value)
