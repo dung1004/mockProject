@@ -48,6 +48,14 @@ function* getDataUser() {
 
     yield put(fetchUserSuccess(data));
   }
+
+// ======= code cua a thuần để đó a thuần xử lý
+//   const path = allData ? yield select(makeSelectLocation()) : null;
+//   const id = allData ? yield path.pathname.slice(11) : null;
+//   const user = allData ? yield allData.filter(item => item.id === id) : null;
+//   const data = allData ? { ...user[0], class, idClass } : null;
+//   yield put(fetchUserSuccess(data));
+// >>>>>>> remotes/origin/class/index
 }
 
 function* editUser(payload) {
@@ -55,8 +63,8 @@ function* editUser(payload) {
   const user = {};
   const data = Object.keys(payload.user);
   data.forEach(item => {
-    if (payload.user[`${item}`] !== '') {
-      user[`${item}`] = payload.user[`${item}`];
+    if (payload.user[item] !== '') {
+      user[item] = payload.user[item];
     }
   });
   yield put(editSuccess(dataCon));

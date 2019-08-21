@@ -6,12 +6,12 @@ const selectData = state => state.class || initialState;
 const makeSelectClass = () =>
   createSelector(
     selectData,
-    classState => classState.dataClass,
+    classState => classState.data,
   );
-const makeDay = () =>
-  createSelector(
-    selectData,
-    classState => classState.day,
-  );
+// const makeDay = () =>
+//   createSelector(
+//     selectData,
+//     classState => classState.day,
+//   );
 
-export { makeSelectClass, makeDay };
+export { makeSelectClass };

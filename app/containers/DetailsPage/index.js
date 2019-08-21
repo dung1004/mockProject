@@ -21,7 +21,8 @@ import { makeSelectUser, selectSave } from './selectors';
 import saga from './sagas';
 import { fetchUser, editUser, calcelEdit } from './actions';
 import Section from '../../components/Section';
-import { useStyles } from './style';
+
+import useStyles from './styles';
 
 const key = 'detpage';
 
