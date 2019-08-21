@@ -15,13 +15,11 @@ function* getDataUser() {
   ]);
   const staffs = yield callApi('staff', 'get', null).then(res => [...res.data]);
   const allData = [...teacher, ...students, ...staffs];
-  if (allData) {
-    const path = yield select(makeSelectLocation());
-    const id = yield path.pathname.slice(11);
-    const user = yield allData.filter(item => item.id === id);
-    const data = { ...user[0] };
-    yield put(fetchUserSuccess(data));
-  }
+  const path = allData ? yield select(makeSelectLocation()) : null;
+  const id = allData ? yield path.pathname.slice(11) : null;
+  const user = allData ? yield allData.filter(item => item.id === id) : null;
+  const data = allData ? { ...user[0] } : null;
+  yield put(fetchUserSuccess(data));
 }
 
 function* editUser(payload) {
