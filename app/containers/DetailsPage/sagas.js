@@ -6,6 +6,24 @@ import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
 import { makeSelectUser, selectUserCst } from './selectors';
 
+function getClass(arr, id) {
+  const classes = [];
+  arr.forEach(item => {
+    item.teacherId.filter(itemClass =>
+      itemClass === id ? classes.push(item) : null,
+    );
+  });
+  return classes;
+}
+
+function getId(user, clas) {
+  const idClass = [];
+  user[0].classId.forEach(emtai => {
+    idClass.push(...clas.filter(value => value.id === emtai));
+  });
+  return idClass;
+}
+
 function* getDataUser() {
   const teacher = yield callApi('teacher', 'get', null).then(res => [
     ...res.data,
@@ -18,44 +36,15 @@ function* getDataUser() {
     ...res.data,
   ]);
   const allData = [...teacher, ...students, ...staffs];
-  // console.log(allClass);
 
-  if (allData) {
-    const path = yield select(makeSelectLocation());
-    const id = yield path.pathname.slice(11);
-    // lay thong tin cua 1 user
-    const user = yield allData.filter(item => item.id === id);
-    // lay tat ca cac lop dang day cua 1 gv
-    const classes = [];
-    yield allClass.forEach(item => {
-      item.teacherId.filter(itemClass =>
-        itemClass === id ? classes.push(item) : null,
-      );
-    });
-    // lay tat ca lop hoc cua 1 hv
-    const idClass = [];
-    if (user[0] && user[0].classId) {
-      user[0].classId.forEach(emtai => {
-        allClass.filter(value =>
-          emtai === value.id ? idClass.push(value) : null,
-        );
-      });
-    }
+  const path = allData ? yield select(makeSelectLocation()) : null;
+  const id = allData ? yield path.pathname.slice(11) : null;
+  const user = allData ? yield allData.filter(item => item.id === id) : null;
+  const classTeacher = getClass(allClass, id);
+  const classStudent = user ? yield getId(user, allClass) : null;
+  const data = { ...user[0], classTeacher, classStudent };
 
-    const data = { ...user[0], classes, idClass };
-    // console.log(idClass);
-    // console.log(data);
-
-    yield put(fetchUserSuccess(data));
-  }
-
-// ======= code cua a thuần để đó a thuần xử lý
-//   const path = allData ? yield select(makeSelectLocation()) : null;
-//   const id = allData ? yield path.pathname.slice(11) : null;
-//   const user = allData ? yield allData.filter(item => item.id === id) : null;
-//   const data = allData ? { ...user[0], class, idClass } : null;
-//   yield put(fetchUserSuccess(data));
-// >>>>>>> remotes/origin/class/index
+  yield put(fetchUserSuccess(data));
 }
 
 function* editUser(payload) {

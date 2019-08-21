@@ -134,13 +134,15 @@ function DetailsPage(props) {
                 {props.dataUser.avatar ? (
                   <Grid item>
                     <ButtonAvt>
-                <StyleAvt
-                  alt="complex"
-                  src={
-                    state && state.avatar ? state.avatar : props.dataUser.avatar
-                  }
-                />
-              </ButtonAvt>
+                      <StyleAvt
+                        alt="complex"
+                        src={
+                          state && state.avatar
+                            ? state.avatar
+                            : props.dataUser.avatar
+                        }
+                      />
+                    </ButtonAvt>
                   </Grid>
                 ) : (
                   <Skeleton circle height={250} width={250} />
@@ -304,29 +306,31 @@ function DetailsPage(props) {
                       ) : null}
                       {disabled.is === false ? (
                         <React.Fragment>
-                        <input
-                          name="avatar"
-                          accept="image/*"
-                          className={classes.input}
-                          style={{ display: 'none' }}
-                          id="raised-button-file"
-                          multiple
-                          type="file"
-                          onChange={handleChangeAvt}
-                        />
-                        <label
-                          htmlFor="raised-button-file"
-                          className={classes.labelUp}
-                        >
-                          <Button component="span" className={classes.buttonUp}>
-                            Upload Avatar
-                          </Button>
-                        </label>
-                      </React.Fragment>
+                          <input
+                            name="avatar"
+                            accept="image/*"
+                            className={classes.input}
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            multiple
+                            type="file"
+                            onChange={handleChangeAvt}
+                          />
+                          <label
+                            htmlFor="raised-button-file"
+                            className={classes.labelUp}
+                          >
+                            <Button
+                              component="span"
+                              className={classes.buttonUp}
+                            >
+                              Upload Avatar
+                            </Button>
+                          </label>
+                        </React.Fragment>
                       ) : null}
                     </Grid>
                   </Grid>
-
                 </Grid>
               </Grid>
               <div className={classes.divBtn}>
@@ -366,9 +370,9 @@ function DetailsPage(props) {
           }
         </Grid>
       ) : null}
-      {dataUser && dataUser.classes ? (
+      {dataUser && dataUser.classTeacher ? (
         <React.Fragment>
-          {dataUser.classes.length > 0 ? (
+          {dataUser.classTeacher.length > 0 ? (
             <MaterialTable
               title="Thông tin giảng dạy"
               columns={[
@@ -382,7 +386,7 @@ function DetailsPage(props) {
                   field: 'lichday',
                   render: rowData => {
                     const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                      item => <p>{item.weekday}</p>,
+                      item => <p key={item.weekday}>{item.weekday}</p>,
                     );
                     return weekdayHours;
                   },
@@ -392,13 +396,13 @@ function DetailsPage(props) {
                   field: 'gioday',
                   render: rowData => {
                     const hours = rowData.classWeekday.weekdayHours.map(
-                      item => <p>{item.hours}</p>,
+                      item => <p key={item.hours}>{item.hours}</p>,
                     );
                     return hours;
                   },
                 },
               ]}
-              data={props.dataUser.classes}
+              data={props.dataUser.classTeacher}
               options={{
                 sorting: false,
                 search: false,
@@ -411,7 +415,7 @@ function DetailsPage(props) {
       ) : (
         <Skeleton height={100} />
       )}
-      {dataUser && dataUser.idClass && dataUser.idClass.length > 0 ? (
+      {dataUser && dataUser.classStudent && dataUser.classStudent.length > 0 ? (
         <MaterialTable
           title="Lịch học của học viên"
           columns={[
@@ -425,7 +429,7 @@ function DetailsPage(props) {
               field: 'lichday',
               render: rowData => {
                 const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                  item => <p>{item.weekday}</p>,
+                  item => <p key={item.weekday}>{item.weekday}</p>,
                 );
                 return weekdayHours;
               },
@@ -435,13 +439,13 @@ function DetailsPage(props) {
               field: 'gioday',
               render: rowData => {
                 const hours = rowData.classWeekday.weekdayHours.map(item => (
-                  <p>{item.hours}</p>
+                  <p key={item.hours}>{item.hours}</p>
                 ));
                 return hours;
               },
             },
           ]}
-          data={props.dataUser.idClass}
+          data={props.dataUser.classStudent}
           options={{
             sorting: false,
             search: false,

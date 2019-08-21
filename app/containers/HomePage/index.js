@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import { ToastContainer, toast } from 'react-toastify';
@@ -24,26 +24,25 @@ import useStyles from './styles';
 
 function HomePage() {
   const classes = useStyles();
-  const [login, setLogin] = useState({
-    is: true,
-  });
   const notify = () => {
-    if (login.is === true && localStorage.getItem('login') === 'd') {
+    const toas = JSON.parse(localStorage.getItem('toat'));
+    if (toas === 1) {
       toast.success('Đăng nhập thành công !', {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } else {
-      return null;
+      localStorage.setItem('toat', 0);
     }
-    return null;
+    if (toas === 2) {
+      toast.info('Đăng xuất thành công !', {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      localStorage.setItem('toat', 0);
+    }
   };
   useEffect(() => {
     notify();
-    localStorage.setItem('login', 's');
-    setLogin({
-      is: false,
-    });
-  }, [login.is]);
+  }, []);
+
   return (
     <Article>
       <BoxImg>
