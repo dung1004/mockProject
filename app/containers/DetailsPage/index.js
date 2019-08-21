@@ -6,7 +6,6 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { createStructuredSelector } from 'reselect';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ToastContainer } from 'react-toastify';
@@ -19,46 +18,9 @@ import { makeSelectUser, selectSave } from './selectors';
 import saga from './sagas';
 import { fetchUser, editUser, calcelEdit } from './actions';
 import Section from '../../components/Section';
+import useStyles from './styles';
 
 const key = 'detpage';
-
-const useStyles = makeStyles(theme => ({
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-    color: 'black!important',
-  },
-  textFieldSelect: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    width: 200,
-  },
-  button: {
-    backgroundColor: '#3939af',
-    margin: 10,
-  },
-  divBtn: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'center',
-  },
-  buttonUp: {
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    margin: 10,
-    color: 'black',
-    border: '1px solid blue',
-    '&:hover': {
-      color: 'white',
-      backgroundColor: 'rgba(0, 0, 0, 0.38)',
-    },
-  },
-  labelUp: {
-    display: 'flex',
-  },
-}));
 
 function DetailsPage(props) {
   useInjectReducer({ key, reducer });

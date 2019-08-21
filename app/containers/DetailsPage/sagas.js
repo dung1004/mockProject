@@ -29,8 +29,8 @@ function* editUser(payload) {
   const user = {};
   const data = Object.keys(payload.user);
   data.forEach(item => {
-    if (payload.user[`${item}`] !== '') {
-      user[`${item}`] = payload.user[`${item}`];
+    if (payload.user[item] !== '') {
+      user[item] = payload.user[item];
     }
   });
   yield put(editSuccess(dataCon));

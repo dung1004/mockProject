@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,17 +20,7 @@ import StyleH3 from './StyleH3';
 import TitleTheP from './TitleTheP';
 import Section from '../../components/Section';
 import Article from '../../components/Article';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+import useStyles from './styles';
 
 function HomePage() {
   const classes = useStyles();
