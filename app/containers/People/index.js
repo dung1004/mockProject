@@ -226,8 +226,8 @@ function People(props) {
                   </option>
                 ))
               ) : (
-                  <option value="" />
-                )}
+                <option value="" />
+              )}
             </TextField>
           ) : null}
         </Paper>
@@ -251,16 +251,15 @@ function People(props) {
                 ),
               },
             ]}
-            data={props.data}
+            data={state.data || props.data}
             options={{
               sorting: true,
               search: false,
             }}
           />
         ) : (
-            <Skeleton count={7} height={40} />
-          )}
-
+          <Skeleton count={7} height={40} />
+        )}
       </Section>
       <ToastContainer autoClose={2000} />
     </div>

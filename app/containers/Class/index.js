@@ -209,7 +209,7 @@ function Teachers(props) {
         </Paper>
       </SectionForm>
       <Section className={classes.table}>
-        {dataClass && dataClass.length > 0 ? (
+        {props.data && props.data.dataClass ? (
           <MaterialTable
             title="Thông Tin Lớp Học"
             columns={[
@@ -222,7 +222,7 @@ function Teachers(props) {
                 title: 'Lịch dạy',
                 render: rowData => {
                   const weekdayHours = rowData.classWeekday.weekdayHours.map(
-                    item => <p>{item.weekday}</p>,
+                    item => <p key={item.weekday}>{item.weekday}</p>,
                   );
                   return weekdayHours;
                 },
@@ -231,7 +231,7 @@ function Teachers(props) {
                 title: 'Giờ dạy',
                 render: rowData => {
                   const hours = rowData.classWeekday.weekdayHours.map(item => (
-                    <p>{item.hours}</p>
+                    <p key={item.hours}>{item.hours}</p>
                   ));
                   return hours;
                 },
@@ -252,7 +252,6 @@ function Teachers(props) {
         ) : (
           <Skeleton count={7} height={40} />
         )}
-
       </Section>
     </div>
   );

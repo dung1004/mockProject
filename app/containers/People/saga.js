@@ -1,12 +1,10 @@
-import { takeLatest, put, delay } from 'redux-saga/effects';
+import { takeLatest, put } from 'redux-saga/effects';
 import { GET_DATA } from './constants';
 import callApi from '../../utils/apiCaller';
 import { getDataSuccess, getDataFail } from './actions';
-import { showLoading, hideLoading } from '../GlobalLoading/actions';
 
 export function* getDataForm() {
   try {
-    yield put(showLoading());
     const teachers = yield callApi('teacher', 'get', null).then(res => [
       ...res.data,
     ]);
@@ -21,8 +19,6 @@ export function* getDataForm() {
       students,
       staffs,
     };
-    yield delay(1000);
-    yield put(hideLoading());
     yield put(getDataSuccess(allData));
   } catch (error) {
     yield put(getDataFail(error));
