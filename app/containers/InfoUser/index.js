@@ -61,30 +61,21 @@ function Info(props) {
   }
 
   function checkRole(role, allClass, teachers, students) {
-    const updateState = {
+    const dataClass =
+      role === roleAdmin || role === roleStudent ? getClass(allClass) : null;
+    const dataTeacher =
+      role === roleAdmin || role === roleStudent
+        ? getTeacher(dataClass, teachers)
+        : null;
+    const dataStudent =
+      role === roleTeacher || role === roleAdmin
+        ? getStudent(students, id)
+        : null;
+    setState({
       ...state,
-    };
-    switch (role) {
-      case roleAdmin:
-        {
-          const dataClass = getClass(allClass);
-          updateState.teachers = getTeacher(dataClass, teachers);
-          updateState.students = getStudent(students, dataClass[0].id);
-        }
-        break;
-      case roleTeacher:
-        updateState.students = getStudent(students, id);
-        break;
-      case roleStudent:
-        {
-          const dataClass = getClass(allClass);
-          updateState.teachers = getTeacher(dataClass, teachers);
-        }
-        break;
-      default:
-        break;
-    }
-    setState(updateState);
+      teachers: dataTeacher || [],
+      students: dataStudent || [],
+    });
   }
 
   useEffect(() => {
