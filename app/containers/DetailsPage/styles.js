@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
   boxInfo: {
     marginBottom: 100,
   },
+  titleH2: {
+    paddingLeft: 30,
+  },
 }));
 
 export default useStyles;

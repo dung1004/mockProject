@@ -32,5 +32,5 @@ export default styled.h1`
     word-spacing: 10px;
     font-family: 'Purisa' ;
     transition: .3s ease-in-out;
-    animation: ${test} 5s linear;
+    // animation: ${test} 5s linear;
 `;
