@@ -4,7 +4,9 @@ import { FETCH_USER, CALCEL_EDIT, EDIT } from './constants';
 import { fetchUserSuccess, editSuccess } from './actions';
 import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
-import { makeSelectUser, selectUserCst } from './selectors';
+import { makeSelectUser } from './selectors';
+
+const datas = { constData: [] };
 
 function* getDataUser() {
   const teacher = yield callApi('teacher', 'get', null).then(res => [
@@ -47,15 +49,16 @@ function* getDataUser() {
     // console.log(data);
 
     yield put(fetchUserSuccess(data));
+    yield (datas.constData = data);
   }
 
-// ======= code cua a thuần để đó a thuần xử lý
-//   const path = allData ? yield select(makeSelectLocation()) : null;
-//   const id = allData ? yield path.pathname.slice(11) : null;
-//   const user = allData ? yield allData.filter(item => item.id === id) : null;
-//   const data = allData ? { ...user[0], class, idClass } : null;
-//   yield put(fetchUserSuccess(data));
-// >>>>>>> remotes/origin/class/index
+  // ======= code cua a thuần để đó a thuần xử lý
+  //   const path = allData ? yield select(makeSelectLocation()) : null;
+  //   const id = allData ? yield path.pathname.slice(11) : null;
+  //   const user = allData ? yield allData.filter(item => item.id === id) : null;
+  //   const data = allData ? { ...user[0], class, idClass } : null;
+  //   yield put(fetchUserSuccess(data));
+  // >>>>>>> remotes/origin/class/index
 }
 
 function* editUser(payload) {
@@ -72,8 +75,7 @@ function* editUser(payload) {
 }
 
 function* calcelEditUser() {
-  const data = yield select(selectUserCst());
-  yield put(fetchUserSuccess(data));
+  yield put(fetchUserSuccess(datas.constData));
 }
 
 export default function* sagaWatcher() {

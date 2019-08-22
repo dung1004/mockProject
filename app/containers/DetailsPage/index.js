@@ -70,12 +70,14 @@ function DetailsPage(props) {
       avatar: avatar || '',
     });
   }
+
   function onCancel() {
     setDisabled({
       is: true,
     });
     props.onCancelEdit();
   }
+
   function onSave() {
     props.onEditUser(state);
 
@@ -134,13 +136,15 @@ function DetailsPage(props) {
                 {props.dataUser.avatar ? (
                   <Grid item>
                     <ButtonAvt>
-                <StyleAvt
-                  alt="complex"
-                  src={
-                    state && state.avatar ? state.avatar : props.dataUser.avatar
-                  }
-                />
-              </ButtonAvt>
+                      <StyleAvt
+                        alt="complex"
+                        src={
+                          state && state.avatar
+                            ? state.avatar
+                            : props.dataUser.avatar
+                        }
+                      />
+                    </ButtonAvt>
                   </Grid>
                 ) : (
                   <Skeleton circle height={250} width={250} />
@@ -304,29 +308,31 @@ function DetailsPage(props) {
                       ) : null}
                       {disabled.is === false ? (
                         <React.Fragment>
-                        <input
-                          name="avatar"
-                          accept="image/*"
-                          className={classes.input}
-                          style={{ display: 'none' }}
-                          id="raised-button-file"
-                          multiple
-                          type="file"
-                          onChange={handleChangeAvt}
-                        />
-                        <label
-                          htmlFor="raised-button-file"
-                          className={classes.labelUp}
-                        >
-                          <Button component="span" className={classes.buttonUp}>
-                            Upload Avatar
-                          </Button>
-                        </label>
-                      </React.Fragment>
+                          <input
+                            name="avatar"
+                            accept="image/*"
+                            className={classes.input}
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            multiple
+                            type="file"
+                            onChange={handleChangeAvt}
+                          />
+                          <label
+                            htmlFor="raised-button-file"
+                            className={classes.labelUp}
+                          >
+                            <Button
+                              component="span"
+                              className={classes.buttonUp}
+                            >
+                              Upload Avatar
+                            </Button>
+                          </label>
+                        </React.Fragment>
                       ) : null}
                     </Grid>
                   </Grid>
-
                 </Grid>
               </Grid>
               <div className={classes.divBtn}>
