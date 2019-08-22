@@ -6,7 +6,9 @@ import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
 import { makeSelectUser } from './selectors';
 
-const datas = { constData: [] };
+const dataGlobal = {
+  data: {},
+};
 
 function getClass(arr, id) {
   const classes = [];
@@ -47,7 +49,8 @@ function* getDataUser() {
   const data = { ...user[0], classTeacher, classStudent };
 
   yield put(fetchUserSuccess(data));
-  yield (datas.constData = data);
+
+  yield (dataGlobal.data = data);
 }
 
 function* editUser(payload) {
@@ -64,7 +67,7 @@ function* editUser(payload) {
 }
 
 function* calcelEditUser() {
-  yield put(fetchUserSuccess(datas.constData));
+  yield put(fetchUserSuccess(dataGlobal.data));
 }
 
 export default function* sagaWatcher() {
