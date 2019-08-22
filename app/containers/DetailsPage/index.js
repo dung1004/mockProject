@@ -277,8 +277,9 @@ function DetailsPage(props) {
                           margin="normal"
                         />
                       ) : null}
-                      {props.dataUser.dateBirth ? (
-                        <React.Fragment>
+
+                      <React.Fragment>
+                        {props.dataUser.dateBirth ? (
                           <TextField
                             disabled={disabled.is}
                             id="date"
@@ -292,6 +293,8 @@ function DetailsPage(props) {
                               shrink: true,
                             }}
                           />
+                        ) : null}
+                        {props.dataUser.address ? (
                           <TextField
                             disabled={disabled.is}
                             id="standard-address"
@@ -302,8 +305,9 @@ function DetailsPage(props) {
                             className={classes.textFieldSe}
                             margin="normal"
                           />
-                        </React.Fragment>
-                      ) : null}
+                        ) : null}
+                      </React.Fragment>
+
                       {disabled.is === false ? (
                         <React.Fragment>
                           <input
