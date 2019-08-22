@@ -41,7 +41,7 @@ function* getDataUser() {
   const id = allData ? yield path.pathname.slice(11) : null;
   const user = allData ? yield allData.filter(item => item.id === id) : null;
   const classTeacher = getClass(allClass, id);
-  const classStudent = user ? yield getId(user, allClass) : null;
+  const classStudent = user[0].classId ? yield getId(user, allClass) : null;
   const data = { ...user[0], classTeacher, classStudent };
 
   yield put(fetchUserSuccess(data));
