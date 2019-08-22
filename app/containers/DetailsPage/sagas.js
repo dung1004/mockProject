@@ -4,7 +4,11 @@ import { FETCH_USER, CALCEL_EDIT, EDIT } from './constants';
 import { fetchUserSuccess, editSuccess } from './actions';
 import callApi from '../../utils/apiCaller';
 import { makeSelectLocation } from '../App/selectors';
-import { makeSelectUser, selectUserCst } from './selectors';
+import { makeSelectUser } from './selectors';
+
+const dataGlobal = {
+  data: {},
+};
 
 function getClass(arr, id) {
   const classes = [];
@@ -45,6 +49,7 @@ function* getDataUser() {
   const data = { ...user[0], classTeacher, classStudent };
 
   yield put(fetchUserSuccess(data));
+  yield (dataGlobal.data = data);
 }
 
 function* editUser(payload) {
@@ -61,8 +66,7 @@ function* editUser(payload) {
 }
 
 function* calcelEditUser() {
-  const data = yield select(selectUserCst());
-  yield put(fetchUserSuccess(data));
+  yield put(fetchUserSuccess(dataGlobal.data));
 }
 
 export default function* sagaWatcher() {

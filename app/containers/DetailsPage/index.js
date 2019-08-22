@@ -30,9 +30,8 @@ function DetailsPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   const userLevel = JSON.parse(localStorage.getItem('token'));
-  const [disabled, setDisabled] = React.useState({
-    is: true,
-  });
+  const [disabled, setDisabled] = React.useState(true);
+  const [cancel, setCancel] = React.useState(false);
   useEffect(() => {
     props.onFetchUser();
   }, []);
@@ -53,9 +52,7 @@ function DetailsPage(props) {
       address,
       avatar,
     } = props.dataUser;
-    setDisabled({
-      is: false,
-    });
+    setDisabled(false);
     setState({
       id,
       firstName,
@@ -71,17 +68,14 @@ function DetailsPage(props) {
     });
   }
   function onCancel() {
-    setDisabled({
-      is: true,
-    });
+    setDisabled(true);
+    setCancel(false);
     props.onCancelEdit();
   }
   function onSave() {
     props.onEditUser(state);
 
-    setDisabled({
-      is: true,
-    });
+    setDisabled(true);
   }
   function onBack() {
     window.history.back();
@@ -96,10 +90,10 @@ function DetailsPage(props) {
 
   // load avatar
   const handleChangeAvt = event => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
+    // setState({
+    //   ...state,
+    //   [event.target.name]: event.target.value,
+    // });
     const file = event.target.files[0];
     getBase64(file).then(base64 => {
       setState({
@@ -107,6 +101,7 @@ function DetailsPage(props) {
         avatar: base64,
       });
     });
+    setCancel(true);
   };
 
   const { dataUser = false } = props;
@@ -137,7 +132,7 @@ function DetailsPage(props) {
                       <StyleAvt
                         alt="complex"
                         src={
-                          state && state.avatar
+                          state && state.avatar && cancel
                             ? state.avatar
                             : props.dataUser.avatar
                         }
@@ -151,7 +146,7 @@ function DetailsPage(props) {
                 <Grid item xs={6} container justify="center">
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      {disabled.is ? (
+                      {disabled ? (
                         <React.Fragment>
                           {Object.keys(props.dataUser).length > 0 ? (
                             <h2 variant="subtitle1">
@@ -164,7 +159,7 @@ function DetailsPage(props) {
                           )}
                         </React.Fragment>
                       ) : null}
-                      {!disabled.is ? (
+                      {!disabled ? (
                         <div>
                           <TextField
                             id="standard-name"
@@ -188,7 +183,7 @@ function DetailsPage(props) {
                       ) : null}
                       {props.dataUser.email ? (
                         <TextField
-                          disabled={disabled.is || true}
+                          disabled={disabled || true}
                           id="standard-email"
                           label="Email"
                           onChange={handleChange}
@@ -202,7 +197,7 @@ function DetailsPage(props) {
                       )}
                       {props.dataUser.phoneNumber ? (
                         <TextField
-                          disabled={disabled.is}
+                          disabled={disabled}
                           id="standard-phone"
                           label="Phone Number"
                           onChange={handleChange}
@@ -217,7 +212,7 @@ function DetailsPage(props) {
 
                       {props.dataUser.gender ? (
                         <TextField
-                          disabled={disabled.is}
+                          disabled={disabled}
                           id="standard-select-currency-native"
                           select
                           label="Gender select"
@@ -241,7 +236,7 @@ function DetailsPage(props) {
 
                       {props.dataUser.position ? (
                         <TextField
-                          disabled={disabled.is}
+                          disabled={disabled}
                           id="standard-select-standard-position"
                           select
                           label="Position select"
@@ -265,7 +260,7 @@ function DetailsPage(props) {
                       )}
                       {props.dataUser.description ? (
                         <TextField
-                          disabled={disabled.is}
+                          disabled={disabled}
                           id="standard-description"
                           label="Description"
                           name="description"
@@ -280,7 +275,7 @@ function DetailsPage(props) {
                       {props.dataUser.dateBirth ? (
                         <React.Fragment>
                           <TextField
-                            disabled={disabled.is}
+                            disabled={disabled}
                             id="date"
                             label="Birthday"
                             type="date"
@@ -293,7 +288,7 @@ function DetailsPage(props) {
                             }}
                           />
                           <TextField
-                            disabled={disabled.is}
+                            disabled={disabled}
                             id="standard-address"
                             label="Address"
                             name="address"
@@ -304,7 +299,7 @@ function DetailsPage(props) {
                           />
                         </React.Fragment>
                       ) : null}
-                      {disabled.is === false ? (
+                      {disabled === false ? (
                         <React.Fragment>
                           <input
                             name="avatar"
@@ -339,7 +334,7 @@ function DetailsPage(props) {
                     <Button
                       className={classes.button}
                       onClick={
-                        disabled.is === false && userLevel.level === 0
+                        disabled === false && userLevel.level === 0
                           ? onCancel
                           : onBack
                       }
@@ -347,18 +342,18 @@ function DetailsPage(props) {
                       color="secondary"
                       type="reset"
                     >
-                      {disabled.is === false && userLevel.level === 0
+                      {disabled === false && userLevel.level === 0
                         ? 'Cancel'
                         : 'Back'}
                     </Button>
                     {userLevel.level === 0 ? (
                       <Button
                         className={classes.button}
-                        onClick={disabled.is === true ? editClick : onSave}
+                        onClick={disabled === true ? editClick : onSave}
                         variant="contained"
                         color="secondary"
                       >
-                        {disabled.is === true ? 'Edit' : 'Save'}
+                        {disabled === true ? 'Edit' : 'Save'}
                       </Button>
                     ) : null}
                   </React.Fragment>
