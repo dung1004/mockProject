@@ -6,7 +6,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropsTypes from 'prop-types';
-import { toast } from 'react-toastify';
 
 import LinhAcc from './LinkAccount';
 
@@ -54,15 +53,10 @@ export default function Accout(props) {
     setAnchorEl(null);
   }
   function onLogOut() {
-    localStorage.removeItem('token');
-    if (!localStorage.getItem('token')) {
-      // props.history.push('/');
-      toast.info('Đăng xuất thành công !', {
-        position: toast.POSITION.TOP_LEFT,
-      });
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
+    const token = localStorage.removeItem('token');
+    if (!token) {
+      localStorage.setItem('toat', 2);
+      window.location.href = '/';
     }
   }
   return (

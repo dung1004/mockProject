@@ -1,4 +1,12 @@
+import { toast } from 'react-toastify';
 import * as type from './constants';
+import 'react-toastify/dist/ReactToastify.css';
+
+const toastTify = err => {
+  toast.error(err, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 
 export function getData() {
   return {
@@ -6,10 +14,17 @@ export function getData() {
   };
 }
 
-export function getDataSuccess(students, teachers) {
+export function getDataSuccess(data) {
   return {
     type: type.GET_DATA_SUCCESS,
-    students,
-    teachers,
+    data,
+  };
+}
+
+export function getDataFailed(error) {
+  toastTify(error);
+  return {
+    type: type.GET_DATA_FAIL,
+    error,
   };
 }

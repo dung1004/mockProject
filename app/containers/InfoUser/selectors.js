@@ -3,16 +3,9 @@ import initialState from './reducers';
 
 const selectData = state => state.info || initialState;
 
-const makeSelectStudent = () =>
+const makeSelectData = () =>
   createSelector(
     selectData,
-    classState => classState.students,
+    classState => classState.data,
   );
-
-const makeSelectTeacher = () =>
-  createSelector(
-    selectData,
-    classState => classState.teachers,
-  );
-
-export { makeSelectStudent, makeSelectTeacher };
+export { makeSelectData };
