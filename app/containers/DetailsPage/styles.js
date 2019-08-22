@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
   labelUp: {
     display: 'flex',
   },
+  boxInfo: {
+    marginBottom: 100,
+  },
 }));
 
 export default useStyles;

@@ -262,9 +262,7 @@ function DetailsPage(props) {
                           <option value="Nhân viên">Nhân viên</option>
                           <option value="Phó Giám Đốc">Phó Giám Đốc</option>
                         </TextField>
-                      ) : (
-                        <Skeleton width={150} height={50} />
-                      )}
+                      ) : null}
                       {props.dataUser.description ? (
                         <TextField
                           disabled={disabled.is}
