@@ -303,7 +303,7 @@ function DetailsPage(props) {
                         ) : null}
                       </React.Fragment>
 
-                      {disabled.is === false ? (
+                      {!disabled ? (
                         <React.Fragment>
                           <input
                             name="avatar"
@@ -338,26 +338,22 @@ function DetailsPage(props) {
                     <Button
                       className={classes.button}
                       onClick={
-                        disabled === false && userLevel.level === 0
-                          ? onCancel
-                          : onBack
+                        !disabled && userLevel.level === 0 ? onCancel : onBack
                       }
                       variant="contained"
                       color="secondary"
                       type="reset"
                     >
-                      {disabled === false && userLevel.level === 0
-                        ? 'Cancel'
-                        : 'Back'}
+                      {!disabled && userLevel.level === 0 ? 'Cancel' : 'Back'}
                     </Button>
                     {userLevel.level === 0 ? (
                       <Button
                         className={classes.button}
-                        onClick={disabled === true ? editClick : onSave}
+                        onClick={disabled ? editClick : onSave}
                         variant="contained"
                         color="secondary"
                       >
-                        {disabled === true ? 'Edit' : 'Save'}
+                        {disabled ? 'Edit' : 'Save'}
                       </Button>
                     ) : null}
                   </React.Fragment>
