@@ -777,6 +777,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.6.0":
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.3.tgz#935122c74c73d2240cafd32ddb5fc2a6cd35cf1f"
+  integrity sha512-kq6anf9JGjW8Nt5rYfEuGRaEAaH1mkv3Bbu6rYvLOpPh/RusSJXuKPEAoZ7L7gybZkchE8+NV5g9vKF4AGAtsA==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -1027,16 +1034,16 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@material-ui/pickers@^3.0.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/pickers/-/pickers-3.2.0.tgz#1a10be67211b9348b87e8354af041c1f1a56f060"
-  integrity sha512-/bn90Vl6U22/Od2QGirSg1U9fk/YjzLtkHdwmS4crE6HjVzApi5l8kcOC2j+gDHggs3J6zO+4eq3DK5kGYN6Jg==
+"@material-ui/pickers@^3.2.2":
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/@material-ui/pickers/-/pickers-3.2.7.tgz#5ddcd768cdfc9d9bbdace209df75176cd98122e7"
+  integrity sha512-dDi8G8TOXssXZQsGCRM4zoDnWMY4O/vvqVCH4ViIHflvS4ek4v30IlFcSONI5jGzL0dmJhNKso2UEn7qS3iZ3g==
   dependencies:
+    "@babel/runtime" "^7.6.0"
     "@types/styled-jsx" "^2.2.8"
     clsx "^1.0.2"
     react-transition-group "^4.0.0"
     rifm "^0.7.0"
-    tslib "^1.9.3"
 
 "@material-ui/styles@^4.2.0":
   version "4.2.0"
@@ -3253,6 +3260,11 @@ date-fns@^2.0.0-alpha.27:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-beta.2.tgz#ccd556df832ef761baa88c600f53d2e829245999"
   integrity sha512-4cicZF707RNerr3/Q3CcdLo+3OHMCfrRXE7h5iFgn7AMvX07sqKLxSf8Yp+WJW5bvKr2cy9/PkctXLv4iFtOaA==
 
+date-fns@^2.0.0-beta.4:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.6.0.tgz#a5bc82e6a4c3995ae124b0ba1a71aec7b8cbd666"
+  integrity sha512-F55YxqRdEfP/eYQmQjLN798v0AwLjmZ8nMBjdQvNwEE3N/zWVrlkkqT+9seBlPlsbkybG4JmWg3Ee3dIV9BcGQ==
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -4012,16 +4024,16 @@ eslint-scope@^4.0.0, eslint-scope@^4.0.3:
     estraverse "^4.1.1"
 
 eslint-utils@^1.3.1:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-utils/-/eslint-utils-1.4.0.tgz#e2c3c8dba768425f897cf0f9e51fe2e241485d4c"
-  integrity sha512-7ehnzPaP5IIEh1r1tkjuIrxqhNkzUJa9z3R92tLJdZIVdWaczEhr3EbhGtsMrVxi1KeR8qA7Off6SWc5WNQqyQ==
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/eslint-utils/-/eslint-utils-1.4.3.tgz#74fec7c54d0776b6f67e0251040b5806564e981f"
+  integrity sha512-fbBN5W2xdY45KulGXmLHZ3c3FHfVYmKg0IrAKGOkT/464PQsx2UeIzfz1RmEci+KLm1bBaAzZAh8+/E+XAeZ8Q==
   dependencies:
-    eslint-visitor-keys "^1.0.0"
+    eslint-visitor-keys "^1.1.0"
 
-eslint-visitor-keys@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
-  integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
+eslint-visitor-keys@^1.0.0, eslint-visitor-keys@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
+  integrity sha512-8y9YjtM1JBJU/A9Kc+SbaOV4y29sSWckBwMHa+FGtVj5gN/sbnKDf6xJUl+8g7FAij9LVaP8C24DUiH/f/2Z9A==
 
 eslint@5.16.0:
   version "5.16.0"
@@ -4483,10 +4495,10 @@ file-type@^8.1.0:
   resolved "https://registry.yarnpkg.com/file-type/-/file-type-8.1.0.tgz#244f3b7ef641bbe0cca196c7276e4b332399f68c"
   integrity sha512-qyQ0pzAy78gVoJsmYeNgl8uH8yKhr1lVhW7JbzJmnlRi0I4R2eEDEJZVKG8agpDnLpacwNbDhLNG/LMdxHD2YQ==
 
-filefy@0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/filefy/-/filefy-0.1.9.tgz#9f342c2f3f804505cb5011107fcb345378b282bf"
-  integrity sha512-M+9HcR+Hu0LTh5qYTHRnmA2dm+WBHCG6WU+Biw/84RamiV41DzEArSLockUQ0qCSV1fJI0BoCpnniVG/Ch5tMw==
+filefy@0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/filefy/-/filefy-0.1.10.tgz#174677c8e2fa5bc39a3af0ed6fb492f16b8fbf42"
+  integrity sha512-VgoRVOOY1WkTpWH+KBy8zcU1G7uQTVsXqhWEgzryB9A5hg2aqCyZ6aQ/5PSzlqM5+6cnVrX6oYV0XqD3HZSnmQ==
 
 filename-reserved-regex@^2.0.0:
   version "2.0.0"
@@ -7222,17 +7234,17 @@ matcher@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.4"
 
-material-table@^1.44.0:
-  version "1.44.0"
-  resolved "https://registry.yarnpkg.com/material-table/-/material-table-1.44.0.tgz#b36ca491c85786168fc04de8ff5676605678b532"
-  integrity sha512-2K+xJKw0TJolN5zy5mYtg2SprlVxz8qrB58NZSCDWTZzuzwkx0nMVih3E74bzKXvAPTBmlLGhJEKzfUuwjUQqA==
+material-table@^1.47.0:
+  version "1.53.0"
+  resolved "https://registry.yarnpkg.com/material-table/-/material-table-1.53.0.tgz#d6e14a71ae57ad5096ec862aff926ecd1ed995fb"
+  integrity sha512-nsPXYABMb4MQEfz1SOlQi6vFJuzZPR4AMyE/EbP26/gkHL/jsa+Z5pBG3liiHbGUy7flONckpzqYWZ3wLf5iKw==
   dependencies:
     "@date-io/date-fns" "^1.1.0"
-    "@material-ui/pickers" "^3.0.0"
+    "@material-ui/pickers" "^3.2.2"
     classnames "^2.2.6"
     date-fns "^2.0.0-alpha.27"
     debounce "^1.2.0"
-    filefy "0.1.9"
+    filefy "0.1.10"
     prop-types "^15.6.2"
     react-beautiful-dnd "11.0.3"
     react-double-scrollbar "0.0.15"
